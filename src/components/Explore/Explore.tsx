@@ -1,6 +1,6 @@
 import test from "../../assets/images/default.jpg";
 import "./Explore.css";
-const explore = () => {
+const Explore = () => {
   return (
     <div className="container border-bottom py-4">
       <div className="row py-4 ">
@@ -31,4 +31,4 @@ const explore = () => {
   );
 };
 
-export default explore;
+export default Explore;
