@@ -1,0 +1,9 @@
+.sale-icon {
+  left: 0;
+}
+.card-title {
+  max-height: 1.6875rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
