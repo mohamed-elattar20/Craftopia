@@ -1,10 +1,10 @@
 // Components
-import CategoryCard from "../CategoryCard/CategoryCard";
+import CategoryCard from "../../../components/CategoryCard/CategoryCard";
 // imgs
-import gems from "../../assets/images/Categories/gems.png";
-import candles from "../../assets/images/Categories/candles.png";
-import crochet from "../../assets/images/Categories/crochet.png";
-import forMore from "../../assets/images/Categories/for_more.png";
+import gems from "../../../assets/images/Categories/gems.png";
+import candles from "../../../assets/images/Categories/candles.png";
+import crochet from "../../../assets/images/Categories/crochet.png";
+import forMore from "../../../assets/images/Categories/for_more.png";
 const Categories = () => {
   return (
     <>

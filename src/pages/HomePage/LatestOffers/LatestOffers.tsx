@@ -1,4 +1,4 @@
-import ProductCard from "../ProductCard/ProductCard";
+import ProductCard from "../../../components/ProductCard/ProductCard";
 
 const LatestOffers = () => {
   return (

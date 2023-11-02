@@ -64,6 +64,7 @@ function Navbar() {
               <div className="d-flex">
                 {/* offcanvas controls */}
                 <button
+                  title="fav"
                   className="btn fs-5"
                   type="button"
                   data-bs-toggle="offcanvas"
@@ -73,6 +74,7 @@ function Navbar() {
                   <FontAwesomeIcon icon={faHeart} className="text-primary" />
                 </button>
                 <button
+                  title="cart"
                   className="btn fs-5"
                   type="button"
                   data-bs-toggle="offcanvas"

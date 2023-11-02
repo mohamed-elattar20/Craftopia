@@ -1,5 +1,12 @@
+import LoginForm from "./components/LoginForm/LoginForm";
+import HomePage from "./pages/HomePage/HomePage";
+
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <HomePage />
+    </>
+  );
 }
 
 export default App;
