@@ -1,9 +1,9 @@
-import logo from "./assets/images/logo4-04.png";
+
+import Navbar from "./components/Navbar/Navbar";
 function App() {
   return (
     <div className="App">
-      <h1 className="text-center pt-5 fs-1 text-secondary">Hello World</h1>
-      <img src={logo} alt="" />
+      <Navbar />
     </div>
   );
 }
