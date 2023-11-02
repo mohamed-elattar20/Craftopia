@@ -1,0 +1,15 @@
+.contact-info {
+  background: linear-gradient(
+    112.1deg,
+    rgb(32, 38, 57) 11.4%,
+    rgb(63, 76, 119) 70.2%
+  );
+  border-radius: 10px;
+}
+input:focus,
+textarea:focus {
+  box-shadow: 3px 3px rgb(32, 38, 57) !important;
+}
+::placeholder {
+  opacity: 0.4 !important;
+}

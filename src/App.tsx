@@ -1,5 +1,11 @@
+import ContactUs from "./components/ContactUs/ContactUs";
+
 function App() {
-  return <div className="App"></div>;
+  return (
+    <div>
+      <ContactUs />
+    </div>
+  );
 }
 
 export default App;
