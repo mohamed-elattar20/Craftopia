@@ -10,17 +10,17 @@ const Categories = () => {
     <>
       <div className="container my-5">
         <div className="row">
-          <h2>تسوق حسب الفئة</h2>
-          <div className="col-sm-6 col-md-6 col-lg-3 mt-5">
+          <h2 className="display-5">تسوق حسب الفئة</h2>
+          <div className="col-6 col-md-6 col-lg-3 mt-5">
             <CategoryCard img={gems} categoryType="مواد طبيعية" />
           </div>
-          <div className="col-sm-6 col-md-6 col-lg-3 mt-5">
+          <div className="col-6 col-md-6 col-lg-3 mt-5">
             <CategoryCard img={candles} categoryType="مواد كيميائية" />
           </div>
-          <div className="col-sm-6 col-md-6 col-lg-3 mt-5">
+          <div className="col-6 col-md-6 col-lg-3 mt-5">
             <CategoryCard img={crochet} categoryType="خيوط" />
           </div>
-          <div className="col-sm-6 col-md-6 col-lg-3 mt-5">
+          <div className="col-6 col-md-6 col-lg-3 mt-5">
             <CategoryCard img={forMore} categoryType="للمزيد اضغط هنا" />
           </div>
         </div>
