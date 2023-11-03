@@ -1,6 +1,5 @@
 import React from "react";
 import { UserProfileSections } from "./userProfileSections/UserProfileSections";
-import { UserProfileAccount } from "./userProfileAccount/UserProfileAccount";
 import { Outlet } from "react-router-dom";
 
 export const UserProile = () => {

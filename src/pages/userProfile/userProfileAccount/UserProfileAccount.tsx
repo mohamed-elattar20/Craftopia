@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./userProfileAccount.css";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 
 type Inputs = {
   firstName: string;
@@ -22,7 +23,8 @@ export const UserProfileAccount = () => {
 
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
-      <h2 className="text-center mb-4">بيانات الحساب</h2>
+      <UserProfileTaps />
+      <h2 className="text-center my-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="d-flex flex-column gap-3"
