@@ -7,3 +7,7 @@ a {
 ul {
   list-style: none;
 }
+img {
+  display: inline-block;
+  width: 100%;
+}

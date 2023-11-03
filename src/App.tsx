@@ -1,9 +1,4 @@
-import Categories from "./components/Categories/Categories";
-import Explore from "./components/Explore/Explore";
-import Invest from "./components/Invest/Invest";
-import LatestOffers from "./components/LatestOffers/LatestOffers";
 import Navbar from "./components/Navbar/Navbar";
-import { HeroSection } from "./components/hero section/HeroSection";
 import { UserProile } from "./pages/userProfile/UserProile";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
@@ -13,8 +8,8 @@ import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserPro
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      <BrowserRouter>
+      {/* <Navbar /> */}
+      {/* <BrowserRouter>
         <Routes>
           <Route path="/user/profile" element={<UserProile />}>
             <Route path="" element={<UserProfileAccount />} />
@@ -22,7 +17,7 @@ function App() {
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }

@@ -21,7 +21,7 @@ export const UserProfileAccount = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   return (
-    <div className="user-account border p-5 flex-grow-1 rounded-4">
+    <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
       <h2 className="text-center mb-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -124,8 +124,8 @@ export const UserProfileAccount = () => {
             <p className="text-start text-danger">This field is required</p>
           )}
         </div>
-        <div>
-          <button className="btn btn-primary text-white px-4" type="submit">
+        <div className="text-start">
+          <button className="btn btn-secondary text-white px-4" type="submit">
             حفظ
           </button>
         </div>

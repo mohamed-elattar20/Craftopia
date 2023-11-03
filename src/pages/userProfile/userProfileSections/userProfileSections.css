@@ -1,3 +1,6 @@
+.user-profile-sections {
+  min-width: 25% !important;
+}
 .user-profile-sections a {
   display: inline-block;
   width: 100%;

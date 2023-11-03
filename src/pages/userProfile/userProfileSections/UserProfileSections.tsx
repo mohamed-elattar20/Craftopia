@@ -1,11 +1,11 @@
-import avatar from "../../../assets/images/bassiony/Avatar.png";
+import avatar from "../../../assets/images/User Profile/Avatar.png";
 import { NavLink } from "react-router-dom";
 import "./userProfileSections.css";
 
 export const UserProfileSections = () => {
   return (
-    <div>
-      <div className="user-profile-sections border  pt-4 rounded-4">
+    <div className="user-profile-sections d-none d-md-block">
+      <div className="border pt-4 rounded-4">
         <div className="text-center">
           <img src={avatar} alt="" style={{ width: "70px" }} />
           <h4 className="mt-2 fs-5">Ahmed Khamis</h4>

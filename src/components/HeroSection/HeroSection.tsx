@@ -1,5 +1,5 @@
-import heroSeller from "../../assets/images/bassiony/hero-seller.png";
-import heroBuyer from "../../assets/images/bassiony/hero6.jpg";
+import heroSeller from "../../assets/images/Hero Section/hero-seller.png";
+import heroBuyer from "../../assets/images/Hero Section/hero6.jpg";
 import "./hero-section.css";
 
 export const HeroSection = () => {
