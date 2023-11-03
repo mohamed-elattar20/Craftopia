@@ -67,11 +67,19 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control text-start"
             id="phoneNumber"
-            defaultValue="+020100040689"
-            {...register("phoneNumber", { required: true })}
+            defaultValue="+0201000406896"
+            {...register("phoneNumber", {
+              required: "This field is required",
+              pattern: {
+                value: /^\+020\d{10}$/,
+                message: "Invalid phone number",
+              },
+            })}
           ></input>
           {errors.phoneNumber && (
-            <p className="text-start text-danger">This field is required</p>
+            <p className="text-start text-danger">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
         <div>
@@ -83,8 +91,18 @@ export const UserProfileAccount = () => {
             className="form-control text-start"
             id="additionalPhoneNumber"
             defaultValue="+020100040689"
-            {...register("additionalPhoneNumber")}
+            {...register("additionalPhoneNumber", {
+              pattern: {
+                value: /^(?:\+020\d{10})?$/,
+                message: "Invalid phone number",
+              },
+            })}
           ></input>
+          {errors.additionalPhoneNumber && (
+            <p className="text-start text-danger">
+              {errors.additionalPhoneNumber.message}
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor="password" className="form-label">
