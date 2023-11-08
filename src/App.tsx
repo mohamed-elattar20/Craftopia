@@ -10,12 +10,23 @@ import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
-
+import HomePage from "./pages/HomePage/HomePage";
+import { Footer } from "./components/Footer";
+import ContactUs from "./components/ContactUs/ContactUs";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import Register from "./pages/RegisterPage/Register/Register";
 
 function App() {
   return (
     <div className="App">
-      {/* <Routes>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/store" element={<StorePage />} />
+        <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
+        {/*  */}
         <Route path="/user/profile" element={<UserProile />}>
           <Route path="" element={<UserProfileAccount />} />
           <Route path="address" element={<UserProfileAddress />} />
@@ -26,7 +37,8 @@ function App() {
           <Route path="description" element={<ProductDetailsDesc />} />
           <Route path="reviews" element={<ProductDetailsReviews />} />
         </Route>
-      </Routes> */}
+      </Routes>
+      <Footer />
     </div>
   );
 }

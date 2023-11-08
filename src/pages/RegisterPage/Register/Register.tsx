@@ -2,6 +2,7 @@ import { useForm, Controller } from "react-hook-form";
 import egyptGovernoratesData from "./governorates.json";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
+import { NavLink } from "react-router-dom";
 
 function Register() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
@@ -229,12 +230,12 @@ function Register() {
           <button type="submit" className="btn btn-primary mt-5">
             تسجيل
           </button>
-          <a
-            href="#"
+          <NavLink
+            to={`/login`}
             className="text-primary d-block my-2 text-decoration-none"
           >
             هل أنت عضو بالفعل؟
-          </a>
+          </NavLink>
         </form>
       </div>
     </>

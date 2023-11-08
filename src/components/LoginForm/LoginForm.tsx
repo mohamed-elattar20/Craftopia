@@ -1,4 +1,5 @@
 //  CSS
+import { NavLink } from "react-router-dom";
 import "./LoginForm.css";
 // React Hook Form
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -94,12 +95,12 @@ const LoginForm = () => {
               </button>
               <div className="text-center">
                 <p className=" mt-3 text-muted">جديد الى كرافتوبيا ؟</p>
-                <a
-                  href="#"
+                <NavLink
+                  to={`/register`}
                   className="text-center text-decoration-none fw-bold text-primary "
                 >
                   انشاء حساب لك في كرافتوبيا
-                </a>
+                </NavLink>
               </div>
             </form>
           </div>
