@@ -1,27 +1,32 @@
 import Navbar from "./components/Navbar/Navbar";
 import { UserProile } from "./pages/userProfile/UserProile";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
 import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
 import { UserProfilePosts } from "./pages/userProfile/userProfilePosts/UserProfilePosts";
 import { UserProfileSavedPosts } from "./pages/userProfile/userProfileSavedPosts/UserProfileSavedPosts";
+import StorePage from "./pages/StorePage/StorePage";
+import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
+import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
+import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
+
 
 function App() {
   return (
     <div className="App">
-      <Navbar />
-      {/* <BrowserRouter>
-        <Routes>
-          <Route path="/user/profile" element={<UserProile />}>
-            <Route path="" element={<UserProfileAccount />} />
-            <Route path="address" element={<UserProfileAddress />} />
-            <Route path="orders" element={<UserProfileOrders />} />
-            <Route path="posts" element={<UserProfilePosts />} />
-            <Route path="posts/saved" element={<UserProfileSavedPosts />} />
-          </Route>
-        </Routes>
-      </BrowserRouter> */}
+      {/* <Routes>
+        <Route path="/user/profile" element={<UserProile />}>
+          <Route path="" element={<UserProfileAccount />} />
+          <Route path="address" element={<UserProfileAddress />} />
+          <Route path="orders" element={<UserProfileOrders />} />
+        </Route>
+        <Route path="/product-details/:id" element={<ProductDetailsPage />}>
+          <Route path="" element={<ProductDetailsDesc />} />
+          <Route path="description" element={<ProductDetailsDesc />} />
+          <Route path="reviews" element={<ProductDetailsReviews />} />
+        </Route>
+      </Routes> */}
     </div>
   );
 }

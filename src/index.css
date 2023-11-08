@@ -11,3 +11,7 @@ img {
   display: inline-block;
   width: 100%;
 }
+.input-style:focus {
+  box-shadow: none !important;
+  outline: none;
+}
