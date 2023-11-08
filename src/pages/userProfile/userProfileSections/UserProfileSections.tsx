@@ -1,8 +1,13 @@
 import avatar from "../../../assets/images/User Profile/Avatar.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import "./userProfileSections.css";
 
 export const UserProfileSections = () => {
+  const location = useLocation();
+  const isActiveLink = (path: string): boolean => {
+    return location.pathname.startsWith(path);
+  };
+
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
@@ -12,7 +17,9 @@ export const UserProfileSections = () => {
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
-            <NavLink to={"./"}>حسابي</NavLink>
+            <NavLink end to={"/user/profile"}>
+              حسابي
+            </NavLink>
           </li>
           <li>
             <NavLink to={"./address"}>العناوين</NavLink>

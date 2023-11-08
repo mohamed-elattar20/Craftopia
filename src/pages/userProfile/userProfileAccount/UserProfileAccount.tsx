@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./userProfileAccount.css";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 
 type Inputs = {
   firstName: string;
@@ -22,7 +23,8 @@ export const UserProfileAccount = () => {
 
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
-      <h2 className="text-center mb-4">بيانات الحساب</h2>
+      <UserProfileTaps />
+      <h2 className="text-center my-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="d-flex flex-column gap-3"
@@ -65,11 +67,19 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control text-start"
             id="phoneNumber"
-            defaultValue="+020100040689"
-            {...register("phoneNumber", { required: true })}
+            defaultValue="+0201000406896"
+            {...register("phoneNumber", {
+              required: "This field is required",
+              pattern: {
+                value: /^\+020\d{10}$/,
+                message: "Invalid phone number",
+              },
+            })}
           ></input>
           {errors.phoneNumber && (
-            <p className="text-start text-danger">This field is required</p>
+            <p className="text-start text-danger">
+              {errors.phoneNumber.message}
+            </p>
           )}
         </div>
         <div>
@@ -81,8 +91,18 @@ export const UserProfileAccount = () => {
             className="form-control text-start"
             id="additionalPhoneNumber"
             defaultValue="+020100040689"
-            {...register("additionalPhoneNumber")}
+            {...register("additionalPhoneNumber", {
+              pattern: {
+                value: /^(?:\+020\d{10})?$/,
+                message: "Invalid phone number",
+              },
+            })}
           ></input>
+          {errors.additionalPhoneNumber && (
+            <p className="text-start text-danger">
+              {errors.additionalPhoneNumber.message}
+            </p>
+          )}
         </div>
         <div>
           <label htmlFor="password" className="form-label">
