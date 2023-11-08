@@ -1,11 +1,12 @@
 import logo from "../../assets/images/logo4-04.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 function Navbar() {
   return (
     <div className="container justify-content-between">
       <nav className="navbar navbar-expand-lg ">
-        <a className="navbar-brand ms-5" href="#">
+        <NavLink className="navbar-brand ms-5" to="/">
           <img
             src={logo}
             alt="logo"
@@ -13,7 +14,7 @@ function Navbar() {
             height="40"
             className="d-inline-block align-text-top"
           />
-        </a>
+        </NavLink>
 
         <button
           className="navbar-toggler"
@@ -41,24 +42,24 @@ function Navbar() {
           </form>
           <ul className="navbar-nav flex-grow-1 justify-content-between">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
+              <NavLink className="nav-link" aria-current="page" to={`/`}>
                 الرئيسية
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to={`/store`}>
                 التسوق
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to={`/contact-us`}>
                 تواصل معنا
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to={`/login`}>
                 مرحباً. تسجيل الدخول؟
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
               <div className="d-flex">
