@@ -1,5 +1,5 @@
 //  Components
-import AboutUs from "../../components/AboutUs";
+import AboutUs from "./AboutUs/AboutUs";
 import Explore from "../../components/Explore/Explore";
 import { HeroSection } from "../../components/HeroSection/HeroSection";
 import Invest from "../../components/Invest/Invest";
