@@ -1,44 +1,36 @@
+//  Assets
 import logo from "../../assets/images/logo4-04.png";
+// Fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
-//  Context
-import { useContext, useEffect, useMemo, useState } from "react";
-import { UserContext } from "../../Contexts/UserContext";
-// Firebase
-import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+// Routing
+import { Link, NavLink, useNavigate } from "react-router-dom";
+//  Firebase
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, usersCollRef } from "../../firebase/firebase";
-import {
-  useCollection,
-  useCollectionData,
-} from "react-firebase-hooks/firestore";
-import { User, onAuthStateChanged } from "@firebase/auth";
+import { useContext, useEffect, useState } from "react";
+import { User, signOut } from "@firebase/auth";
 import { query, where } from "@firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { UserContext } from "../../Contexts/UserContext";
 function Navbar() {
-  // Context
-  // const user: any = useContext(UserContext);
-  // console.log(user);
-  const [userLogged] = useAuthState(auth);
-  const [name, setName] = useState<string | null | undefined>("");
+  // Authentication **************
+  const navigate = useNavigate();
+  const [myUser] = useAuthState(auth);
+  const listOfUsers =
+    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
+  const [authUser] = useCollectionData(listOfUsers);
+  // console.log(authUser);
+
+  const [userName, setUserName] = useState<string | null | undefined>("");
   useEffect(() => {
-    setName(userLogged?.displayName);
-  }, [userLogged]);
-  // console.log(userLogged?.uid);
+    setUserName(authUser && authUser[0].displayName);
+  }, [authUser]);
+  // Authentication **************
 
-  // const [users] = useCollectionData(usersCollRef);
-  // console.log(users);
-  //
-
-  //  ?????????????????
-  // const newUserFilterd = users?.filter((user) => user.uid == userLogged?.uid);
-  // console.log(newUserFilterd);
-
-  const [signOutUser, loadingg, errorr] = useSignOut(auth);
-  const signOut = () => {
-    signOutUser().then(() => {
-      console.log(`User Signed out Successfully`);
-    });
-  };
+  // Context
+  // const myUser = useContext<User | null | undefined>(UserContext);
+  // console.log(myUser);
 
   return (
     <div className="container justify-content-between">
@@ -94,11 +86,17 @@ function Navbar() {
               </NavLink>
             </li>
             {/*  */}
-            {userLogged ? (
-              <li className="nav-item">
-                <NavLink onClick={signOut} className="nav-link" to={`/`}>
+            {myUser ? (
+              <li className="nav-item nav-link p-2 rounded-3">
+                <button
+                  onClick={() => {
+                    signOut(auth);
+                    navigate(`/`);
+                  }}
+                  className="border-0 bg-white text-primary   "
+                >
                   تسجيل الخروج ؟
-                </NavLink>
+                </button>
               </li>
             ) : (
               <li className="nav-item">
@@ -107,14 +105,14 @@ function Navbar() {
                 </NavLink>
               </li>
             )}
-
-            {/*  */}
-            {userLogged && (
+            {myUser ? (
               <li className="nav-item nav-link">
-                مرحبا بك {userLogged?.displayName}
+                <Link to={`/user/profile`}>مرحبا {userName}</Link>
               </li>
+            ) : (
+              ""
             )}
-
+            {/*  */}
             <li className="nav-item">
               <div className="d-flex">
                 {/* offcanvas controls */}

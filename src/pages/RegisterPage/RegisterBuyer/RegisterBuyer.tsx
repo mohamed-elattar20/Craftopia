@@ -1,13 +1,33 @@
-import { useForm, Controller } from "react-hook-form";
-import egyptGovernoratesData from "../../pages/RegisterPage/RegisterSeller/governorates.json";
+//  Types
+// import { RegisterData } from "../../../Types/RegisterUserType";
+//  Json
+import egyptGovernoratesData from "./governorates.json";
+//  React Hook Form
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+// React Select
 import Select from "react-select";
+//  CSS
 import "react-phone-number-input/style.css";
-
-interface CartPurchasesProps {
-  nextPage: (value: number) => void;
-}
-
-export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
+//  Routing
+import { Link, NavLink, useNavigate } from "react-router-dom";
+//  Firebase
+import {
+  User,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import {
+  useCreateUserWithEmailAndPassword,
+  useAuthState,
+} from "react-firebase-hooks/auth";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { auth, usersCollRef } from "../../../firebase/firebase";
+import { addDoc } from "firebase/firestore";
+import { useState } from "react";
+function RegisterBuyer() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
     register,
@@ -17,16 +37,57 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
     control,
   } = useForm();
 
-  const onSubmit = (data: {}) => console.log(data);
+  // Authentication *******************
 
+  const [myUser] = useAuthState(auth);
+  // console.log(myUser);
+  const [users] = useCollection(usersCollRef);
+  //
+  const navigate = useNavigate();
+  //
+  //
+  const onSubmit = (data: any) => {
+    console.log(data);
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((res) => {
+        // console.log(res);
+        // console.log(`added to auth users`, res);
+        // setName(res?.user?.displayName);
+        // updateProfile(res.user, {
+        //   displayName: `${data.firstName} ${data.lastName}`,
+        // });
+        //
+        addDoc(usersCollRef, {
+          ...data,
+          uId: res.user.uid,
+          displayName: `${data.firstName} ${data.lastName}`,
+          Rule: "buyer",
+          orders: [{}],
+        })
+          .then(() => {
+            // console.log(`user Added to fire Store`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        navigate(`/user/profile`);
+      })
+      .catch((err) => {
+        console.log(err?.message);
+      });
+  };
+  // Authentication *******************
   return (
     <>
-      <div className="container pt-3">
-        <p className="text-center fs-5 pb-5">تفاصيل الفاتورة</p>
+      <div className="container">
+        <h1 className="text-center pt-5  fw-bold">إنشاء حساب</h1>
+        <p className="text-center fs-5 pb-5">
+          نحن بحاجة لمساعدتك في تقديم بعض المعلومات الأساسية لإنشاء حسابك
+        </p>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text mb-2 ">الاسم الأول</div>
+              <div className="form-text mb-2">الاسم الأول</div>
 
               <input
                 id="firstName"
@@ -60,14 +121,14 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-md-6 pb-3">
-              <div className="form-text mb-2"> البريد الالكتروني</div>
+            <div className="col-12  pb-3">
+              <div className="form-text mb-2 ">عنوان البريد الالكتروني</div>
 
               <input
                 id="email"
                 type="text"
                 className="form-control"
-                placeholder="Email address"
+                placeholder="عنوان البريد الالكتروني الخاص بك"
                 aria-describedby="البريد الالكتروني"
                 {...register("email", {
                   required: true,
@@ -85,6 +146,8 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
                 </div>
               ) : null}
             </div>
+          </div>
+          <div className="row">
             <div className="col-12 col-md-6 pb-3">
               <div className="form-text mb-2">رقم الهاتف</div>
               <input
@@ -107,8 +170,6 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
                 <div className="form-text  text-danger">رقم هاتف غير صحيح</div>
               ) : null}
             </div>
-          </div>
-          <div className="row">
             <div className="col-12 col-md-6">
               <div className="form-text mb-2">المحافظة</div>
               {/* <Select options={governorates} /> */}
@@ -142,7 +203,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
                 </div>
               ) : null}
             </div>
-            <div className="col-12 col-md-6 pt-3">
+            <div className="col-12 col-md-6">
               <div className="form-text mb-2">العنوان</div>
               <input
                 type="text"
@@ -158,21 +219,77 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
                 </div>
               ) : null}
             </div>
+            <div className="col-12 col-md-6 pt-3">
+              <div className="form-text mb-2">كلمة السر</div>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="كلمة السر"
+                {...register("password", {
+                  required: true,
+                  pattern:
+                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                })}
+              />
+              {errors.password?.type === "required" ? (
+                <div className="form-text  text-danger">
+                  برجاء ادخال كلمة السر{" "}
+                </div>
+              ) : null}
+              {errors.password?.type === "pattern" ? (
+                <div className="form-text  text-danger">
+                  "يجب أن تحتوي كلمة المرور على الأقل حرف أبجدي واحد، رقم واحد،
+                  وحرف خاص واحد، وأن تكون على الأقل 8 أحرف في الطول."
+                </div>
+              ) : null}
+            </div>
+            <div className="col-12 col-md-6 pt-3">
+              <div className="form-text mb-2">تأكيد كلمة السر</div>
+              <input
+                type="password"
+                className="form-control"
+                id="confirmPassword"
+                placeholder="تأكيد كلمة السر"
+                {...register("confirmPassword", {
+                  required: true,
+                  validate: (value) => {
+                    if (watch("password") !== value) {
+                      return false;
+                    }
+                  },
+                })}
+              />
+              {errors.confirmPassword?.type === "required" ? (
+                <div className="form-text  text-danger">
+                  برجاء ادخال تأكيد كلمة السر{" "}
+                </div>
+              ) : null}
+              {errors.confirmPassword?.type === "validate" ? (
+                <div className="form-text  text-danger">
+                  كلمة السر غير متوافقة
+                </div>
+              ) : null}
+            </div>
           </div>
-          <div className="mx-auto text-center">
+          <div>
             <button type="submit" className="btn btn-primary mt-5">
-              تقدم إلى الدفع
+              تسجيل
             </button>
-            <button
-              className="btn btn-danger mt-5 me-3"
-              type="submit"
-              onClick={() => nextPage(0)}
-            >
-              رجوع
-            </button>
+            <Link to={`/register`} className="btn btn-primary mt-5 me-2">
+              العوده
+            </Link>
           </div>
+          <NavLink
+            to={`/login`}
+            className="text-primary d-block my-2 text-decoration-none"
+          >
+            هل أنت عضو بالفعل؟
+          </NavLink>
         </form>
       </div>
     </>
   );
-};
+}
+
+export default RegisterBuyer;

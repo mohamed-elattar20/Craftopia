@@ -1,5 +1,6 @@
-import heroSeller from "../../assets/images/Hero Section/hero-seller.png";
-import heroBuyer from "../../assets/images/Hero Section/hero6.jpg";
+import { Link } from "react-router-dom";
+import heroSeller from "../../../assets/images/Hero Section/hero-seller.png";
+import heroBuyer from "../../../assets/images/Hero Section/hero6.jpg";
 import "./hero-section.css";
 
 export const HeroSection = () => {
@@ -17,9 +18,12 @@ export const HeroSection = () => {
               منصة فريدة للحرفيين الموهوبين وعشاق الفن
             </h2>
             <div className="text-center">
-              <button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5 ">
+              <Link
+                to={`/store`}
+                className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5 "
+              >
                 ابدأ التسوق
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -30,9 +34,12 @@ export const HeroSection = () => {
               انضموا إلينا وشاركوا في عرض مواهبكم
             </h2>
             <div className="">
-              <button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5">
+              <Link
+                to={`/register`}
+                className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
+              >
                 انضموا الآن
-              </button>
+              </Link>
             </div>
           </div>
         </div>

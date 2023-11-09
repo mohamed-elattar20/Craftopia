@@ -9,7 +9,7 @@ import Select from "react-select";
 //  CSS
 import "react-phone-number-input/style.css";
 //  Routing
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 //  Firebase
 import {
   User,
@@ -26,8 +26,8 @@ import {
 } from "react-firebase-hooks/firestore";
 import { auth, usersCollRef } from "../../../firebase/firebase";
 import { addDoc } from "firebase/firestore";
-import { useState } from "react";
-function Register() {
+import { useEffect, useState } from "react";
+function RegisterSeller() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
     register,
@@ -40,6 +40,12 @@ function Register() {
   // Authentication *******************
 
   const [myUser] = useAuthState(auth);
+  const [NavigationState, setNavigationState] = useState<
+    User | null | undefined
+  >();
+  useEffect(() => {
+    setNavigationState(myUser);
+  }, [myUser]);
   // console.log(myUser);
   const [users] = useCollection(usersCollRef);
   //
@@ -48,23 +54,23 @@ function Register() {
 
   //
   const onSubmit = (data: any) => {
-    // console.log(data);
+    console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
         // console.log(res);
         // console.log(`added to auth users`, res);
-        //
         // setName(res?.user?.displayName);
-        //
-        updateProfile(res.user, {
-          displayName: `${data.firstName} ${data.lastName}`,
-        });
-        //
+        // ***************
+        // updateProfile(res.user, {
+        //   displayName: `${data.firstName} ${data.lastName}`,
+        // });
+        // *****************
         addDoc(usersCollRef, {
-          email: data.email,
-          password: data.password, // *************************
+          ...data,
           uId: res.user.uid,
           displayName: `${data.firstName} ${data.lastName}`,
+          Rule: "seller",
+          orders: [{}],
         })
           .then(() => {
             // console.log(`user Added to fire Store`);
@@ -72,7 +78,7 @@ function Register() {
           .catch((err) => {
             console.log(err);
           });
-        navigate(`/user/profile`);
+        navigate(`/seller/profile`);
       })
       .catch((err) => {
         console.log(err?.message);
@@ -292,9 +298,14 @@ function Register() {
               ) : null}
             </div>
           </div>
-          <button type="submit" className="btn btn-primary mt-5">
-            تسجيل
-          </button>
+          <div>
+            <button type="submit" className="btn btn-primary mt-5">
+              تسجيل
+            </button>
+            <Link to={`/register`} className="btn btn-primary mt-5 me-2">
+              العوده
+            </Link>
+          </div>
           <NavLink
             to={`/login`}
             className="text-primary d-block my-2 text-decoration-none"
@@ -307,4 +318,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default RegisterSeller;

@@ -37,7 +37,7 @@ const LoginForm = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
         console.log(`logged in`, res);
-        // navigate(`/`);
+        navigate(`/`);
       })
       .catch((err) => {
         console.log(err.message);

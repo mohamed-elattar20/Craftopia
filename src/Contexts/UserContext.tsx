@@ -2,29 +2,32 @@ import { useEffect, useState } from "react";
 import { createContext } from "react";
 //  Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase/firebase";
-import { any } from "prop-types";
+import { auth, usersCollRef } from "../firebase/firebase";
+import { User } from "firebase/auth";
+import { query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 type UserContextProps = {
   children: React.ReactNode;
 };
 
-export const UserContext = createContext(any);
+export const UserContext = createContext<Array<any>>([]);
 
 export const UserContextProvider = ({ children }: UserContextProps) => {
-  const [user, setUser] = useState<any>();
-  //   console.log(myUser);
+  // const [myUser] = useAuthState(auth);
 
-  //   console.log(myUser?.email);
-  //   console.log(myUser?.uid);
-  //   const [myUser] = useAuthState(auth);
-  useEffect(() => {
-    // setUser(myUser);
-  }, []);
+  // const listOfUsers =
+  //   myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
 
+  // const [authUser] = useCollectionData(listOfUsers); // [{One User}]
+
+  // const [userName, setUserName] = useState<string | null | undefined>("");
+  // useEffect(() => {
+  //   setUserName(authUser && authUser[0].displayName);
+  // }, [authUser]);
   return (
     <>
-      <UserContext.Provider value={user}>{children}</UserContext.Provider>
+      {/* <UserContext.Provider value={}>{children}</UserContext.Provider> */}
     </>
   );
 };
