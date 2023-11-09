@@ -1,9 +1,32 @@
-import { useForm, Controller } from "react-hook-form";
+//  Types
+// import { RegisterData } from "../../../Types/RegisterUserType";
+//  Json
 import egyptGovernoratesData from "./governorates.json";
+//  React Hook Form
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
+// React Select
 import Select from "react-select";
+//  CSS
 import "react-phone-number-input/style.css";
-import { NavLink } from "react-router-dom";
-
+//  Routing
+import { NavLink, useNavigate } from "react-router-dom";
+//  Firebase
+import {
+  User,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import {
+  useCreateUserWithEmailAndPassword,
+  useAuthState,
+} from "react-firebase-hooks/auth";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { auth, usersCollRef } from "../../../firebase/firebase";
+import { addDoc } from "firebase/firestore";
+import { useState } from "react";
 function Register() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
@@ -14,7 +37,49 @@ function Register() {
     control,
   } = useForm();
 
-  const onSubmit = (data: {}) => console.log(data);
+  // Authentication *******************
+
+  const [myUser] = useAuthState(auth);
+  // console.log(myUser);
+  const [users] = useCollection(usersCollRef);
+  //
+  const navigate = useNavigate();
+  //
+
+  //
+  const onSubmit = (data: any) => {
+    // console.log(data);
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((res) => {
+        // console.log(res);
+        // console.log(`added to auth users`, res);
+        //
+        // setName(res?.user?.displayName);
+        //
+        updateProfile(res.user, {
+          displayName: `${data.firstName} ${data.lastName}`,
+        });
+        //
+        addDoc(usersCollRef, {
+          email: data.email,
+          password: data.password, // *************************
+          uId: res.user.uid,
+          displayName: `${data.firstName} ${data.lastName}`,
+        })
+          .then(() => {
+            // console.log(`user Added to fire Store`);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        navigate(`/user/profile`);
+      })
+      .catch((err) => {
+        console.log(err?.message);
+      });
+  };
+
+  // Authentication *******************
 
   return (
     <>

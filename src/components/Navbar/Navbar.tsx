@@ -2,7 +2,44 @@ import logo from "../../assets/images/logo4-04.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCartPlus } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+//  Context
+import { useContext, useEffect, useMemo, useState } from "react";
+import { UserContext } from "../../Contexts/UserContext";
+// Firebase
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { auth, usersCollRef } from "../../firebase/firebase";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { User, onAuthStateChanged } from "@firebase/auth";
+import { query, where } from "@firebase/firestore";
 function Navbar() {
+  // Context
+  // const user: any = useContext(UserContext);
+  // console.log(user);
+  const [userLogged] = useAuthState(auth);
+  const [name, setName] = useState<string | null | undefined>("");
+  useEffect(() => {
+    setName(userLogged?.displayName);
+  }, [userLogged]);
+  // console.log(userLogged?.uid);
+
+  // const [users] = useCollectionData(usersCollRef);
+  // console.log(users);
+  //
+
+  //  ?????????????????
+  // const newUserFilterd = users?.filter((user) => user.uid == userLogged?.uid);
+  // console.log(newUserFilterd);
+
+  const [signOutUser, loadingg, errorr] = useSignOut(auth);
+  const signOut = () => {
+    signOutUser().then(() => {
+      console.log(`User Signed out Successfully`);
+    });
+  };
+
   return (
     <div className="container justify-content-between">
       <nav className="navbar navbar-expand-lg ">
@@ -56,11 +93,28 @@ function Navbar() {
                 تواصل معنا
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to={`/login`}>
-                مرحباً. تسجيل الدخول؟
-              </NavLink>
-            </li>
+            {/*  */}
+            {userLogged ? (
+              <li className="nav-item">
+                <NavLink onClick={signOut} className="nav-link" to={`/`}>
+                  تسجيل الخروج ؟
+                </NavLink>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <NavLink className="nav-link" to={`/login`}>
+                  مرحباً. تسجيل الدخول؟
+                </NavLink>
+              </li>
+            )}
+
+            {/*  */}
+            {userLogged && (
+              <li className="nav-item nav-link">
+                مرحبا بك {userLogged?.displayName}
+              </li>
+            )}
+
             <li className="nav-item">
               <div className="d-flex">
                 {/* offcanvas controls */}

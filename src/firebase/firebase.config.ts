@@ -1,7 +1,5 @@
-import { initializeApp } from "firebase/app";
-
 // Your web app's Firebase configuration
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyCerXBzIJ7f-LpfL3mz5GHDj_jolaZOc1o",
     authDomain: "craftopia-405b6.firebaseapp.com",
     projectId: "craftopia-405b6",
@@ -10,5 +8,3 @@ const firebaseConfig = {
     appId: "1:391694631914:web:554214c0e8fc370528a893"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);

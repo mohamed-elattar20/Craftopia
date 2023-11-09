@@ -1,22 +1,48 @@
+// Routing
+import { NavLink, useNavigate } from "react-router-dom";
 //  CSS
-import { NavLink } from "react-router-dom";
 import "./LoginForm.css";
 // React Hook Form
+//  React Hook Form
 import { SubmitHandler, useForm } from "react-hook-form";
+//  Firebase
+import {
+  useAuthState,
+  useSignInWithEmailAndPassword,
+} from "react-firebase-hooks/auth";
+import { auth } from "../../firebase/firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
 // Types
 type Inputs = {
   email: string;
   password: string;
 };
 const LoginForm = () => {
+  //  Auth
+  const navigate = useNavigate();
+  const [userLogin] = useAuthState(auth);
+  console.log(userLogin);
+
+  // const [signInWithEmailAndPassword, user, loading, error] =
+  //   useSignInWithEmailAndPassword(auth);
+  //
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+  //
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((res) => {
+        console.log(`logged in`, res);
+        // navigate(`/`);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+    // console.log(data);
   };
 
   return (
@@ -93,6 +119,7 @@ const LoginForm = () => {
               <button type="submit" className="btn btn-primary w-100">
                 تسجيل الدخول
               </button>
+
               <div className="text-center">
                 <p className=" mt-3 text-muted">جديد الى كرافتوبيا ؟</p>
                 <NavLink
