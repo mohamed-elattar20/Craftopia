@@ -15,6 +15,11 @@ import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
+
+import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
+import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
+import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
+
 import HomePage from "./pages/HomePage/HomePage";
 import { Footer } from "./components/Footer";
 import ContactUs from "./pages/ContactUsPage/ContactUs/ContactUs";
@@ -27,6 +32,7 @@ import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
 import { UserProile } from "./pages/userProfile/UserProfile";
 
+
 function App() {
   const [user] = useAuthState(auth);
   const [us, setUs] = useState<User | null | undefined>();
@@ -36,6 +42,8 @@ function App() {
   }, [user]);
   return (
     <div className="App">
+
+
       <UserContextProvider>
         <Navbar />
         <Routes>
@@ -58,6 +66,10 @@ function App() {
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
+           <Route path="/seller/profile" element={<SellerProfile />}>
+          <Route path="" element={<SellerProfileAccount />} />
+          <Route path="products" element={<SellerProfileProducts />} />
+        </Route>
           {/* Comment */}
           <Route path="/product-details/:id" element={<ProductDetailsPage />}>
             <Route path="" element={<ProductDetailsDesc />} />
@@ -67,6 +79,7 @@ function App() {
         </Routes>
         <Footer />
       </UserContextProvider>
+
     </div>
   );
 }

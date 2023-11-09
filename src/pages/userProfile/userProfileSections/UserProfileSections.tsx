@@ -1,5 +1,5 @@
 import avatar from "../../../assets/images/User Profile/Avatar.png";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./userProfileSections.css";
 // Authentication
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -13,6 +13,8 @@ interface User {
   uid: string;
 }
 export const UserProfileSections = () => {
+
+
   //  Auth
   const [user] = useAuthState(auth);
   const [name, setName] = useState<string | null | undefined>("");
@@ -24,6 +26,7 @@ export const UserProfileSections = () => {
   const isActiveLink = (path: string): boolean => {
     return location.pathname.startsWith(path);
   };
+
 
   return (
     <div className="user-profile-sections d-none d-md-block">
