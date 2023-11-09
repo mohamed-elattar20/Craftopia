@@ -1,11 +1,11 @@
-import heroSeller from "../../assets/images/bassiony/hero-seller.png";
-import heroBuyer from "../../assets/images/bassiony/hero6.jpg";
+import heroSeller from "../../assets/images/Hero Section/hero-seller.png";
+import heroBuyer from "../../assets/images/Hero Section/hero6.jpg";
 import "./hero-section.css";
 
 export const HeroSection = () => {
   return (
     <div
-      id="carouselExample"
+      id="carouselExampleAutoplaying"
       className="carousel slide"
       data-bs-ride="carousel"
     >
@@ -40,7 +40,7 @@ export const HeroSection = () => {
       <button
         className="carousel-control-prev"
         type="button"
-        data-bs-target="#carouselExample"
+        data-bs-target="#carouselExampleAutoplaying"
         data-bs-slide="prev"
       >
         <span className="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -49,7 +49,7 @@ export const HeroSection = () => {
       <button
         className="carousel-control-next"
         type="button"
-        data-bs-target="#carouselExample"
+        data-bs-target="#carouselExampleAutoplaying"
         data-bs-slide="next"
       >
         <span className="carousel-control-next-icon" aria-hidden="true"></span>

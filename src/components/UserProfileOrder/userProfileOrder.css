@@ -1,0 +1,5 @@
+@media (max-width: 575px) {
+  .user-profile-order .order-img {
+    width: 100% !important;
+  }
+}

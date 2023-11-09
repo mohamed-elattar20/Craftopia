@@ -8,14 +8,15 @@ import AddToCartBtn from "../AddToCartBtn/AddToCartBtn";
 import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
+import { NavLink } from "react-router-dom";
 const ProductCard = () => {
   return (
     <>
       <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
-          <a href="#">
+          <NavLink to={`/product-details/${5}`}>
             <img src={plates} className="card-img-top" alt="product" />
-          </a>
+          </NavLink>
           <div className="right-icons position-absolute top-0 mt-2 me-3 d-flex flex-column ">
             <button
               title="fav"

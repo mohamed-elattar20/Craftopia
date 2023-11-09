@@ -1,0 +1,11 @@
+.user-profile-taps {
+  padding: 0;
+}
+.user-profile-taps .active {
+  background-color: #ddd !important;
+  color: #2e2e2e !important;
+  font-weight: bold !important;
+}
+.user-profile-taps .nav-link:hover {
+  background-color: #eee !important;
+}
