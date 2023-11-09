@@ -1,11 +1,49 @@
 import logo from "../../assets/images/logo4-04.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
+//  Context
+import { useContext, useEffect, useMemo, useState } from "react";
+import { UserContext } from "../../Contexts/UserContext";
+// Firebase
+import { useAuthState, useSignOut } from "react-firebase-hooks/auth";
+import { auth, usersCollRef } from "../../firebase/firebase";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { User, onAuthStateChanged } from "@firebase/auth";
+import { query, where } from "@firebase/firestore";
 function Navbar() {
+  // Context
+  // const user: any = useContext(UserContext);
+  // console.log(user);
+  const [userLogged] = useAuthState(auth);
+  const [name, setName] = useState<string | null | undefined>("");
+  useEffect(() => {
+    setName(userLogged?.displayName);
+  }, [userLogged]);
+  // console.log(userLogged?.uid);
+
+  // const [users] = useCollectionData(usersCollRef);
+  // console.log(users);
+  //
+
+  //  ?????????????????
+  // const newUserFilterd = users?.filter((user) => user.uid == userLogged?.uid);
+  // console.log(newUserFilterd);
+
+  const [signOutUser, loadingg, errorr] = useSignOut(auth);
+  const signOut = () => {
+    signOutUser().then(() => {
+      console.log(`User Signed out Successfully`);
+    });
+  };
+
   return (
     <div className="container justify-content-between">
       <nav className="navbar navbar-expand-lg ">
-        <a className="navbar-brand ms-5" href="#">
+        <NavLink className="navbar-brand ms-5" to="/">
           <img
             src={logo}
             alt="logo"
@@ -13,7 +51,7 @@ function Navbar() {
             height="40"
             className="d-inline-block align-text-top"
           />
-        </a>
+        </NavLink>
 
         <button
           className="navbar-toggler"
@@ -41,25 +79,42 @@ function Navbar() {
           </form>
           <ul className="navbar-nav flex-grow-1 justify-content-between">
             <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
+              <NavLink className="nav-link" aria-current="page" to={`/`}>
                 الرئيسية
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to={`/store`}>
                 التسوق
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" to={`/contact-us`}>
                 تواصل معنا
-              </a>
+              </NavLink>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                مرحباً. تسجيل الدخول؟
-              </a>
-            </li>
+            {/*  */}
+            {userLogged ? (
+              <li className="nav-item">
+                <NavLink onClick={signOut} className="nav-link" to={`/`}>
+                  تسجيل الخروج ؟
+                </NavLink>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <NavLink className="nav-link" to={`/login`}>
+                  مرحباً. تسجيل الدخول؟
+                </NavLink>
+              </li>
+            )}
+
+            {/*  */}
+            {userLogged && (
+              <li className="nav-item nav-link">
+                مرحبا بك {userLogged?.displayName}
+              </li>
+            )}
+
             <li className="nav-item">
               <div className="d-flex">
                 {/* offcanvas controls */}

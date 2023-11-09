@@ -1,9 +1,13 @@
 import { useForm, Controller } from "react-hook-form";
-import egyptGovernoratesData from "./governorates.json";
+import egyptGovernoratesData from "../../pages/RegisterPage/Register/governorates.json";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 
-function Register() {
+interface CartPurchasesProps {
+  nextPage: (value: number) => void;
+}
+
+export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
     register,
@@ -17,15 +21,12 @@ function Register() {
 
   return (
     <>
-      <div className="container">
-        <h1 className="text-center pt-5  fw-bold">إنشاء حساب</h1>
-        <p className="text-center fs-5 pb-5">
-          نحن بحاجة لمساعدتك في تقديم بعض المعلومات الأساسية لإنشاء حسابك
-        </p>
+      <div className="container pt-3">
+        <p className="text-center fs-5 pb-5">تفاصيل الفاتورة</p>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">الاسم الأول</div>
+              <div className="form-text mb-2 ">الاسم الأول</div>
 
               <input
                 id="firstName"
@@ -42,7 +43,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">الاسم الأخير</div>
+              <div className="form-text mb-2">الاسم الأخير</div>
               <input
                 id="lastName"
                 type="text"
@@ -60,7 +61,7 @@ function Register() {
           </div>
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">عنوان البريد الالكتروني</div>
+              <div className="form-text mb-2"> البريد الالكتروني</div>
 
               <input
                 id="email"
@@ -85,25 +86,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">اسم العلامة التجارية</div>
-              <input
-                id="brand"
-                type="text"
-                className="form-control"
-                placeholder=" العلامة التجارية  "
-                aria-describedby="العلامة التجارية"
-                {...register("brand", { required: true })}
-              />
-              {errors.brand?.type === "required" ? (
-                <div className="form-text  text-danger">
-                  برجاء ادخال العلامة التجارية
-                </div>
-              ) : null}
-            </div>
-          </div>
-          <div className="row">
-            <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">رقم الهاتف</div>
+              <div className="form-text mb-2">رقم الهاتف</div>
               <input
                 id="phone"
                 type="text"
@@ -124,8 +107,10 @@ function Register() {
                 <div className="form-text  text-danger">رقم هاتف غير صحيح</div>
               ) : null}
             </div>
+          </div>
+          <div className="row">
             <div className="col-12 col-md-6">
-              <div className="form-text ">المحافظة</div>
+              <div className="form-text mb-2">المحافظة</div>
               {/* <Select options={governorates} /> */}
               <Controller
                 name="governorate"
@@ -142,7 +127,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">المدينة</div>
+              <div className="form-text mb-2">المدينة</div>
               <input
                 type="text"
                 className="form-control"
@@ -157,8 +142,8 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-12 col-md-6">
-              <div className="form-text ">العنوان</div>
+            <div className="col-12 col-md-6 pt-3">
+              <div className="form-text mb-2">العنوان</div>
               <input
                 type="text"
                 className="form-control"
@@ -173,72 +158,21 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-12 col-md-6 pt-3">
-              <div className="form-text ">كلمة السر</div>
-              <input
-                type="password"
-                className="form-control"
-                id="password"
-                placeholder="كلمة السر"
-                {...register("password", {
-                  required: true,
-                  pattern:
-                    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-                })}
-              />
-              {errors.password?.type === "required" ? (
-                <div className="form-text  text-danger">
-                  برجاء ادخال كلمة السر{" "}
-                </div>
-              ) : null}
-              {errors.password?.type === "pattern" ? (
-                <div className="form-text  text-danger">
-                  "يجب أن تحتوي كلمة المرور على الأقل حرف أبجدي واحد، رقم واحد،
-                  وحرف خاص واحد، وأن تكون على الأقل 8 أحرف في الطول."
-                </div>
-              ) : null}
-            </div>
-            <div className="col-12 col-md-6 pt-3">
-              <div className="form-text ">تأكيد كلمة السر</div>
-              <input
-                type="password"
-                className="form-control"
-                id="confirmPassword"
-                placeholder="تأكيد كلمة السر"
-                {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => {
-                    if (watch("password") !== value) {
-                      return false;
-                    }
-                  },
-                })}
-              />
-              {errors.confirmPassword?.type === "required" ? (
-                <div className="form-text  text-danger">
-                  برجاء ادخال تأكيد كلمة السر{" "}
-                </div>
-              ) : null}
-              {errors.confirmPassword?.type === "validate" ? (
-                <div className="form-text  text-danger">
-                  كلمة السر غير متوافقة
-                </div>
-              ) : null}
-            </div>
           </div>
-          <button type="submit" className="btn btn-primary mt-5">
-            تسجيل
-          </button>
-          <a
-            href="#"
-            className="text-primary d-block my-2 text-decoration-none"
-          >
-            هل أنت عضو بالفعل؟
-          </a>
+          <div className="mx-auto text-center">
+            <button type="submit" className="btn btn-primary mt-5">
+              تقدم إلى الدفع
+            </button>
+            <button
+              className="btn btn-danger mt-5 me-3"
+              type="submit"
+              onClick={() => nextPage(0)}
+            >
+              رجوع
+            </button>
+          </div>
         </form>
       </div>
     </>
   );
-}
-
-export default Register;
+};
