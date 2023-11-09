@@ -22,10 +22,7 @@ export const UserProfileSections = () => {
     setName(user?.displayName);
   }, [user]);
   //
-  const location = useLocation();
-  const isActiveLink = (path: string): boolean => {
-    return location.pathname.startsWith(path);
-  };
+ 
 
 
   return (
