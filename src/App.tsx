@@ -1,5 +1,10 @@
+// import AboutUs from "./components/AboutUs";
+import Cart from "./components/Cart/Cart";
+import Explore from "./components/Explore/Explore";
+import Invest from "./components/Invest/Invest";
+import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
-import { UserProile } from "./pages/userProfile/UserProfile";
+
 import { Route, Routes } from "react-router-dom";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
@@ -20,6 +25,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
+import { UserProile } from "./pages/userProfile/UserProfile";
 
 function App() {
   const [user] = useAuthState(auth);
