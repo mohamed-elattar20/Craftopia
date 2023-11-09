@@ -1,7 +1,7 @@
-import shippingIcon from '../assets/images/shippingIcon.png'
-import supportIcon from '../assets/images/supportIcon.png'
-import secureIcon from '../assets/images/secureIcon.png'
-import returnIcon from '../assets/images/returnIcon.png'
+import shippingIcon from '../../assets/images/aboutUS/shippingIcon.png'
+import supportIcon from '../../assets/images/aboutUS/supportIcon.png'
+import secureIcon from '../../assets/images/aboutUS/secureIcon.png'
+import returnIcon from '../../assets/images/aboutUS/returnIcon.png'
 import { AboutUsCard } from './AboutUsCard'
 
 
