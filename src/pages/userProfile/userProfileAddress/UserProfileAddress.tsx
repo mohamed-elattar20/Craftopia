@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { RequiredInput } from "../../../components/RequiredInput/RequiredInput";
+import { UserProfileTaps } from "../UserProfileTaps/UserProfileTaps";
 
 type Inputs = {
   address: string;
@@ -9,14 +10,14 @@ export const UserProfileAddress = () => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
 
   return (
     <div className="border p-5 px-2 px-sm-5 flex-grow-1 rounded-4">
-      <h2 className="text-center mb-4">العناوين</h2>
+      <UserProfileTaps />
+      <h2 className="text-center my-4">العناوين</h2>
       <form
         action=""
         onSubmit={handleSubmit(onSubmit)}
@@ -24,7 +25,7 @@ export const UserProfileAddress = () => {
       >
         <div>
           <label htmlFor="address" className="form-label">
-            العنوان{" "}
+            العنوان
           </label>
           <input
             type="text"

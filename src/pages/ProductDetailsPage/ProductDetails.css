@@ -1,0 +1,6 @@
+h1 .active {
+  color: #192655;
+}
+h1 .inactive {
+  color: grey;
+}

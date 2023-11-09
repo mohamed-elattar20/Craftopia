@@ -53,6 +53,7 @@ const ProductDetailsModal = () => {
                   <div className="rating-stars mb-2">
                     {arr.map((star) => (
                       <FontAwesomeIcon
+                        key={star}
                         className="ms-2 text-warning "
                         icon={faStar}
                       />
