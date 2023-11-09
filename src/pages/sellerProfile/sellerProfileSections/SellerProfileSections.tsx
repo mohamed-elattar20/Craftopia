@@ -1,8 +1,7 @@
 import avatar from "../../../assets/images/User Profile/Avatar.png";
 import { NavLink } from "react-router-dom";
-import "./userProfileSections.css";
 
-export const UserProfileSections = () => {
+export const SellerProfileSections = () => {
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
@@ -12,18 +11,12 @@ export const UserProfileSections = () => {
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
-            <NavLink end to={"/user/profile"}>
+            <NavLink end to={"/seller/profile"}>
               حسابي
             </NavLink>
           </li>
           <li>
-            <NavLink to={"./address"}>العناوين</NavLink>
-          </li>
-          <li>
-            <NavLink to={"./orders"}>الطلبات</NavLink>
-          </li>
-          <li>
-            <NavLink to={"./wishlist"}>المنتجات المفضلة</NavLink>
+            <NavLink to={"./products"}>المنتجات</NavLink>
           </li>
           <li>
             <NavLink to={"./posts"}>المنشورات</NavLink>

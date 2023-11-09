@@ -10,23 +10,31 @@ import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
-
+import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
+import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
+import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
 
 function App() {
   return (
     <div className="App">
-      {/* <Routes>
+      <Navbar />
+      <Routes>
         <Route path="/user/profile" element={<UserProile />}>
           <Route path="" element={<UserProfileAccount />} />
           <Route path="address" element={<UserProfileAddress />} />
           <Route path="orders" element={<UserProfileOrders />} />
+        </Route>
+
+        <Route path="/seller/profile" element={<SellerProfile />}>
+          <Route path="" element={<SellerProfileAccount />} />
+          <Route path="products" element={<SellerProfileProducts />} />
         </Route>
         <Route path="/product-details/:id" element={<ProductDetailsPage />}>
           <Route path="" element={<ProductDetailsDesc />} />
           <Route path="description" element={<ProductDetailsDesc />} />
           <Route path="reviews" element={<ProductDetailsReviews />} />
         </Route>
-      </Routes> */}
+      </Routes>
     </div>
   );
 }
