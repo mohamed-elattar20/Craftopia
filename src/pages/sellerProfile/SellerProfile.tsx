@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { SellerProfileSections } from "./sellerProfileSections/SellerProfileSections";
+import { SellerProfileSections } from "./SellerProfileSections/SellerProfileSections";
 
 export const SellerProfile = () => {
   return (
