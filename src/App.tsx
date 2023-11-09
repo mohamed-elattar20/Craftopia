@@ -1,17 +1,13 @@
-<<<<<<< HEAD
 import AboutUs from "./components/AboutUs";
 import Cart from "./components/Cart/Cart";
-import ContactUs from "./components/ContactUs/ContactUs";
 import Explore from "./components/Explore/Explore";
-import { Footer } from "./components/Footer";
 import Invest from "./components/Invest/Invest";
 import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
-import { HeroSection } from "./components/hero section/HeroSection";
+import { HeroSection } from "./components/HeroSection/HeroSection";
 import Categories from "./pages/HomePage/Categories/Categories";
 import LatestOffers from "./pages/HomePage/LatestOffers/LatestOffers";
-=======
-import Navbar from "./components/Navbar/Navbar";
+
 import { UserProile } from "./pages/userProfile/UserProile";
 import { Route, Routes } from "react-router-dom";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
@@ -28,14 +24,10 @@ import { Footer } from "./components/Footer";
 import ContactUs from "./components/ContactUs/ContactUs";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Register from "./pages/RegisterPage/Register/Register";
->>>>>>> e066fec36b52b680dc83d22ddc96b6f7353715d1
 
 function App() {
   return (
     <div className="App">
-<<<<<<< HEAD
-      <Cart />
-=======
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
@@ -56,7 +48,6 @@ function App() {
         </Route>
       </Routes>
       <Footer />
->>>>>>> e066fec36b52b680dc83d22ddc96b6f7353715d1
     </div>
   );
 }
