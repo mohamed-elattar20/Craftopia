@@ -13,8 +13,6 @@ interface User {
   uid: string;
 }
 export const UserProfileSections = () => {
-
-
   //  Auth
   const [user] = useAuthState(auth);
   const [name, setName] = useState<string | null | undefined>("");
@@ -22,11 +20,6 @@ export const UserProfileSections = () => {
     setName(user?.displayName);
   }, [user]);
   //
-  const location = useLocation();
-  const isActiveLink = (path: string): boolean => {
-    return location.pathname.startsWith(path);
-  };
-
 
   return (
     <div className="user-profile-sections d-none d-md-block">
