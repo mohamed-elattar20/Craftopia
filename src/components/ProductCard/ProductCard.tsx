@@ -9,13 +9,23 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
-const ProductCard = () => {
+import { sellerProductType } from "../../Types/SellerProduct";
+type ProductCardProps = {
+  product?: sellerProductType;
+};
+const ProductCard = ({ product }: ProductCardProps) => {
   return (
     <>
       <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
           <NavLink to={`/product-details/${5}`}>
-            <img src={plates} className="card-img-top" alt="product" />
+            <img
+              src={
+                product?.productImages[0] && product?.productImages[0].imgUrl
+              }
+              className="card-img-top"
+              alt="product"
+            />
           </NavLink>
           <div className="right-icons position-absolute top-0 mt-2 me-3 d-flex flex-column ">
             <button
@@ -33,10 +43,8 @@ const ProductCard = () => {
           </div>
         </div>
         <div className="card-body text-end">
-          <h5 className="card-title mb-3">
-            10 اطباق مزينة بفن الديكوباج بزينة عصرية
-          </h5>
-          <h5 className="card-text mb-3">EGP 1500.00</h5>
+          <h5 className="card-title mb-3">{product?.productTitle}</h5>
+          <h5 className="card-text mb-3">EGP {product?.productPrice}</h5>
           <AddToCartBtn />
         </div>
       </div>

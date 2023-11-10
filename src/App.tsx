@@ -30,6 +30,8 @@ import RegisterSeller from "./pages/RegisterPage/RegisterSeller/RegisterSeller";
 import RegisterBuyer from "./pages/RegisterPage/RegisterBuyer/RegisterBuyer";
 import ProtectedRoutesLogin from "./pages/ProtectedRoutes/ProtectedRoutesLogin";
 import ProtectedRoutesProfile from "./pages/ProtectedRoutes/ProtectedRoutesProfile";
+import ResetPassword from "./pages/LoginPage/ResetPassword/ResetPassword";
+import SearchPage from "./pages/SearchPage/SearchPage";
 
 function App() {
   // const myUser = useContext(UserContext);
@@ -48,9 +50,11 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/store" element={<StorePage />} />
         <Route path="/contact-us" element={<ContactUs />} />
+        <Route path="/search/:word" element={<SearchPage />} />
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/reset-password" element={<ResetPassword />} />
           <Route path="/register" element={<UserRuleChoice />} />
           <Route path="/register/seller" element={<RegisterSeller />} />
           <Route path="/register/buyer" element={<RegisterBuyer />} />

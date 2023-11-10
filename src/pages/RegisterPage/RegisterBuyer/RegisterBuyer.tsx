@@ -62,7 +62,9 @@ function RegisterBuyer() {
           uId: res.user.uid,
           displayName: `${data.firstName} ${data.lastName}`,
           Rule: "buyer",
-          orders: [{}],
+          orders: [],
+          cart: [],
+          wishList: [],
         })
           .then(() => {
             // console.log(`user Added to fire Store`);

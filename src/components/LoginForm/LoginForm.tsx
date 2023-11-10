@@ -1,5 +1,5 @@
 // Routing
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 //  CSS
 import "./LoginForm.css";
 // React Hook Form
@@ -10,8 +10,17 @@ import {
   useAuthState,
   useSignInWithEmailAndPassword,
 } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, firestore, usersCollRef } from "../../firebase/firebase";
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { doc, getDocs, query, where } from "firebase/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
+import { RefObject, useRef, useState } from "react";
 // Types
 type Inputs = {
   email: string;
@@ -21,18 +30,46 @@ const LoginForm = () => {
   //  Auth
   const navigate = useNavigate();
   const [userLogin] = useAuthState(auth);
-  console.log(userLogin);
 
-  // const [signInWithEmailAndPassword, user, loading, error] =
-  //   useSignInWithEmailAndPassword(auth);
-  //
+  // **************************************************
+
+  // **************************************************
+  // const [userToReset] = useCollection(listOfUsers);
+  // console.log(userToReset);
+  // const resetPasword = () => {
+  //   let myQuery: any = query(
+  //     usersCollRef,
+  //     where("email", "==", resetPassByEmail)
+  //   );
+  //   getDocs(myQuery)
+  //     .then((res) => {
+  //       // console.log(`hello`, res.docs[0].data());
+  //       sendPasswordResetEmail(auth, resetPassByEmail)
+  //         .then(() => {
+  //           // console.log(`Password reset email sent!`);
+  //           setResetPassConfirm(`تم إرسال رابط تغيير كلمة السر بنجاح`);
+  //           setResetPassErr("");
+  //         })
+  //         .catch((error) => {
+  //           const errorMessage = error.message;
+  //           setResetPassErr(errorMessage);
+  //           console.log(errorMessage);
+  //           setResetPassConfirm(``);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       setResetPassErr("برجاء إدخال البريد الالكتروني الصحيح");
+  //     });
+  // };
+  // ******************************
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  //
+
+  // Submit *******************
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
@@ -42,7 +79,6 @@ const LoginForm = () => {
       .catch((err) => {
         console.log(err.message);
       });
-    // console.log(data);
   };
 
   return (
@@ -112,9 +148,8 @@ const LoginForm = () => {
                     {errors.password.message}
                   </p>
                 )}
-                <a href="#" id="passHelp" className="form-text ">
-                  هل نسيت كلمة السر ؟
-                </a>
+                <Link to={`/login/reset-password`}>هل نسيت كلمة المرور ؟</Link>
+                {/* **************************************************************** */}
               </div>
               <button type="submit" className="btn btn-primary w-100">
                 تسجيل الدخول

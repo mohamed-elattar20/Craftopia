@@ -11,7 +11,10 @@ import { auth, usersCollRef } from "../../firebase/firebase";
 import { useContext, useEffect, useState } from "react";
 import { User, signOut } from "@firebase/auth";
 import { query, where } from "@firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import { UserContext } from "../../Contexts/UserContext";
 function Navbar() {
   // Authentication **************
@@ -20,17 +23,21 @@ function Navbar() {
   const listOfUsers =
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
+  // ***************************
+  // const [authUser] = useCollection(listOfUsers);
   // console.log(authUser);
+  // ***************************
 
   const [userName, setUserName] = useState<string | null | undefined>("");
   useEffect(() => {
     setUserName(authUser && authUser[0].displayName);
   }, [authUser]);
   // Authentication **************
+  const [searchInput, setSearchInput] = useState<string>("");
 
-  // Context
-  // const myUser = useContext<User | null | undefined>(UserContext);
-  // console.log(myUser);
+  const searchFunc = () => {
+    navigate(`search/${searchInput}`);
+  };
 
   return (
     <div className="container justify-content-between">
@@ -60,12 +67,18 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <form className="d-flex flex-grow-1" role="search">
             <input
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="form-control me-4"
               type="search"
               placeholder="ابحث..."
               aria-label="Search"
             />
-            <button className="btn btn-primary me-2" type="submit">
+            <button
+              onClick={searchFunc}
+              className="btn btn-primary me-2"
+              type="button"
+            >
               بحث
             </button>
           </form>
