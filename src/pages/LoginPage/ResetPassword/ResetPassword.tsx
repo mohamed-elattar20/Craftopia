@@ -29,6 +29,7 @@ const ResetPassword = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+  //
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     let myQuery: any = query(usersCollRef, where("email", "==", data.email));
     getDocs(myQuery)

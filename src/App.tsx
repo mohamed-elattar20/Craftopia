@@ -1,5 +1,5 @@
 // Routing
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 // Contexts
 import { UserContext, UserContextProvider } from "./Contexts/UserContext";
 // Firebase
@@ -32,10 +32,13 @@ import ProtectedRoutesLogin from "./pages/ProtectedRoutes/ProtectedRoutesLogin";
 import ProtectedRoutesProfile from "./pages/ProtectedRoutes/ProtectedRoutesProfile";
 import ResetPassword from "./pages/LoginPage/ResetPassword/ResetPassword";
 import SearchPage from "./pages/SearchPage/SearchPage";
+import ProtectedRoutesProfileSeller from "./pages/ProtectedRoutes/ProtectedRoutesProfileSeller";
+import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutesProfilebuyer";
 
 function App() {
-  // const myUser = useContext(UserContext);
+  const { myUser, authUser } = useContext(UserContext);
   // console.log(`user`, myUser);
+  // console.log(`userrrrrrrrrr`, authUser);
 
   const [user] = useAuthState(auth);
   const [us, setUs] = useState<User | null | undefined>();
@@ -62,15 +65,22 @@ function App() {
         {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
         <Route element={<ProtectedRoutesProfile />}>
-          <Route path="/user/profile" element={<UserProile />}>
+          {/* *************************************************************************** */}
+          {/* <Route element={<ProtectedRoutesProfilebuyer />}> */}
+          <Route path={`/user/profile`} element={<UserProile />}>
             <Route path="" element={<UserProfileAccount />} />
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
+          {/* </Route> */}
+          {/* *************************************************************************** */}
+          {/* <Route element={<ProtectedRoutesProfileSeller />}> */}
           <Route path="/seller/profile" element={<SellerProfile />}>
             <Route path="" element={<SellerProfileAccount />} />
             <Route path="products" element={<SellerProfileProducts />} />
           </Route>
+          {/* </Route> */}
+          {/* *************************************************************************** */}
         </Route>
         {/* Protected Routes Profile ********************/}
         <Route path="/product-details/:id" element={<ProductDetailsPage />}>

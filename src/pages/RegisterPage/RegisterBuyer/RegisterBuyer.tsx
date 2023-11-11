@@ -65,6 +65,7 @@ function RegisterBuyer() {
           orders: [],
           cart: [],
           wishList: [],
+          posts: [],
         })
           .then(() => {
             // console.log(`user Added to fire Store`);
@@ -72,7 +73,7 @@ function RegisterBuyer() {
           .catch((err) => {
             console.log(err);
           });
-        navigate(`/user/profile`);
+        navigate(`/`);
       })
       .catch((err) => {
         console.log(err?.message);

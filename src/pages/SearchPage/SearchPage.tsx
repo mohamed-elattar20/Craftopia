@@ -19,11 +19,16 @@ const SearchPage = () => {
   const searchDocuments = async (keyword: any) => {
     try {
       // Create a query to search for documents where a specific field contains the keyword
-      const q = query(productsCollRef, where("productTitle", "==", keyword));
-
+      // collectionRef
+      //   .where("name", ">=", queryText)
+      //   .where("name", "<=", queryText + "\uf8ff");
+      const q = query(
+        productsCollRef,
+        where("productTitle", ">=", keyword),
+        where("productTitle", "<=", keyword + "\uf8ff")
+      );
       const querySnapshot = await getDocs(q);
       const documents = querySnapshot.docs.map((doc) => doc.data());
-
       console.log("Search results:", documents);
       setProducts(documents);
     } catch (error) {

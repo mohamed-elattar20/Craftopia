@@ -4,16 +4,18 @@ import "./userProfileSections.css";
 // Authentication
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, usersCollRef } from "../../../firebase/firebase";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { DocumentData, query, where } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { UserContext } from "../../../Contexts/UserContext";
 
 interface User {
   uid: string;
 }
 export const UserProfileSections = () => {
   //  Auth
-  const [myUser] = useAuthState(auth);
+  // const [myUser] = useAuthState(auth);
+  // ******************************
   // const [name, setName] = useState<string | null | undefined>("");
   // useEffect(() => {
   //   setName(user?.displayName);
@@ -24,11 +26,9 @@ export const UserProfileSections = () => {
   //   return location.pathname.startsWith(path);
   // };
 
-  const listOfUsers =
-    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-
-  const [authUser] = useCollectionData(listOfUsers);
-  console.log(authUser);
+  const { myUser, authUser } = useContext(UserContext);
+  // console.log(myUser);
+  // console.log(authUser);
 
   const [userName, setUserName] = useState<string | null | undefined>("");
   useEffect(() => {

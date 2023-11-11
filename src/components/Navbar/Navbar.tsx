@@ -19,10 +19,14 @@ import { UserContext } from "../../Contexts/UserContext";
 function Navbar() {
   // Authentication **************
   const navigate = useNavigate();
-  const [myUser] = useAuthState(auth);
-  const listOfUsers =
-    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-  const [authUser] = useCollectionData(listOfUsers);
+  // const [myUser] = useAuthState(auth);
+  // const listOfUsers =
+  //   myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
+  // const [authUser] = useCollectionData(listOfUsers);
+
+  const { myUser, authUser } = useContext(UserContext);
+  // console.log(myUser);
+
   // ***************************
   // const [authUser] = useCollection(listOfUsers);
   // console.log(authUser);
@@ -35,6 +39,7 @@ function Navbar() {
   // Authentication **************
   const [searchInput, setSearchInput] = useState<string>("");
 
+  // Search *********************************
   const searchFunc = () => {
     navigate(`search/${searchInput}`);
   };
@@ -120,7 +125,15 @@ function Navbar() {
             )}
             {myUser ? (
               <li className="nav-item nav-link">
-                <Link to={`/user/profile`}>مرحبا {userName}</Link>
+                <Link
+                  to={
+                    authUser && authUser[0].Rule == "buyer"
+                      ? `/user/profile`
+                      : `/seller/profile`
+                  }
+                >
+                  مرحبا {userName}
+                </Link>
               </li>
             ) : (
               ""
