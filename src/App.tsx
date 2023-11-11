@@ -5,11 +5,11 @@ import Invest from "./components/Invest/Invest";
 import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
 import { Route, Routes } from "react-router-dom";
-import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
-import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
-import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
-import { UserProfilePosts } from "./pages/userProfile/userProfilePosts/UserProfilePosts";
-import { UserProfileSavedPosts } from "./pages/userProfile/userProfileSavedPosts/UserProfileSavedPosts";
+import { UserProfileAccount } from "./pages/userProfile/UserProfileAccount/UserProfileAccount";
+import { UserProfileAddress } from "./pages/userProfile/UserProfileAddress/UserProfileAddress";
+import { UserProfileOrders } from "./pages/userProfile/UserProfileOrders/UserProfileOrders";
+import { UserProfilePosts } from "./pages/userProfile/UserProfilePosts/UserProfilePosts";
+import { UserProfileSavedPosts } from "./pages/userProfile/UserProfileSavedPosts/UserProfileSavedPosts";
 import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
@@ -27,8 +27,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 import { User } from "firebase/auth";
-import { UserProile } from "./pages/userProfile/UserProfile";
-
+import { UserProfile } from "./pages/userProfile/UserProfile";
 
 function App() {
   const [user] = useAuthState(auth);
@@ -39,8 +38,6 @@ function App() {
   }, [user]);
   return (
     <div className="App">
-
-
       <UserContextProvider>
         <Navbar />
         <Routes>
@@ -58,15 +55,15 @@ function App() {
           {/* ************************ */}
           <Route path="/register" element={<Register />} />
           {/* Comment */}
-          <Route path="/user/profile" element={<UserProile />}>
+          <Route path="/user/profile" element={<UserProfile />}>
             <Route path="" element={<UserProfileAccount />} />
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
-           <Route path="/seller/profile" element={<SellerProfile />}>
-          <Route path="" element={<SellerProfileAccount />} />
-          <Route path="products" element={<SellerProfileProducts />} />
-        </Route>
+          <Route path="/seller/profile" element={<SellerProfile />}>
+            <Route path="" element={<SellerProfileAccount />} />
+            <Route path="products" element={<SellerProfileProducts />} />
+          </Route>
           {/* Comment */}
           <Route path="/product-details/:id" element={<ProductDetailsPage />}>
             <Route path="" element={<ProductDetailsDesc />} />
@@ -76,7 +73,6 @@ function App() {
         </Routes>
         <Footer />
       </UserContextProvider>
-
     </div>
   );
 }

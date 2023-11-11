@@ -13,18 +13,12 @@ interface User {
   uid: string;
 }
 export const UserProfileSections = () => {
-
-
   //  Auth
   const [user] = useAuthState(auth);
   const [name, setName] = useState<string | null | undefined>("");
   useEffect(() => {
     setName(user?.displayName);
   }, [user]);
-  //
- 
-
-
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
