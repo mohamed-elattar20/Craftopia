@@ -1,5 +1,5 @@
 import React from "react";
-import { UserProfileSections } from "./UserProfileSections/UserProfileSections";
+import { UserProfileSections } from "./userProfileSections/UserProfileSections";
 import { Outlet } from "react-router-dom";
 
 export const UserProfile = () => {

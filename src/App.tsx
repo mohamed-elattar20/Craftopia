@@ -5,11 +5,10 @@ import Invest from "./components/Invest/Invest";
 import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
 import { Route, Routes } from "react-router-dom";
-import { UserProfileAccount } from "./pages/userProfile/UserProfileAccount/UserProfileAccount";
-import { UserProfileAddress } from "./pages/userProfile/UserProfileAddress/UserProfileAddress";
-import { UserProfileOrders } from "./pages/userProfile/UserProfileOrders/UserProfileOrders";
-import { UserProfilePosts } from "./pages/userProfile/UserProfilePosts/UserProfilePosts";
-import { UserProfileSavedPosts } from "./pages/userProfile/UserProfileSavedPosts/UserProfileSavedPosts";
+import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
+import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
+import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
+
 import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";

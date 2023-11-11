@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { RequiredInput } from "../../../components/RequiredInput/RequiredInput";
-import { UserProfileTaps } from "../UserProfileTaps/UserProfileTaps";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 
 type Inputs = {
   address: string;
