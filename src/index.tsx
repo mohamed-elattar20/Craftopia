@@ -4,12 +4,15 @@ import App from "./App";
 import "./main.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 import { BrowserRouter } from "react-router-dom";
+import { UserContextProvider } from "./Contexts/UserContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <BrowserRouter>
-    <App />
+    <UserContextProvider>
+      <App />
+    </UserContextProvider>
   </BrowserRouter>
 );

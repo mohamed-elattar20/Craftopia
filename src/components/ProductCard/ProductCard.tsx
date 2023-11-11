@@ -9,15 +9,25 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
+import { sellerProductType } from "../../Types/SellerProduct";
 import { DocumentData } from "firebase/firestore";
 
+type ProductCardProps = {
+  product?: sellerProductType;
+};
+
+
 const ProductCard = ({ data }: DocumentData) => {
-  console.log(data?.productImages[0].imgUrl);
 
   return (
     <>
       <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
+
+          <NavLink to={`/product-details/${5}`}>
+            <img
+              src={data?.productImages[0] && data?.productImages[0].imgUrl}
+
           <NavLink
             to={{ pathname: `/product-details/${data?.productId}` }}
             state={{ data }}

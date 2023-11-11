@@ -15,3 +15,5 @@ export const firestore = getFirestore(app);
 
 // Getting Collections From Firebase ****************
 export const usersCollRef = collection(firestore, "users");
+
+export const productsCollRef = collection(firestore, "products")
