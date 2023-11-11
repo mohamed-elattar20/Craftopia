@@ -22,11 +22,13 @@ export const SellerProfileSections = () => {
   useEffect(() => {
     setUserName(authUser && authUser[0].displayName);
   }, [authUser]);
+
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
         <div className="text-center">
           <img src={avatar} alt="" style={{ width: "70px" }} />
+
           {myUser && <h4 className="mt-2 fs-5">مرحبا {userName}</h4>}
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">

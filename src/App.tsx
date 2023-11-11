@@ -9,9 +9,9 @@ import { useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 //  Components & Pages
 import Navbar from "./components/Navbar/Navbar";
-import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
+import { SellerProfileProducts } from "./pages/sellerProfile/SellerProfileProducts";
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
-import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
+import { SellerProfileAccount } from "./pages/sellerProfile/SellerProfileAccount";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
 import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
@@ -43,6 +43,8 @@ function App() {
 
   const [user] = useAuthState(auth);
   const [us, setUs] = useState<User | null | undefined>();
+  console.log(user);
+
   useEffect(() => {
     setUs(user);
   }, [user]);
@@ -73,9 +75,11 @@ function App() {
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
+
           {/* </Route> */}
           {/* *************************************************************************** */}
           {/* <Route element={<ProtectedRoutesProfileSeller />}> */}
+
           <Route path="/seller/profile" element={<SellerProfile />}>
             <Route path="" element={<SellerProfileAccount />} />
             <Route path="products" element={<SellerProfileProducts />} />

@@ -17,6 +17,6 @@ const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore(app);
 
-export const productsCol = collection(db, "products");
+export const productsColRef = collection(db, "products");
 
 export const storage = getStorage(app);
