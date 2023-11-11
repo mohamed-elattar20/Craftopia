@@ -72,7 +72,7 @@ function Register() {
           .catch((err) => {
             console.log(err);
           });
-        navigate(`/user/profile`);
+        navigate(`/seller/profile`);
       })
       .catch((err) => {
         console.log(err?.message);

@@ -35,6 +35,8 @@ import { UserProfile } from "./pages/userProfile/UserProfile";
 function App() {
   const [user] = useAuthState(auth);
   const [us, setUs] = useState<User | null | undefined>();
+  console.log(user);
+
   useEffect(() => {
     setUs(user);
     console.log(us);
@@ -63,6 +65,7 @@ function App() {
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
           </Route>
+
           <Route path="/seller/profile" element={<SellerProfile />}>
             <Route path="" element={<SellerProfileAccount />} />
             <Route path="products" element={<SellerProfileProducts />} />

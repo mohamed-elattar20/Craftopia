@@ -1,4 +1,3 @@
-import React from "react";
 import { UserProfileSections } from "./UserProfileSections/UserProfileSections";
 import { Outlet } from "react-router-dom";
 

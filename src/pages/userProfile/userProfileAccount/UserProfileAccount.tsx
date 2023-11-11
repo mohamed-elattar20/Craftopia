@@ -7,6 +7,7 @@ type Inputs = {
   lastName: string;
   phoneNumber: string;
   additionalPhoneNumber: string;
+  address: string;
   password: string;
   newPassword: string;
   repeatedNewPassword: string;
@@ -81,7 +82,8 @@ export const UserProfileAccount = () => {
             </p>
           )}
         </div>
-        <div>
+
+        {/* <div>
           <label htmlFor="additionalPhoneNumber" className="form-label">
             رقم هاتف إضافي
           </label>
@@ -102,7 +104,23 @@ export const UserProfileAccount = () => {
               {errors.additionalPhoneNumber.message}
             </p>
           )}
+        </div> */}
+        <div>
+          <label htmlFor="lastName" className="form-label">
+            الاسم الأخير
+          </label>
+          <input
+            type="text"
+            className="form-control text-start"
+            id="lastName"
+            defaultValue="Khamis"
+            {...register("lastName", { required: true })}
+          ></input>
+          {errors.lastName && (
+            <p className="text-start text-danger">This field is required</p>
+          )}
         </div>
+        <div></div>
         <div>
           <label htmlFor="password" className="form-label">
             كلمة المرور الحالية
