@@ -1,6 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import "./userProfileAccount.css";
-import { UserProfileTaps } from "../UserProfileTaps/UserProfileTaps";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 
 type Inputs = {
   firstName: string;

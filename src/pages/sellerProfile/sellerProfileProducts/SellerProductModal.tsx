@@ -11,7 +11,7 @@ import { auth } from "../../../firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProductType } from "../../../types/ProductType";
+import { ProductType } from "../../../Types/ProductType";
 
 type ImageObj = {
   imgId: string;

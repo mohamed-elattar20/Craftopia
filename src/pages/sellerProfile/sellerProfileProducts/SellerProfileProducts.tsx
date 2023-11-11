@@ -8,12 +8,11 @@ import { storage } from "../../../firebase/firebase.config";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import { SellerProductItem } from "./SellerProductItem";
-import { ProductType } from "../../../types/ProductType";
+import { ProductType } from "../../../Types/ProductType";
 import Select from "react-select";
 import { auth } from "../../../firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./SellerProfileProducts.css";
-
 
 type Inputs = {
   productTitle: string;
