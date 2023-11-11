@@ -1,4 +1,4 @@
-import { sellerProductType } from "../../../Types/SellerProduct";
+import { sellerProductType } from "../../../types/SellerProduct";
 import { useEffect } from "react";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";

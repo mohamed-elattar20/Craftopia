@@ -1,7 +1,7 @@
 // Routing
 import { Navigate, Route, Routes } from "react-router-dom";
 // Contexts
-import { UserContext, UserContextProvider } from "./Contexts/UserContext";
+import { UserContext } from "./Contexts/UserContext";
 // Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase";
@@ -36,7 +36,6 @@ import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutes
 import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
 
-
 function App() {
   const { myUser, authUser } = useContext(UserContext);
   // console.log(`user`, myUser);
@@ -69,8 +68,7 @@ function App() {
         <Route element={<ProtectedRoutesProfile />}>
           {/* *************************************************************************** */}
           {/* <Route element={<ProtectedRoutesProfilebuyer />}> */}
-          <Route path={`/user/profile`} element={<UserProile />}>
-
+          <Route path={`/user/profile`} element={<UserProfile />}>
             <Route path="" element={<UserProfileAccount />} />
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
@@ -94,7 +92,6 @@ function App() {
       </Routes>
       <Footer />
       {/* </UserContextProvider> */}
-
     </div>
   );
 }

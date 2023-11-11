@@ -8,7 +8,7 @@ import { storage } from "../../../firebase/firebase.config";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import { SellerProduct } from "./SellerProduct";
-import { sellerProductType } from "../../../Types/SellerProduct";
+import { sellerProductType } from "../../../types/SellerProduct";
 import Select from "react-select";
 
 
