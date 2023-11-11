@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import egyptGovernoratesData from "../../pages/RegisterPage/Register/governorates.json";
+import egyptGovernoratesData from "../../pages/RegisterPage/RegisterSeller/governorates.json";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 

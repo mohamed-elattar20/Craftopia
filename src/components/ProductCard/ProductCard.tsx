@@ -9,13 +9,27 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
-const ProductCard = () => {
+import { sellerProductType } from "../../types/SellerProduct";
+import { DocumentData } from "firebase/firestore";
+
+type ProductCardProps = {
+  product?: sellerProductType;
+};
+
+const ProductCard = ({ data }: DocumentData) => {
   return (
     <>
       <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
-          <NavLink to={`/product-details/${5}`}>
-            <img src={plates} className="card-img-top" alt="product" />
+          <NavLink
+            to={{ pathname: `/product-details/${data?.productId}` }}
+            state={{ data }}
+          >
+            <img
+              src={data?.productImages[0].imgUrl}
+              className="card-img-top"
+              alt="product"
+            />
           </NavLink>
           <div className="right-icons position-absolute top-0 mt-2 me-3 d-flex flex-column ">
             <button
@@ -24,7 +38,7 @@ const ProductCard = () => {
             >
               <FontAwesomeIcon icon={faHeart} />
             </button>
-            <ProductDetailsModal />
+            <ProductDetailsModal modalData={data} key={data?.productId} />
           </div>
           <div className="sale-icon position-absolute top-0 mt-2 ms-2">
             <span className="rounded-pill bg-black px-2 bg-opacity-50 text-light  ">
@@ -33,10 +47,8 @@ const ProductCard = () => {
           </div>
         </div>
         <div className="card-body text-end">
-          <h5 className="card-title mb-3">
-            10 اطباق مزينة بفن الديكوباج بزينة عصرية
-          </h5>
-          <h5 className="card-text mb-3">EGP 1500.00</h5>
+          <h5 className="card-title mb-3">{data?.productTitle} </h5>
+          <h5 className="card-text mb-3">{data?.productPrice} EGP</h5>
           <AddToCartBtn />
         </div>
       </div>
