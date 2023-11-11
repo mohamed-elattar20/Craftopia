@@ -4,7 +4,6 @@ import Explore from "./components/Explore/Explore";
 import Invest from "./components/Invest/Invest";
 import LoginForm from "./components/LoginForm/LoginForm";
 import Navbar from "./components/Navbar/Navbar";
-
 import { Route, Routes } from "react-router-dom";
 import { UserProfileAccount } from "./pages/userProfile/UserProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/UserProfileAddress/UserProfileAddress";
@@ -15,11 +14,9 @@ import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
-
-import { SellerProfileProducts } from "./pages/sellerProfile/SellerProfileProducts/SellerProfileProducts";
+import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
-import { SellerProfileAccount } from "./pages/sellerProfile/SellerProfileAccount/SellerProfileAccount";
-
+import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
 import HomePage from "./pages/HomePage/HomePage";
 import { Footer } from "./components/Footer";
 import ContactUs from "./pages/ContactUsPage/ContactUs/ContactUs";

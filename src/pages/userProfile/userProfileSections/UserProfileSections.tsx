@@ -19,8 +19,6 @@ export const UserProfileSections = () => {
   useEffect(() => {
     setName(user?.displayName);
   }, [user]);
-  //
-
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
