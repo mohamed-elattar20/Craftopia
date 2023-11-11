@@ -3,9 +3,6 @@ import { collection, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
-
-
-// Your web app's Firebase configuration
 export const firebaseConfig = {
   apiKey: "AIzaSyCerXBzIJ7f-LpfL3mz5GHDj_jolaZOc1o",
   authDomain: "craftopia-405b6.firebaseapp.com",
@@ -18,10 +15,8 @@ export const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-
 export const db = getFirestore(app);
 
 export const productsCol = collection(db, "products");
 
 export const storage = getStorage(app);
-

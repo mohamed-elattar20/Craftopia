@@ -14,27 +14,11 @@ interface User {
 }
 export const UserProfileSections = () => {
   //  Auth
-  // const [myUser] = useAuthState(auth);
-  // ******************************
-  // const [name, setName] = useState<string | null | undefined>("");
-  // useEffect(() => {
-  //   setName(user?.displayName);
-  // }, [user, name]);
-  //
-  // const location = useLocation();
-  // const isActiveLink = (path: string): boolean => {
-  //   return location.pathname.startsWith(path);
-  // };
-
   const { myUser, authUser } = useContext(UserContext);
-  // console.log(myUser);
-  // console.log(authUser);
-
   const [userName, setUserName] = useState<string | null | undefined>("");
   useEffect(() => {
     setUserName(authUser && authUser[0].displayName);
   }, [authUser]);
-
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">

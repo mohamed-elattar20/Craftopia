@@ -24,7 +24,6 @@ import { Footer } from "./components/Footer";
 import ContactUs from "./pages/ContactUsPage/ContactUs/ContactUs";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Register from "./pages/RegisterPage/RegisterSeller/RegisterSeller";
-import { UserProile } from "./pages/userProfile/UserProfile";
 import UserRuleChoice from "./components/UserRuleChoice/UserRuleChoice";
 import RegisterSeller from "./pages/RegisterPage/RegisterSeller/RegisterSeller";
 import RegisterBuyer from "./pages/RegisterPage/RegisterBuyer/RegisterBuyer";
@@ -34,6 +33,9 @@ import ResetPassword from "./pages/LoginPage/ResetPassword/ResetPassword";
 import SearchPage from "./pages/SearchPage/SearchPage";
 import ProtectedRoutesProfileSeller from "./pages/ProtectedRoutes/ProtectedRoutesProfileSeller";
 import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutesProfilebuyer";
+import { UserContextProvider } from "./Contexts/UserContext";
+import { UserProfile } from "./pages/userProfile/UserProfile";
+
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
@@ -68,6 +70,7 @@ function App() {
           {/* *************************************************************************** */}
           {/* <Route element={<ProtectedRoutesProfilebuyer />}> */}
           <Route path={`/user/profile`} element={<UserProile />}>
+
             <Route path="" element={<UserProfileAccount />} />
             <Route path="address" element={<UserProfileAddress />} />
             <Route path="orders" element={<UserProfileOrders />} />
@@ -91,6 +94,7 @@ function App() {
       </Routes>
       <Footer />
       {/* </UserContextProvider> */}
+
     </div>
   );
 }

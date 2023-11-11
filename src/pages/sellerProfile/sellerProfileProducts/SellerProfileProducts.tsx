@@ -11,6 +11,7 @@ import { SellerProduct } from "./SellerProduct";
 import { sellerProductType } from "../../../Types/SellerProduct";
 import Select from "react-select";
 
+
 type Inputs = {
   productTitle: string;
   productPrice: string;

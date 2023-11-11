@@ -10,19 +10,30 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
 import { sellerProductType } from "../../Types/SellerProduct";
+import { DocumentData } from "firebase/firestore";
+
 type ProductCardProps = {
   product?: sellerProductType;
 };
-const ProductCard = ({ product }: ProductCardProps) => {
+
+
+const ProductCard = ({ data }: DocumentData) => {
+
   return (
     <>
       <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
+
           <NavLink to={`/product-details/${5}`}>
             <img
-              src={
-                product?.productImages[0] && product?.productImages[0].imgUrl
-              }
+              src={data?.productImages[0] && data?.productImages[0].imgUrl}
+
+          <NavLink
+            to={{ pathname: `/product-details/${data?.productId}` }}
+            state={{ data }}
+          >
+            <img
+              src={data?.productImages[0].imgUrl}
               className="card-img-top"
               alt="product"
             />
@@ -34,7 +45,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
             >
               <FontAwesomeIcon icon={faHeart} />
             </button>
-            <ProductDetailsModal />
+            <ProductDetailsModal modalData={data} key={data?.productId} />
           </div>
           <div className="sale-icon position-absolute top-0 mt-2 ms-2">
             <span className="rounded-pill bg-black px-2 bg-opacity-50 text-light  ">
@@ -43,8 +54,8 @@ const ProductCard = ({ product }: ProductCardProps) => {
           </div>
         </div>
         <div className="card-body text-end">
-          <h5 className="card-title mb-3">{product?.productTitle}</h5>
-          <h5 className="card-text mb-3">EGP {product?.productPrice}</h5>
+          <h5 className="card-title mb-3">{data?.productTitle} </h5>
+          <h5 className="card-text mb-3">{data?.productPrice} EGP</h5>
           <AddToCartBtn />
         </div>
       </div>
