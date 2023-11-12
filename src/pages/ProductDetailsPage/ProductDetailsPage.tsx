@@ -17,7 +17,7 @@ const ProductDetailsPage = () => {
   let arr = [1, 2, 3, 4];
   const location = useLocation();
   const { state } = location;
-  const ProductData = state.data;
+  const ProductData = state && state.data;
   console.log(ProductData);
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -68,7 +68,7 @@ const ProductDetailsPage = () => {
               <button className="btn btn-secondary px-3">-</button>
             </div>
             <div className="my-4">
-              <AddToCartBtn />
+              <AddToCartBtn product={ProductData} />
               <button
                 title="fav"
                 className="bg-secondary border-0 rounded-3 p-2 me-3"

@@ -49,7 +49,7 @@ const ProductCard = ({ data }: DocumentData) => {
         <div className="card-body text-end">
           <h5 className="card-title mb-3">{data?.productTitle} </h5>
           <h5 className="card-text mb-3">{data?.productPrice} EGP</h5>
-          <AddToCartBtn />
+          <AddToCartBtn product={data} />
         </div>
       </div>
     </>

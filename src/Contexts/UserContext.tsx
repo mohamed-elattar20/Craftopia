@@ -19,6 +19,8 @@ export const UserContext = createContext<myUserContext>({} as myUserContext);
 
 export const UserContextProvider = ({ children }: UserContextProps) => {
   const [myUser] = useAuthState(auth);
+  console.log(myUser);
+
   const listOfUsers =
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
