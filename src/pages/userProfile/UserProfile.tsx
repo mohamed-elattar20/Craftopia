@@ -6,7 +6,7 @@ export const UserProfile = () => {
     <div className="container my-5">
       <div className="d-flex gap-4">
         <UserProfileSections />
-        <Outlet />
+        {/* <Outlet /> */}
       </div>
     </div>
   );

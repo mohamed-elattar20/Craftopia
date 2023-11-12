@@ -38,6 +38,7 @@ import { UserProfile } from "./pages/userProfile/UserProfile";
 import Cart from "./components/Cart/Cart";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+
 function App() {
   const { myUser, authUser } = useContext(UserContext);
   // console.log(`user`, myUser);
