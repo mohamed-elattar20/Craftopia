@@ -16,6 +16,9 @@ import {
   useCollectionData,
 } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../Contexts/UserContext";
+import ProductCard from "../ProductCard/ProductCard";
+import ProductCartSidebar from "../ProductCartSidebar/ProductCartSidebar";
+import ProductWishListSidebar from "../ProductWishListSidebar/ProductWishListSidebar";
 function Navbar() {
   // Authentication **************
   const navigate = useNavigate();
@@ -25,11 +28,11 @@ function Navbar() {
   // const [authUser] = useCollectionData(listOfUsers);
 
   const { myUser, authUser } = useContext(UserContext);
-  // console.log(myUser);
 
   // ***************************
   // const [authUser] = useCollection(listOfUsers);
-  // console.log(authUser);
+  // console.log(authUser && Object.values(authUser[0].cart));
+
   // ***************************
 
   const [userName, setUserName] = useState<string | null | undefined>("");
@@ -109,6 +112,7 @@ function Navbar() {
                 <button
                   onClick={() => {
                     signOut(auth);
+                    localStorage.removeItem("token");
                     navigate(`/`);
                   }}
                   className="border-0 bg-white text-primary   "
@@ -123,6 +127,7 @@ function Navbar() {
                 </NavLink>
               </li>
             )}
+            {/*  */}
             {myUser ? (
               <li className="nav-item nav-link">
                 <Link
@@ -187,9 +192,19 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <p>Lorem</p>
+          {authUser &&
+            Object.values(authUser[0].cart).map((prod: any) => (
+              <ProductCartSidebar key={prod.productId} data={prod} />
+            ))}
+          {/* <ProductCartSidebar />
+          <ProductCartSidebar />
+          <ProductCartSidebar />
+          <ProductCartSidebar />
+          <ProductCartSidebar />
+          <ProductCartSidebar /> */}
         </div>
       </div>
+      {/* Favourites ****************************************************** */}
       <div
         className="offcanvas offcanvas-start"
         data-bs-scroll="true"
@@ -209,7 +224,8 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <p>Lorem</p>
+          <ProductWishListSidebar />
+          <ProductWishListSidebar />
         </div>
       </div>
     </div>

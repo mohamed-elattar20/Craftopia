@@ -1,4 +1,4 @@
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 // Firebase
 import { auth } from "../../firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -7,9 +7,15 @@ import { UserContext } from "../../Contexts/UserContext";
 
 const ProtectedRoutesProfile = () => {
   const { myUser, authUser } = useContext(UserContext);
-  // console.log(authUser);
+  console.log(authUser && authUser[0].Rule);
+  console.log(myUser);
+  const location = useLocation();
 
-  return !myUser ? <Navigate to={`/`} /> : <Outlet />;
+  return localStorage.getItem("token") ? (
+    <Outlet />
+  ) : (
+    <Navigate to={`/login`} state={{ from: location }} replace />
+  );
 };
 
 export default ProtectedRoutesProfile;

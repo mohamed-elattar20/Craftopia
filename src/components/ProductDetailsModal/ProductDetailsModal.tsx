@@ -69,7 +69,7 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
                     الفئة: <strong> {modalData?.productCategory?.value}</strong>
                   </p>
                   <div>
-                    <AddToCartBtn />
+                    <AddToCartBtn product={modalData} />
                     <button className="bg-primary border-0 rounded-3 p-2 me-3">
                       <FontAwesomeIcon className="text-light" icon={faHeart} />
                     </button>
