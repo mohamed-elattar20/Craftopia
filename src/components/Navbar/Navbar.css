@@ -1,0 +1,23 @@
+.navbar-dropdown-menu {
+  /* padding: 0; */
+  /* position: absolute;
+  z-index: 2;
+
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.3); */
+}
+.navbar-dropdown-menu li * {
+  display: block;
+  width: 100%;
+}
+.navbar-dropdown-menu li *:hover {
+  background-color: #eee !important;
+}
+.navbar-dropdown-menu li button {
+  border-radius: 0 0 5px 5px !important;
+}
+.display-none {
+  display: none;
+}
