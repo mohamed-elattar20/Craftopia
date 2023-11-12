@@ -117,9 +117,9 @@ import Navbar from "./components/Navbar/Navbar";
 
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
 import { SellerProfileProducts } from "./pages/sellerProfile/SellerProfileProducts/SellerProfileProducts";
-import { UserProfileAccount } from "./pages/userProfile/UserProfileAccount/UserProfileAccount";
-import { UserProfileAddress } from "./pages/userProfile/UserProfileAddress/UserProfileAddress";
-import { UserProfileOrders } from "./pages/userProfile/UserProfileOrders/UserProfileOrders";
+import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
+import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
+import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
 import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";

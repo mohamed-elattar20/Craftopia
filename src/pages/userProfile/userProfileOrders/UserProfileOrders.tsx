@@ -1,5 +1,5 @@
 import { UserProfileOrder } from "../../../components/UserProfileOrder/UserProfileOrder";
-import { UserProfileTaps } from "../UserProfileTaps/UserProfileTaps";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 
 export const UserProfileOrders = () => {
   return (

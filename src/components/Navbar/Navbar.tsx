@@ -46,17 +46,6 @@ function Navbar() {
     navigate(`search/${searchInput}`);
   };
 
-  const dropdownMenue = useRef<HTMLUListElement>(null);
-
-  // const toggleDropdownMenue = () => {
-  //   dropdownMenue.current?.classList.toggle("display-none");
-  // };
-  // window.onclick = (e: MouseEvent) => {
-  //   console.log(e.target);
-
-  //   dropdownMenue.current &&
-  //     console.log(dropdownMenue.current.contains(e.target as Node));
-  // };
   return (
     <div className="container justify-content-between">
       <nav className="navbar navbar-expand-lg ">
