@@ -7,13 +7,7 @@ import { UserContext } from "../../Contexts/UserContext";
 const ProtectedRoutesLogin = () => {
   const { myUser, authUser } = useContext(UserContext);
   console.log(myUser);
-  const location = useLocation();
-
-  return myUser ? (
-    <Navigate to={`/`} state={{ from: location }} replace />
-  ) : (
-    <Outlet />
-  );
+  return localStorage.getItem("token") ? <Navigate to={`/`} /> : <Outlet />;
 };
 
 export default ProtectedRoutesLogin;

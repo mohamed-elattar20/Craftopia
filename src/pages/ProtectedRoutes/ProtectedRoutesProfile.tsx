@@ -7,14 +7,15 @@ import { UserContext } from "../../Contexts/UserContext";
 
 const ProtectedRoutesProfile = () => {
   const { myUser, authUser } = useContext(UserContext);
+  console.log(authUser && authUser[0].Rule);
   console.log(myUser);
-
   const location = useLocation();
 
-  return myUser ? (
+  return localStorage.getItem("token") ? (
     <Outlet />
   ) : (
-    <Navigate to={`/store`} state={{ from: location }} replace />
+    <Navigate to={`/login`} state={{ from: location }} replace />
+
   );
 };
 

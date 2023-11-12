@@ -36,6 +36,8 @@ import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutes
 import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
 import Cart from "./components/Cart/Cart";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
@@ -93,6 +95,7 @@ function App() {
           <Route path="description" element={<ProductDetailsDesc />} />
           <Route path="reviews" element={<ProductDetailsReviews />} />
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
       {/* </UserContextProvider> */}

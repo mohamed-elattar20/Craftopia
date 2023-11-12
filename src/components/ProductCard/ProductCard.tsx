@@ -10,12 +10,13 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
+
 import { ProductType } from "../../Types/ProductType";
 import { DocumentData, doc, updateDoc } from "firebase/firestore";
 import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import { firestore } from "../../firebase/firebase";
-
+import { DocumentData } from "firebase/firestore";
 type ProductCardProps = {
   product?: ProductType;
 };
@@ -93,7 +94,7 @@ const ProductCard = ({ data }: DocumentData) => {
         <div className="card-body text-end">
           <h5 className="card-title mb-3">{data?.productTitle} </h5>
           <h5 className="card-text mb-3">{data?.productPrice} EGP</h5>
-          <AddToCartBtn />
+          <AddToCartBtn product={data} />
         </div>
       </div>
     </>

@@ -17,9 +17,7 @@ const StorePage = () => {
   };
 
   useEffect(() => {
-    const q = query(
-      productsColRef,
-      category
+    const q = query(productsCollRef, category
         ? where("productCategory.value", "==", category)
         : where("productTitle", ">", "")
     );
