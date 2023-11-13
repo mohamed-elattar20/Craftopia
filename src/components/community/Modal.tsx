@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import UserAddProductForm from "./UserAddProductForm";
-export default function Modal() {
+
+function Modal() {
   return (
     <div className="pt-5">
       <h2 className="text-center"> تبحث عن منتج ولم تجده ؟</h2>
@@ -45,3 +46,5 @@ export default function Modal() {
     </div>
   );
 }
+
+export default Modal;
