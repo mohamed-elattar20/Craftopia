@@ -1,0 +1,10 @@
+.navbar-dropdown-menu li * {
+  display: block;
+  width: 100%;
+}
+.navbar-dropdown-menu li *:hover {
+  background-color: #eee !important;
+}
+.navbar-dropdown-menu li button {
+  border-radius: 0 0 5px 5px !important;
+}

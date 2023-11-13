@@ -8,7 +8,6 @@ function Cart() {
   const [stepperValue, setStepperValue] = useState(0);
   return (
     <>
-      <Navbar />
       <CartStepper stepUpdate={stepperValue} />
       {stepperValue === 0 && <CartPurchases nextPage={setStepperValue} />}
       {stepperValue === 1 && <CartInfo nextPage={setStepperValue} />}

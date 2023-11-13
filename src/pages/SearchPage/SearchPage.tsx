@@ -48,7 +48,7 @@ const SearchPage = () => {
         <div className="row my-5 g-3">
           {products.map((prod: any) => (
             <div key={prod.sellerId} className="col-6 col-md-6 col-lg-3">
-              <ProductCard product={prod} />
+              <ProductCard data={prod} />
             </div>
           ))}
         </div>

@@ -72,6 +72,9 @@ const LoginForm = () => {
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
+        res.user.getIdTokenResult().then((response) => {
+          localStorage.setItem("token", response.token);
+        });
         console.log(`logged in`, res);
         navigate(`/`);
       })

@@ -109,9 +109,10 @@ export const SellerProfileProducts = () => {
     setProductImages([]);
   };
 
-  const q = user && query(productsColRef, where("sellerId", "==", user?.uid));
+  const sellerProductsColRef =
+    user && query(productsColRef, where("sellerId", "==", user?.uid));
 
-  const [products, loading, error] = useCollection(productsColRef);
+  const [products, loading, error] = useCollection(sellerProductsColRef);
 
   console.log(products);
 

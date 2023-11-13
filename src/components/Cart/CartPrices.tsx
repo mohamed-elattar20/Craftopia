@@ -5,7 +5,7 @@ interface CartPurchasesProps {
 export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
   return (
     <>
-      <div className="card col-12 col-md-4 mx-auto my-3">
+      <div className="card my-3">
         <div className="card-body">
           <h5 className="card-title pb-3 text-center">إجمالي سلة المشتريات</h5>
           <div className="d-flex justify-content-between py-3 border-bottom">
@@ -21,8 +21,6 @@ export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
             <h5 className="card-subtitle mb-2">1260EGP</h5>
           </div>
         </div>
-      </div>
-      <div className="mx-auto text-center">
         <button
           className="btn btn-primary my-2 mx-3"
           type="submit"
@@ -31,6 +29,8 @@ export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
           اتمام الطلب
         </button>
       </div>
+
+
     </>
   );
 };

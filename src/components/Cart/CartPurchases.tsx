@@ -8,9 +8,18 @@ interface CartPurchasesProps {
 
 export const CartPurchases = ({ nextPage }: CartPurchasesProps) => {
   return (
-    <>
-      <ProductsTable />
-      <CartPrices nextPage={nextPage} />
-    </>
+    <div className="container">
+      <div className="row align-items-center">
+        <div className="col-12  col-lg-9 ">
+          <div>
+            <ProductsTable />
+          </div>
+        </div>
+
+        <div className="col-12  col-lg-3 ">
+          <CartPrices nextPage={nextPage} />
+        </div>
+      </div>
+    </div>
   );
 };

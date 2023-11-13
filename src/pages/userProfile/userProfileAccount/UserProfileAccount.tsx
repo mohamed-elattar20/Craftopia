@@ -1,25 +1,68 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import "./userProfileAccount.css";
-import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
+import "./userProfileAccount.css";import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
+import { auth, db, usersRef } from "../../../firebase/firebase.config";
+import { useEffect, useState } from "react";
+import {
+  DocumentData,
+  QueryDocumentSnapshot,
+  doc,
+  getDocs,
+  query,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+
 
 type Inputs = {
   firstName: string;
   lastName: string;
-  phoneNumber: string;
-  additionalPhoneNumber: string;
+  phone: string;
   address: string;
-  password: string;
-  newPassword: string;
-  repeatedNewPassword: string;
+
 };
 
 export const UserProfileAccount = () => {
+  const [currentUser, setCurrentUser] = useState<DocumentData>({});
+  const [userDocId, setUserDocId] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const modifyUser = async () => {
+      await updateDoc(doc(db, "users", userDocId), {...data, displayName: `${data.firstName} ${data.lastName}`});
+    };
+    modifyUser();
+  };
+  console.log(errors);
+
+  // getting user data
+  const userUid = auth.currentUser?.uid;
+  const q = query(usersRef, where("uId", "==", userUid));
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setUserDocId((old) => doc.id);
+        console.log(typeof doc.data());
+        console.log(doc.data());
+        setCurrentUser((current) => ({ ...doc.data() }));
+      });
+      console.log(currentUser);
+      reset({
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        phone: currentUser.phone,
+        address: currentUser.address,
+
+      });
+    };
+    getUserInfo();
+  }, []);
 
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
@@ -35,13 +78,13 @@ export const UserProfileAccount = () => {
           </label>
           <input
             type="text"
-            className="form-control text-start"
+            className="form-control"
             id="firstName"
-            defaultValue="Ahmed"
+            defaultValue={currentUser.firstName}
             {...register("firstName", { required: true })}
           />
           {errors.firstName && (
-            <p className="text-start text-danger">This field is required</p>
+            <p className=" text-danger">يجب ادخال الاسم الأول</p>
           )}
         </div>
         <div>
@@ -50,13 +93,13 @@ export const UserProfileAccount = () => {
           </label>
           <input
             type="text"
-            className="form-control text-start"
+            className="form-control"
             id="lastName"
-            defaultValue="Khamis"
+            defaultValue={currentUser.lastName}
             {...register("lastName", { required: true })}
-          ></input>
+          />
           {errors.lastName && (
-            <p className="text-start text-danger">This field is required</p>
+            <p className=" text-danger">يجب ادخال الاسم الأخير</p>
           )}
         </div>
         <div>
@@ -65,103 +108,35 @@ export const UserProfileAccount = () => {
           </label>
           <input
             type="text"
-            className="form-control text-start"
+            className="form-control"
             id="phoneNumber"
-            defaultValue="+0201000406896"
-            {...register("phoneNumber", {
-              required: "This field is required",
+            defaultValue={currentUser.phone}
+            {...register("phone", {
+              required: "يجب ادخال رقم الهاتف",
               pattern: {
-                value: /^\+020\d{10}$/,
-                message: "Invalid phone number",
+                value: /^01[0125][0-9]{8}$/,
+                message: "رقم تليفون غير صحيح",
               },
             })}
           ></input>
-          {errors.phoneNumber && (
-            <p className="text-start text-danger">
-              {errors.phoneNumber.message}
-            </p>
+          {errors.phone && (
+            <p className=" text-danger">{errors.phone.message}</p>
           )}
         </div>
-
-        {/* <div>
-          <label htmlFor="additionalPhoneNumber" className="form-label">
-            رقم هاتف إضافي
+        <div>
+          <label htmlFor="address" className="form-label">
+            العنوان
           </label>
           <input
             type="text"
-            className="form-control text-start"
-            id="additionalPhoneNumber"
-            defaultValue="+020100040689"
-            {...register("additionalPhoneNumber", {
-              pattern: {
-                value: /^(?:\+020\d{10})?$/,
-                message: "Invalid phone number",
-              },
-            })}
+            className="form-control "
+            id="address"
+            defaultValue={currentUser.address}
+            {...register("address", { required: true })}
           ></input>
-          {errors.additionalPhoneNumber && (
-            <p className="text-start text-danger">
-              {errors.additionalPhoneNumber.message}
-            </p>
-          )}
-        </div> */}
-        <div>
-          <label htmlFor="lastName" className="form-label">
-            الاسم الأخير
-          </label>
-          <input
-            type="text"
-            className="form-control text-start"
-            id="lastName"
-            defaultValue="Khamis"
-            {...register("lastName", { required: true })}
-          ></input>
-          {errors.lastName && (
-            <p className="text-start text-danger">This field is required</p>
-          )}
+          {errors.address && <p className=" text-danger">يجب ادخال العنوان</p>}
         </div>
-        <div></div>
-        <div>
-          <label htmlFor="password" className="form-label">
-            كلمة المرور الحالية
-          </label>
-          <input
-            type="password"
-            className="form-control text-start"
-            id="password"
-            defaultValue="+020100040689"
-            {...register("password", { required: true })}
-          ></input>
-          {errors.password && (
-            <p className="text-start text-danger">This field is required</p>
-          )}
-        </div>
-        <div>
-          <label htmlFor="newPassword" className="form-label">
-            كلمة المرور الجديدة
-          </label>
-          <input
-            type="password"
-            className="form-control text-start"
-            id="newPassword"
-            {...register("newPassword")}
-          ></input>
-        </div>
-        <div>
-          <label htmlFor="repeatedNewPassword" className="form-label">
-            كرر كلمة المرور الجديدة
-          </label>
-          <input
-            type="password"
-            className="form-control text-start"
-            id="repeatedNewPassword"
-            {...register("repeatedNewPassword")}
-          ></input>
-          {errors.repeatedNewPassword && (
-            <p className="text-start text-danger">This field is required</p>
-          )}
-        </div>
-        <div className="text-start">
+        <div className="">
           <button className="btn btn-secondary text-white px-4" type="submit">
             حفظ
           </button>
