@@ -1,8 +1,8 @@
 import ProductCard from "../../components/ProductCard/ProductCard";
 import { DocumentData, getDocs, query, where } from "firebase/firestore";
-import { productsColRef } from "../../firebase/firebase.config";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { productsCollRef } from "../../firebase/firebase";
 
 const StorePage = () => {
   const [products, setProducts] = useState<Array<DocumentData>>([]);
@@ -17,7 +17,9 @@ const StorePage = () => {
   };
 
   useEffect(() => {
-    const q = query(productsCollRef, category
+    const q = query(
+      productsCollRef,
+      category
         ? where("productCategory.value", "==", category)
         : where("productTitle", ">", "")
     );

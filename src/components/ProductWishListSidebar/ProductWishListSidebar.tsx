@@ -1,44 +1,39 @@
 //  Routing
-import { Link } from "react-router-dom";
-// Assets
-import candles from "../../assets/images/Categories/candles.png";
-// Fontawesome
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-const ProductWishListSidebar = () => {
+import { NavLink } from "react-router-dom";
+import { DocumentData } from "firebase/firestore";
+import { WishListIcon } from "../WishListIcon/WishListIcon";
+
+const ProductWishListSidebar = ({ data }: DocumentData) => {
   return (
     <>
       <div className="container my-4">
         <div className="row">
           <div className="col-4">
-            {/* <Link to={`/product-details/${data?.productId}`}> */}
-            <img
-              style={{ display: "block" }}
-              className="img-fluid w-100"
-              // src={data?.productImages[0].imgUrl}
-              src={candles}
-              alt=""
-            />
-            {/* </Link> */}
+            <NavLink
+              to={{ pathname: `/product-details/${data?.productId}` }}
+              state={{ data }}
+            >
+              <img
+                style={{ display: "block" }}
+                className="img-fluid w-100"
+                src={data?.productImages[0].imgUrl}
+                alt=""
+              />
+            </NavLink>
           </div>
-          <div className="col-8">
+          <div className="col-6">
             <p
               style={{
-                height: "24px",
+                height: "48px",
                 overflow: "hidden",
                 textOverflow: "ellipsis",
-                whiteSpace: "nowrap",
               }}
             >
-              {/* {data?.productTitle} */}
-              كوفية كروشية من خيط مستورد صناعة يدوية عالية الجودة والكفاءة
+              {data?.productTitle}
             </p>
-            {/* Add To WishList Functionality */}
-            <div className="text-start">
-              <button className="btn">
-                <FontAwesomeIcon className="text-warning fs-5" icon={faHeart} />
-              </button>
-            </div>
+          </div>
+          <div className="text-start col-2">
+            <WishListIcon data={data} />
           </div>
         </div>
       </div>

@@ -39,9 +39,9 @@ function Navbar() {
   // ***************************
 
   const [userName, setUserName] = useState<string | null | undefined>("");
-  useEffect(() => {
-    setUserName(authUser && authUser[0].displayName);
-  }, [authUser]);
+  // useEffect(() => {
+  //   setUserName(authUser && authUser[0].displayName);
+  // }, [authUser]);
   // Authentication **************
   const [searchInput, setSearchInput] = useState<string>("");
 
@@ -110,13 +110,11 @@ function Navbar() {
               </NavLink>
             </li>
             {myUser ? (
-
               <div className="dropdown">
                 <li
                   className="nav-item nav-link "
                   data-bs-toggle="dropdown"
                   style={{ cursor: "pointer" }}
-                  // onClick={toggleDropdownMenue}
                 >
                   <div className="d-flex align-items-center gap-2">
                     <div>
@@ -130,15 +128,12 @@ function Navbar() {
                         style={{ width: "40px", borderRadius: "50%" }}
                       />
                     </div>
-                    <h4 className="fs-6">مرحبا {userName}</h4>
+                    <h4 className="fs-6 m-0">
+                      مرحبا {authUser && authUser[0].displayName}
+                    </h4>
                   </div>
                 </li>
-                <ul
-                  className="navbar-dropdown-menu dropdown-menu"
-                  //
-                  // className="navbar-dropdown-menu display-none"
-                  // ref={dropdownMenue}
-                >
+                <ul className="navbar-dropdown-menu dropdown-menu">
                   <li>
                     <Link
                       className="py-2 px-3 text-end dropdown-item"
@@ -170,22 +165,6 @@ function Navbar() {
                   مرحباً. تسجيل الدخول؟
                 </NavLink>
               </li>
-            )}
-            {/*  */}
-            {myUser ? (
-              <li className="nav-item nav-link">
-                <Link
-                  to={
-                    authUser && authUser[0].Rule == "buyer"
-                      ? `/user/profile`
-                      : `/seller/profile`
-                  }
-                >
-                  مرحبا {userName}
-                </Link>
-              </li>
-            ) : (
-              ""
             )}
 
             {/*  */}
@@ -238,15 +217,10 @@ function Navbar() {
         </div>
         <div className="offcanvas-body">
           {authUser &&
-            Object.values(authUser[0].cart).map((prod: any) => (
+            authUser[0]?.cart &&
+            Object.values(authUser[0].cart)?.map((prod: any) => (
               <ProductCartSidebar key={prod.productId} data={prod} />
             ))}
-          {/* <ProductCartSidebar />
-          <ProductCartSidebar />
-          <ProductCartSidebar />
-          <ProductCartSidebar />
-          <ProductCartSidebar />
-          <ProductCartSidebar /> */}
         </div>
       </div>
       {/* Favourites ****************************************************** */}
@@ -269,8 +243,11 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
-          <ProductWishListSidebar />
-          <ProductWishListSidebar />
+          {authUser &&
+            authUser[0]?.wishList &&
+            Object.values(authUser[0].wishList).map((prod: any) => (
+              <ProductWishListSidebar key={prod.productId} data={prod} />
+            ))}
         </div>
       </div>
     </div>
