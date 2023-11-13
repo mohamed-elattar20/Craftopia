@@ -9,11 +9,7 @@ export const UserProfileTaps = () => {
           حسابي
         </NavLink>
       </li>
-      <li className="nav-item col">
-        <NavLink to={"/user/profile/address"} className="nav-link">
-          العناوين
-        </NavLink>
-      </li>
+
       <li className="nav-item col">
         <NavLink to={"/user/profile/orders"} className="nav-link">
           الطلبات

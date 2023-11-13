@@ -9,11 +9,11 @@ import ProductDetailsModal from "../ProductDetailsModal/ProductDetailsModal";
 // Css
 import "./ProductCard.css";
 import { NavLink } from "react-router-dom";
-import { sellerProductType } from "../../types/SellerProduct";
+import { ProductType } from "../../Types/ProductType";
 import { DocumentData } from "firebase/firestore";
 
 type ProductCardProps = {
-  product?: sellerProductType;
+  product?: ProductType;
 };
 
 const ProductCard = ({ data }: DocumentData) => {

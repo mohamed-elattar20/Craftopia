@@ -9,9 +9,9 @@ import { useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 //  Components & Pages
 import Navbar from "./components/Navbar/Navbar";
-import { SellerProfileProducts } from "./pages/sellerProfile/SellerProfileProducts";
+import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
-import { SellerProfileAccount } from "./pages/sellerProfile/SellerProfileAccount";
+import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
 import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
@@ -35,6 +35,7 @@ import ProtectedRoutesProfileSeller from "./pages/ProtectedRoutes/ProtectedRoute
 import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutesProfilebuyer";
 import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
+import Cart from "./components/Cart/Cart";
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
@@ -57,6 +58,7 @@ function App() {
         <Route path="/store" element={<StorePage />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search/:word" element={<SearchPage />} />
+        <Route path="/cart" element={<Cart />} />
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />

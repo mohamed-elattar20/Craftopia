@@ -16,6 +16,7 @@ import {
   useCollectionData,
 } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../Contexts/UserContext";
+
 function Navbar() {
   // Authentication **************
   const navigate = useNavigate();

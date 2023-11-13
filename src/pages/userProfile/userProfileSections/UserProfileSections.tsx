@@ -33,9 +33,6 @@ export const UserProfileSections = () => {
             </NavLink>
           </li>
           <li>
-            <NavLink to={"./address"}>العناوين</NavLink>
-          </li>
-          <li>
             <NavLink to={"./orders"}>الطلبات</NavLink>
           </li>
           <li>

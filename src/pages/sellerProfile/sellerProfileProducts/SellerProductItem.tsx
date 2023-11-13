@@ -1,4 +1,4 @@
-import { ProductType } from "../../../types/ProductType";
+import { ProductType } from "../../../Types/ProductType";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../../../firebase/firebase.config";
