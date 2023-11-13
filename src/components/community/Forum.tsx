@@ -11,8 +11,7 @@ export default function Forum() {
       <Modal />
       <div className="row">
         {posts?.map((post) => (
-          <div className="col-6">
-            {" "}
+          <div className="">
             <Post post={post} key={post.postId} />
           </div>
         ))}

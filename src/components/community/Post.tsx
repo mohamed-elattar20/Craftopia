@@ -81,94 +81,93 @@ export default function Post({ post }: DocumentData) {
   }, [post, authUser]);
 
   return (
-    <Container sx={{ paddingY: 3 }}>
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} lg={4}>
-          <Item>
-            <Paper elevation={8}>
-              <Stack direction={"column"}>
-                <Box sx={{ padding: 1 }}>
-                  <img
-                    className="item-img"
-                    src={post.postBodyImages[0].imageUrl}
-                    alt=""
-                  />
-                  <Stack
-                    direction={"row"}
-                    alignItems={"center"}
-                    justifyContent={"flex-end"}
-                    sx={{ paddingY: 1, marginBottom: 2 }}
-                  >
-                    <Box>
-                      <Typography sx={{ fontWeight: "bold" }}>
-                        {post.postOwnerName}
-                      </Typography>
-                      <Typography sx={{ opacity: 0.9 }}>
-                        {post.genratedAt &&
-                          new Date(post.genratedAt.toDate()).toDateString()}
-                      </Typography>
-                    </Box>
-                    <Box sx={{ height: "auto" }}>
-                      <img
-                        src={
-                          post.postOwnerAvatarUrl
-                            ? post.postOwnerAvatarUrl
-                            : avatar
-                        }
-                        alt=""
-                        className="user-img"
-                        style={{ objectFit: "cover" }}
-                      />
-                    </Box>
-                  </Stack>
-                  <Typography sx={{ fontSize: "1.1rem", marginBottom: 1 }}>
-                    {post.postBody}
-                  </Typography>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={6} lg={4}>
+        <Item>
+          <Paper elevation={8}>
+            <Stack direction={"column"}>
+              <Box sx={{ padding: 1 }}>
+                <img
+                  className="item-img"
+                  src={post.postBodyImages[0].imageUrl}
+                  alt=""
+                />
+                <Stack
+                  direction={"row"}
+                  alignItems={"center"}
+                  justifyContent={"flex-end"}
+                  sx={{ paddingY: 1, marginBottom: 2 }}
+                >
+                  <Box>
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      {post.postOwnerName}
+                    </Typography>
+                    <Typography sx={{ opacity: 0.9 }}>
+                      {post.genratedAt &&
+                        new Date(post.genratedAt.toDate()).toDateString()}
+                    </Typography>
+                  </Box>
+                  <Box sx={{ height: "auto" }}>
+                    <img
+                      src={
+                        post.postOwnerAvatarUrl
+                          ? post.postOwnerAvatarUrl
+                          : avatar
+                      }
+                      alt=""
+                      className="user-img"
+                      style={{ objectFit: "cover" }}
+                    />
+                  </Box>
+                </Stack>
+                <Typography sx={{ fontSize: "1.1rem", marginBottom: 1 }}>
+                  {post.postBody}
+                </Typography>
 
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    sx={{ marginBottom: 1 }}
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  sx={{ marginBottom: 1 }}
+                >
+                  <Button
+                    sx={{
+                      minWidth: 0,
+                      padding: 0,
+                      marginLeft: 3,
+                    }}
+                    onClick={() => togglesVotes(post.postId)}
                   >
-                    <Button
-                      sx={{
-                        minWidth: 0,
-                        padding: 0,
-                        marginLeft: 3,
-                      }}
-                      onClick={() => togglesVotes(post.postId)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faArrowUpLong}
-                        color={hasVoted ? "blue" : "gray"}
-                        style={{ fontSize: 20, marginLeft: 5 }}
-                      />
-                      <span>{Object.keys(post.votes).length}</span>
+                    <FontAwesomeIcon
+                      icon={faArrowUpLong}
+                      color={hasVoted ? "blue" : "gray"}
+                      style={{ fontSize: 20, marginLeft: 5 }}
+                    />
+                    <span>{Object.keys(post.votes).length}</span>
 
-                      <Typography sx={{ color: "#191970" }}>اعجاب</Typography>
-                    </Button>
-                    {post.votes > 0 && <span>{post.votes}</span>}
-                    <Button
-                      onClick={() => setIsOpen((isOpen) => !isOpen)}
-                      sx={{ minWidth: 0, padding: 0 }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faCommentDots}
-                        color="gray"
-                        style={{ fontSize: 25 }}
-                      />
-                      <Typography sx={{ color: "#191970", paddingX: 1.5 }}>
-                        تعليق
-                      </Typography>
-                    </Button>
-                  </Stack>
-                  <Box>{isOpen && <UserAddCommentForm />}</Box>
-                </Box>
-              </Stack>
-            </Paper>
-          </Item>
-        </Grid>
+                    <Typography sx={{ color: "#191970" }}>اعجاب</Typography>
+                  </Button>
+                  {post.votes > 0 && <span>{post.votes}</span>}
+                  <Button
+                    onClick={() => setIsOpen((isOpen) => !isOpen)}
+                    sx={{ minWidth: 0, padding: 0 }}
+                  >
+                    <FontAwesomeIcon
+                      icon={faCommentDots}
+                      color="gray"
+                      style={{ fontSize: 25 }}
+                    />
+                    <Typography sx={{ color: "#191970", paddingX: 1.5 }}>
+                      تعليق
+                    </Typography>
+                  </Button>
+                </Stack>
+                <Box>{isOpen && <UserAddCommentForm />}</Box>
+              </Box>
+            </Stack>
+          </Paper>
+        </Item>
       </Grid>
-    </Container>
+    </Grid>
+    // </Container>
   );
 }
