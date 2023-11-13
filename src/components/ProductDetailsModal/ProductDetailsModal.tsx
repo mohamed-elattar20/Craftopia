@@ -6,9 +6,12 @@ import AddToCartBtn from "../AddToCartBtn/AddToCartBtn";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faStar, faEye } from "@fortawesome/free-solid-svg-icons";
 import { DocumentData } from "firebase/firestore";
+import { WishListIcon } from "../WishListIcon/WishListIcon";
+import { useEffect } from "react";
 
 const ProductDetailsModal = ({ modalData }: DocumentData) => {
   const arr = [1, 2, 3, 4, 5];
+  useEffect(() => {}, [modalData]);
   return (
     <>
       <button
@@ -69,10 +72,8 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
                     الفئة: <strong> {modalData?.productCategory?.value}</strong>
                   </p>
                   <div>
-                    <AddToCartBtn />
-                    <button className="bg-primary border-0 rounded-3 p-2 me-3">
-                      <FontAwesomeIcon className="text-light" icon={faHeart} />
-                    </button>
+                    <AddToCartBtn product={modalData} />
+                    <WishListIcon data={modalData} />
                   </div>
                 </div>
               </div>

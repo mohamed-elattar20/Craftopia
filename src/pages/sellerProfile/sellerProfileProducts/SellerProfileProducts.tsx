@@ -14,7 +14,6 @@ import { auth } from "../../../firebase/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import "./SellerProfileProducts.css";
 
-
 type Inputs = {
   productTitle: string;
   productPrice: string;
@@ -110,9 +109,10 @@ export const SellerProfileProducts = () => {
     setProductImages([]);
   };
 
-  const q = user && query(productsColRef, where("sellerId", "==", user?.uid));
+  const sellerProductsColRef =
+    user && query(productsColRef, where("sellerId", "==", user?.uid));
 
-  const [products, loading, error] = useCollection(productsColRef);
+  const [products, loading, error] = useCollection(sellerProductsColRef);
 
   console.log(products);
 

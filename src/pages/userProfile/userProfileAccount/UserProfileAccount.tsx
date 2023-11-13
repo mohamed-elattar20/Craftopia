@@ -1,6 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import "./userProfileAccount.css";
-import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
+import "./userProfileAccount.css";import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 import { auth, db, usersRef } from "../../../firebase/firebase.config";
 import { useEffect, useState } from "react";
 import {
@@ -13,6 +12,7 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+
 
 type Inputs = {
   firstName: string;

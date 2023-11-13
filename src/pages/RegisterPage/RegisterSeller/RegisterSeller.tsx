@@ -57,6 +57,9 @@ function RegisterSeller() {
     console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
+        res.user.getIdTokenResult().then((response) => {
+          localStorage.setItem("token", response.token);
+        });
         // console.log(res);
         // console.log(`added to auth users`, res);
         // setName(res?.user?.displayName);
