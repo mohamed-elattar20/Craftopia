@@ -12,6 +12,7 @@ import "./ProductDetails.css";
 import { ComponentsProps } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
 import { useEffect } from "react";
+import { WishListIcon } from "../../components/WishListIcon/WishListIcon";
 
 const ProductDetailsPage = () => {
   let arr = [1, 2, 3, 4];
@@ -69,12 +70,7 @@ const ProductDetailsPage = () => {
             </div>
             <div className="my-4">
               <AddToCartBtn product={ProductData} />
-              <button
-                title="fav"
-                className="bg-secondary border-0 rounded-3 p-2 me-3"
-              >
-                <FontAwesomeIcon className="text-light" icon={faHeart} />
-              </button>
+              <WishListIcon data={ProductData} />
             </div>
             <a href="#">
               <FontAwesomeIcon

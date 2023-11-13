@@ -6,23 +6,28 @@ import candles from "../../../assets/images/Categories/candles.png";
 import crochet from "../../../assets/images/Categories/crochet.png";
 import forMore from "../../../assets/images/Categories/for_more.png";
 const Categories = () => {
+  const categories = [
+    { categoryType: "مواد طبيعية", img: gems },
+    { categoryType: "مواد كيميائية", img: candles },
+    { categoryType: "مواد خيوط", img: crochet },
+    { categoryType: "للمزيد اضغط هنا", img: forMore },
+  ];
   return (
     <>
       <div className="container my-5">
         <div className="row">
           <h2 className="display-5">تسوق حسب الفئة</h2>
-          <div className="col-6 col-md-6 col-lg-3 mt-5">
-            <CategoryCard img={gems} categoryType="مواد طبيعية" />
-          </div>
-          <div className="col-6 col-md-6 col-lg-3 mt-5">
-            <CategoryCard img={candles} categoryType="مواد كيميائية" />
-          </div>
-          <div className="col-6 col-md-6 col-lg-3 mt-5">
-            <CategoryCard img={crochet} categoryType="خيوط" />
-          </div>
-          <div className="col-6 col-md-6 col-lg-3 mt-5">
-            <CategoryCard img={forMore} categoryType="للمزيد اضغط هنا" />
-          </div>
+          {categories.map((category) => (
+            <div
+              className="col-6 col-md-6 col-lg-3 mt-5"
+              key={category.categoryType}
+            >
+              <CategoryCard
+                img={category.img}
+                categoryType={category.categoryType}
+              />
+            </div>
+          ))}
         </div>
       </div>
     </>

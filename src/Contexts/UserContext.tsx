@@ -16,7 +16,7 @@ type UserContextProps = {
 type myUserContext = {
   myUser: User | null | undefined;
   authUser: DocumentData[] | undefined;
-  curr: any;
+  usersCollection: DocumentData | undefined;
 };
 
 export const UserContext = createContext<myUserContext>({} as myUserContext);
@@ -28,11 +28,11 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
   const listOfUsers =
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
-  const [curr] = useCollection(listOfUsers);
+  const [usersCollection] = useCollection(listOfUsers);
 
   return (
     <>
-      <UserContext.Provider value={{ myUser, authUser, curr }}>
+      <UserContext.Provider value={{ myUser, authUser, usersCollection }}>
         {children}
       </UserContext.Provider>
     </>
