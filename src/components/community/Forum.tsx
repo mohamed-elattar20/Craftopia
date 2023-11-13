@@ -9,9 +9,14 @@ export default function Forum() {
   return (
     <>
       <Modal />
-      {posts?.map((post) => (
-        <Post post={post} key={post.postId} />
-      ))}
+      <div className="row">
+        {posts?.map((post) => (
+          <div className="col-6">
+            {" "}
+            <Post post={post} key={post.postId} />
+          </div>
+        ))}
+      </div>
     </>
   );
 }

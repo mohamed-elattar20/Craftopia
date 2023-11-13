@@ -140,7 +140,7 @@ export default function Post({ post }: DocumentData) {
                     >
                       <FontAwesomeIcon
                         icon={faArrowUpLong}
-                        color={hasVoted ? "blue" : "red"}
+                        color={hasVoted ? "blue" : "gray"}
                         style={{ fontSize: 20, marginLeft: 5 }}
                       />
                       <span>{Object.keys(post.votes).length}</span>
@@ -154,7 +154,7 @@ export default function Post({ post }: DocumentData) {
                     >
                       <FontAwesomeIcon
                         icon={faCommentDots}
-                        color="blue"
+                        color="gray"
                         style={{ fontSize: 25 }}
                       />
                       <Typography sx={{ color: "#191970", paddingX: 1.5 }}>
