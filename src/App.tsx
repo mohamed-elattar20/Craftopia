@@ -1,5 +1,6 @@
 // Routing
 import { Navigate, Route, Routes } from "react-router-dom";
+
 // Contexts
 import { UserContext } from "./Contexts/UserContext";
 // Firebase
@@ -8,7 +9,7 @@ import { auth } from "./firebase/firebase";
 import { useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 //  Components & Pages
-import Navbar from "./components/Navbar/Navbar";
+
 import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
@@ -34,12 +35,11 @@ import ProtectedRoutesProfileSeller from "./pages/ProtectedRoutes/ProtectedRoute
 import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutesProfilebuyer";
 import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
+// import Forum from "./components/community/Forum";
+
 import Cart from "./components/Cart/Cart";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
-
-
-
 function App() {
   const { myUser, authUser } = useContext(UserContext);
   // console.log(`user`, myUser);
@@ -55,7 +55,9 @@ function App() {
   return (
     <div className="App">
       {/* <UserContextProvider> */}
-      <Navbar />
+      {/* <Navbar /> */}
+      {/* <Forum />
+      <Explore /> */}
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/cart" element={<Cart />} />
@@ -65,11 +67,11 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
-          <Route path="/login" element={<LoginPage />} />
+          {/* <Route path="/login" element={<LoginPage />} />
           <Route path="/login/reset-password" element={<ResetPassword />} />
           <Route path="/register" element={<UserRuleChoice />} />
           <Route path="/register/seller" element={<RegisterSeller />} />
-          <Route path="/register/buyer" element={<RegisterBuyer />} />
+          <Route path="/register/buyer" element={<RegisterBuyer />} /> */}
         </Route>
         {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
@@ -77,9 +79,9 @@ function App() {
         {/* <Route element={<ProtectedRoutesProfile />}> */}
         <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
           <Route path={`/user/profile`} element={<UserProfile />}>
-            <Route path="" element={<UserProfileAccount />} />
+            {/* <Route path="" element={<UserProfileAccount />} />
             <Route path="address" element={<UserProfileAddress />} />
-            <Route path="orders" element={<UserProfileOrders />} />
+            <Route path="orders" element={<UserProfileOrders />} /> */}
           </Route>
         </Route>
         {/* *************************************************************************** */}
@@ -99,7 +101,7 @@ function App() {
         </Route>
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
       {/* </UserContextProvider> */}
     </div>
   );
