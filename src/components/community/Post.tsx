@@ -103,7 +103,7 @@ export default function Post({ post }: DocumentData) {
                   </Typography>
                   <Typography sx={{ opacity: 0.9 }}>
                     {post.genratedAt &&
-                      new Date(post.genratedAt.toDate()).toDateString()}
+                      new Date(post.genratedAt.toDate()).toLocaleDateString()}
                   </Typography>
                 </Box>
                 <Box sx={{ height: "auto" }}>

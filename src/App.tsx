@@ -36,6 +36,7 @@ import ProtectedRoutesProfilebuyer from "./pages/ProtectedRoutes/ProtectedRoutes
 import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
 import Cart from "./components/Cart/Cart";
+import Forum from "./components/community/Forum";
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
@@ -84,8 +85,10 @@ function App() {
           <Route path="" element={<ProductDetailsDesc />} />
           <Route path="description" element={<ProductDetailsDesc />} />
           <Route path="reviews" element={<ProductDetailsReviews />} />
-        </Route>
+        </Route>{" "}
+        <Route path="/community" element={<Forum />} />
       </Routes>
+
       <Footer />
       {/* </UserContextProvider> */}
     </div>
