@@ -2,14 +2,14 @@ import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 import { ChangeEvent, useContext, useRef, useState } from "react";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { ref } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase/firebase.config";
 import { v4 } from "uuid";
 import { Timestamp, addDoc, doc } from "firebase/firestore";
 import { postsCollRef } from "../../firebase/firebase";
 import { UserContext } from "../../Contexts/UserContext";
 
-const UserAddProductForm = () => {
+export default function UserAddProductForm() {
   const {
     register,
     handleSubmit,
@@ -21,27 +21,30 @@ const UserAddProductForm = () => {
 
   const [imgs, setImgs] = useState<any>([]);
   const { authUser } = useContext(UserContext);
-  console.log(authUser);
 
   const submitControl = async (data: any) => {
-    imgs.map(async (img: any) => {
+    imgs.forEach(async (img: any) => {
       const imgRef = ref(storage, `posts/${img.imageId}`);
       await uploadFile(imgRef, img.postImg);
+      const url = await getDownloadURL(imgRef);
+      img.imageUrl = url;
+      delete img.postImg;
+
+      if (authUser) {
+        console.log(imgs);
+        addDoc(postsCollRef, {
+          postId: crypto.randomUUID(),
+          postBody: data.addComment,
+          postBodyImages: imgs,
+          postOwnerName: authUser[0].displayName,
+          postOwnerAvatarUrl: authUser[0].avatarURL || "",
+          genratedAt: Timestamp.now(),
+          votes: 0,
+          comments: [],
+        });
+      }
     });
 
-    if (authUser) {
-      imgs.forEach((img: any) => delete img.postImg);
-      addDoc(postsCollRef, {
-        postId: crypto.randomUUID(),
-        postBody: data.addComment,
-        postBodyImages: imgs,
-        postOwnerName: authUser[0].displayName,
-        postOwnerAvatarUrl: authUser[0].avatarURL || "",
-        genratedAt: Timestamp.now(),
-        votes: 0,
-        comments: [],
-      });
-    }
     reset();
     setImgs([]);
   };
@@ -137,5 +140,4 @@ const UserAddProductForm = () => {
       </div>
     </form>
   );
-};
-export default UserAddProductForm;
+}
