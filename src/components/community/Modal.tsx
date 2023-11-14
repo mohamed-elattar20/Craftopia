@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import UserAddProductForm from "./UserAddProductForm";
+
 export default function Modal() {
   return (
     <div className="pt-5">
