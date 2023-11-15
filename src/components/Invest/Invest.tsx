@@ -1,8 +1,12 @@
+import { useContext } from "react";
 import test from "../../assets/images/default.jpg";
 import { BookmarkCheck } from "react-bootstrap-icons";
 import { HouseFill } from "react-bootstrap-icons";
 import { StopwatchFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
 const Invest = () => {
+  const { myUser, authUser } = useContext(UserContext);
   return (
     <div className="container py-4">
       <div className="row py-4">
@@ -27,9 +31,16 @@ const Invest = () => {
             </p>
           </div>
 
-          <button className="btn btn-primary fs-5 fw-bold px-4 py-3 mb-4 mb-md-0">
+          <Link
+            to={
+              myUser && authUser && authUser[0].Rule == "seller"
+                ? `/seller/profile`
+                : `/register`
+            }
+            className="btn btn-primary fw-bold px-4 py-2 mb-4 mb-md-0"
+          >
             ابدأ البيع
-          </button>
+          </Link>
         </div>
         <div className="col-md-6 mb-3 mb-md-0">
           <div className="h-100">

@@ -1,11 +1,11 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import "./userProfileAccount.css";
 import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 import { auth, db, usersRef } from "../../../firebase/firebase.config";
 import { useEffect, useState } from "react";
+import egyptGovernoratesData from "../../RegisterPage/RegisterSeller/governorates.json";
 import {
   DocumentData,
-  QueryDocumentSnapshot,
   doc,
   getDocs,
   query,
@@ -13,21 +13,27 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
+import Select from "react-select";
 
 type Inputs = {
   firstName: string;
   lastName: string;
   phone: string;
   address: string;
+  governorate: { label: string; value: string };
 };
 
 export const UserProfileAccount = () => {
+  const governoratesList = egyptGovernoratesData.egyptGovernorates;
+
   const [currentUser, setCurrentUser] = useState<DocumentData>({});
   const [userDocId, setUserDocId] = useState("");
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    control,
     reset,
   } = useForm<Inputs>();
 
@@ -44,6 +50,7 @@ export const UserProfileAccount = () => {
 
   // getting user data
   const userUid = auth.currentUser?.uid;
+
   const q = userUid && query(usersRef, where("uId", "==", userUid));
 
   useEffect(() => {
@@ -58,11 +65,13 @@ export const UserProfileAccount = () => {
         });
       }
       console.log(currentUser);
+
       reset({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         phone: currentUser.phone,
         address: currentUser.address,
+        governorate: currentUser.governorate,
       });
     };
     getUserInfo();
@@ -82,6 +91,7 @@ export const UserProfileAccount = () => {
           </label>
           <input
             type="text"
+            
             className="form-control"
             id="firstName"
             defaultValue={currentUser.firstName}
@@ -139,6 +149,22 @@ export const UserProfileAccount = () => {
             {...register("address", { required: true })}
           ></input>
           {errors.address && <p className=" text-danger">يجب ادخال العنوان</p>}
+        </div>
+        <div className="col-12">
+          <div className="form-text ">المحافظة</div>
+          {/* <Select options={governorates} /> */}
+          <Controller
+            defaultValue={currentUser.governorate}
+            name="governorate"
+            rules={{ required: true }}
+            control={control}
+            render={({ field }) => (
+              <Select {...field} options={governoratesList} />
+            )}
+          />
+          {errors.governorate?.type === "required" ? (
+            <div className="form-text  text-danger">برجاء اختيار المحافظة </div>
+          ) : null}
         </div>
         <div className="">
           <button className="btn btn-secondary text-white px-4" type="submit">

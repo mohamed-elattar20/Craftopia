@@ -2,9 +2,16 @@ import { useEffect, useState } from "react";
 import { createContext } from "react";
 //  Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, usersCollRef } from "../firebase/firebase";
 import { User, onAuthStateChanged } from "firebase/auth";
-import { DocumentData, query, where } from "firebase/firestore";
+import { auth, firestore, usersCollRef } from "../firebase/firebase";
+import {
+  DocumentData,
+  DocumentReference,
+  doc,
+  query,
+  where,
+} from "firebase/firestore";
+
 import {
   useCollection,
   useCollectionData,
@@ -19,6 +26,7 @@ type myUserContext = {
   authUser: DocumentData[] | undefined;
   usersCollection: DocumentData | undefined;
   currentUser: UserType | undefined | null | DocumentData;
+  userRef: "" | DocumentReference<DocumentData, DocumentData> | undefined;
 };
 
 export const UserContext = createContext<myUserContext>({} as myUserContext);
@@ -34,6 +42,10 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
   const [usersCollection] = useCollection(listOfUsers);
+  const [currentUser] = useCollection(listOfUsers);
+  const userId = currentUser?.docs[0].id;
+  const userRef = userId && doc(firestore, "users", userId);
+  console.log(userRef);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {
@@ -52,6 +64,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
     <>
       <UserContext.Provider
         value={{ myUser, authUser, usersCollection, currentUser }}
+        value={{ myUser, authUser, usersCollection, userRef }}
       >
         {children}
       </UserContext.Provider>

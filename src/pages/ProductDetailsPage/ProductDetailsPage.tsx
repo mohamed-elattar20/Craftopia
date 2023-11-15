@@ -5,14 +5,16 @@ import AddToCartBtn from "../../components/AddToCartBtn/AddToCartBtn";
 // Fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 // CSS
 import "./ProductDetails.css";
 import { ComponentsProps } from "@mui/material";
 import { DocumentData } from "firebase/firestore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { WishListIcon } from "../../components/WishListIcon/WishListIcon";
+import ProductDetailsDesc from "./ProductDetailsDesc";
+import ProductDetailsReviews from "./ProductDetailsReviews";
 
 const ProductDetailsPage = () => {
   let arr = [1, 2, 3, 4];
@@ -24,6 +26,7 @@ const ProductDetailsPage = () => {
     window.scrollTo(0, 0);
   }, [location]);
 
+  const [flag, setFlag] = useState<Boolean>(false);
   return (
     <>
       <div className="container my-5 ">
@@ -72,41 +75,38 @@ const ProductDetailsPage = () => {
               <AddToCartBtn product={ProductData} />
               <WishListIcon data={ProductData} />
             </div>
-            <a href="#">
+            <Link to={`/products/${ProductData?.sellerId}`}>
+              <h5>{ProductData?.brand}</h5>
+            </Link>
+            {/* <a href="">
               <FontAwesomeIcon
                 className="text-black ms-3"
                 icon={faCircleQuestion}
-              />
-              <span>سياسة الشحن والاسترجاع</span>
-            </a>
+              /> */}
+
+            <span>سياسة الشحن والاسترجاع</span>
+            {/* </a> */}
           </div>
         </div>
         <div className="row">
           <div className="col-12 text-center my-5 d-flex justify-content-center">
-            <h1>
-              <NavLink
-                end
-                className={({ isActive }) =>
-                  isActive ? "active ms-4" : "inactive ms-4"
-                }
-                to={`./description`}
-              >
-                المواصفات
-              </NavLink>
-            </h1>
-            <h1>
-              <NavLink
-                end
-                className={({ isActive }) =>
-                  isActive ? "active me-4" : "inactive me-4"
-                }
-                to={`./reviews`}
-              >
-                التقييمات
-              </NavLink>
-            </h1>
+            <button
+              className={`btn fs-1 ms-5 ${
+                !flag ? "text-primary " : "text-muted"
+              }`}
+              onClick={() => setFlag(false)}
+            >
+              المواصفات
+            </button>
+            <button
+              className={`btn fs-1 ${!flag ? "text-muted  " : "text-primary"}`}
+              onClick={() => setFlag(true)}
+            >
+              التقييمات
+            </button>
           </div>
-          <Outlet />
+          {!flag && <ProductDetailsDesc />}
+          {flag && <ProductDetailsReviews />}
         </div>
         <div className="row my-5 ">
           <h2 className="mb-4 display-4 text-center ">منتجات ذات صلة</h2>

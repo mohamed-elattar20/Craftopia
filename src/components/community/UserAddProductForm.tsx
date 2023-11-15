@@ -5,8 +5,8 @@ import { useUploadFile } from "react-firebase-hooks/storage";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase/firebase.config";
 import { v4 } from "uuid";
-import { Timestamp, addDoc, doc } from "firebase/firestore";
-import { postsCollRef } from "../../firebase/firebase";
+import { Timestamp, addDoc, doc, setDoc } from "firebase/firestore";
+import { firestore, postsCollRef } from "../../firebase/firebase";
 import { UserContext } from "../../Contexts/UserContext";
 
 export default function UserAddProductForm() {
@@ -31,17 +31,34 @@ export default function UserAddProductForm() {
       delete img.postImg;
 
       if (authUser) {
+        const postId = crypto.randomUUID();
         console.log(imgs);
-        addDoc(postsCollRef, {
-          postId: crypto.randomUUID(),
+        setDoc(doc(firestore, "posts", postId), {
+          postId: postId,
           postBody: data.addComment,
           postBodyImages: imgs,
           postOwnerName: authUser[0].displayName,
           postOwnerAvatarUrl: authUser[0].avatarURL || "",
           genratedAt: Timestamp.now(),
           votes: 0,
-          comments: [],
-        });
+          postOwnerId: authUser[0].uId,
+        })
+          .then(() => {
+            console.log(`Set Post Added **************************`);
+          })
+          .catch(() => {
+            console.log(`Set post not Added`);
+          });
+        // addDoc(postsCollRef, {
+        //   postId: crypto.randomUUID(),
+        //   postBody: data.addComment,
+        //   postBodyImages: imgs,
+        //   postOwnerName: authUser[0].displayName,
+        //   postOwnerAvatarUrl: authUser[0].avatarURL || "",
+        //   genratedAt: Timestamp.now(),
+        //   votes: 0,
+        //   comments: [],
+        // });
       }
     });
 

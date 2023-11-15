@@ -20,6 +20,8 @@ import { UserContext } from "../../../Contexts/UserContext";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import { storage } from "../../../firebase/firebase.config";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import { signOut } from "firebase/auth";
+
 
 export const UserProfileSections = () => {
   //  Auth
@@ -196,12 +198,11 @@ export const UserProfileSections = () => {
           <li>
             <NavLink to={"./posts"}>المنشورات</NavLink>
           </li>
-          <li>
-            <NavLink to={"./posts/saved"}>المنشورات المحفوظة</NavLink>
-          </li>
         </ul>
         <div className="text-center border-top ">
-          <NavLink to={"/"}>تسجيل الخروج</NavLink>
+          <NavLink onClick={() => signOut(auth)} to={"/"}>
+            تسجيل الخروج
+          </NavLink>
         </div>
       </div>
     </div>

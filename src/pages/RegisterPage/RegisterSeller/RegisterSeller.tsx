@@ -59,6 +59,7 @@ function RegisterSeller() {
         res.user.getIdTokenResult().then((response) => {
           localStorage.setItem("token", response.token);
         });
+
         // console.log(res);
         // console.log(`added to auth users`, res);
         // setName(res?.user?.displayName);
@@ -71,6 +72,7 @@ function RegisterSeller() {
           ...data,
           uId: res.user.uid,
           displayName: data.brand,
+          fullName: `${data.firstName} ${data.lastName}`,
           Rule: "seller",
           orders: [],
           cart: [],

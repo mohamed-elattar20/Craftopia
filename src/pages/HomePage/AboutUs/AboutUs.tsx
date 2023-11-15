@@ -1,8 +1,8 @@
-import shippingIcon from "../../../assets/images/shippingIcon.png";
-import supportIcon from "../../../assets/images/supportIcon.png";
-import secureIcon from "../../../assets/images/secureIcon.png";
-import returnIcon from "../../../assets/images/returnIcon.png";
-import { AboutUsCard } from "../../../components/AboutUsCard";
+import shippingIcon from "../../../assets/images/About Us/shippingIcon.png";
+import supportIcon from "../../../assets/images/About Us/supportIcon.png";
+import secureIcon from "../../../assets/images/About Us/secureIcon.png";
+import returnIcon from "../../../assets/images/About Us/returnIcon.png";
+import { AboutUsCard } from "./AboutUsCard";
 
 const AboutUs = () => {
   let aboutUsData = [
@@ -12,10 +12,9 @@ const AboutUs = () => {
     { title: "ارجاع سهل خلال 14 يوم", imgSrc: returnIcon },
   ];
 
-  let aboutUsCards = aboutUsData.map((cardData, index) => {
+  let aboutUsCards = aboutUsData.map((cardData) => {
     return (
       <AboutUsCard
-        key={index}
         title={cardData.title}
         imgSrc={cardData.imgSrc}
       ></AboutUsCard>

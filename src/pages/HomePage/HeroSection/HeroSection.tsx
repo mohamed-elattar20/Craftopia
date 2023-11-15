@@ -3,15 +3,16 @@ import heroSeller from "../../../assets/images/Hero Section/hero-seller.png";
 import heroBuyer from "../../../assets/images/Hero Section/hero6.jpg";
 import "./hero-section.css";
 //  React
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, usersCollRef } from "../../../firebase/firebase";
 import { query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { UserContext } from "../../../Contexts/UserContext";
 
 export const HeroSection = () => {
-  const [myUser] = useAuthState(auth);
+  const { myUser, authUser } = useContext(UserContext);
   return (
     <div
       id="carouselExampleAutoplaying"
@@ -42,7 +43,7 @@ export const HeroSection = () => {
               انضموا إلينا وشاركوا في عرض مواهبكم
             </h2>
             <div className="">
-              {myUser ? (
+              {myUser && authUser && authUser[0].Rule === "seller" ? (
                 <Link
                   to={`/seller/profile`}
                   className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"

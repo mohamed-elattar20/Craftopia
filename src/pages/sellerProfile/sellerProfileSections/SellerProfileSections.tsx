@@ -68,6 +68,7 @@ export const SellerProfileSections = () => {
           {currentUser && (
             <h4 className="mt-2 fs-5">{currentUser.displayName} </h4>
           )}
+
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
@@ -80,9 +81,6 @@ export const SellerProfileSections = () => {
           </li>
           <li>
             <NavLink to={"./posts"}>المنشورات</NavLink>
-          </li>
-          <li>
-            <NavLink to={"./posts/saved"}>المنشورات المحفوظة</NavLink>
           </li>
         </ul>
         <div className="text-center border-top ">
