@@ -8,6 +8,7 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { DocumentData, query, where } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
+import { signOut } from "firebase/auth";
 
 interface User {
   uid: string;
@@ -41,12 +42,11 @@ export const UserProfileSections = () => {
           <li>
             <NavLink to={"./posts"}>المنشورات</NavLink>
           </li>
-          <li>
-            <NavLink to={"./posts/saved"}>المنشورات المحفوظة</NavLink>
-          </li>
         </ul>
         <div className="text-center border-top ">
-          <NavLink to={"/"}>تسجيل الخروج</NavLink>
+          <NavLink onClick={() => signOut(auth)} to={"/"}>
+            تسجيل الخروج
+          </NavLink>
         </div>
       </div>
     </div>

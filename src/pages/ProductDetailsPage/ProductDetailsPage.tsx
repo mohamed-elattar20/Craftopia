@@ -5,7 +5,7 @@ import AddToCartBtn from "../../components/AddToCartBtn/AddToCartBtn";
 // Fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faCircleQuestion } from "@fortawesome/free-solid-svg-icons";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
 // CSS
 import "./ProductDetails.css";
@@ -72,13 +72,17 @@ const ProductDetailsPage = () => {
               <AddToCartBtn product={ProductData} />
               <WishListIcon data={ProductData} />
             </div>
-            <a href="#">
+            <Link to={`/products/${ProductData?.sellerId}`}>
+              <h5>{ProductData?.brand}</h5>
+            </Link>
+            {/* <a href="">
               <FontAwesomeIcon
                 className="text-black ms-3"
                 icon={faCircleQuestion}
-              />
-              <span>سياسة الشحن والاسترجاع</span>
-            </a>
+              /> */}
+
+            <span>سياسة الشحن والاسترجاع</span>
+            {/* </a> */}
           </div>
         </div>
         <div className="row">

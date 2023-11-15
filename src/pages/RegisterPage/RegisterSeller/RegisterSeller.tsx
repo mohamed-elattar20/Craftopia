@@ -60,6 +60,7 @@ function RegisterSeller() {
         res.user.getIdTokenResult().then((response) => {
           localStorage.setItem("token", response.token);
         });
+
         // console.log(res);
         // console.log(`added to auth users`, res);
         // setName(res?.user?.displayName);
@@ -71,7 +72,9 @@ function RegisterSeller() {
         addDoc(usersCollRef, {
           ...data,
           uId: res.user.uid,
-          displayName: `${data.firstName} ${data.lastName}`,
+          displayName: data.brand,
+          firstName: data.firstName,
+          fullName: `${data.firstName} ${data.lastName}`,
           Rule: "seller",
           orders: [],
           cart: [],

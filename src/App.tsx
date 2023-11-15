@@ -15,12 +15,13 @@ import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
 import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
+
 import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
 import HomePage from "./pages/HomePage/HomePage";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/Footer/Footer";
 import ContactUs from "./pages/ContactUsPage/ContactUs/ContactUs";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Register from "./pages/RegisterPage/RegisterSeller/RegisterSeller";
@@ -37,13 +38,17 @@ import { UserContextProvider } from "./Contexts/UserContext";
 import { UserProfile } from "./pages/userProfile/UserProfile";
 import Cart from "./components/Cart/Cart";
 import Forum from "./components/community/Forum";
+import { UserProfilePosts } from "./pages/userProfile/userProfilePosts/UserProfilePosts";
+import UserProfileWishList from "./pages/userProfile/userProfileWishList/UserProfileWishList";
+import SellerProfilePosts from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
+import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
+
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
 
   return (
     <div className="App">
-      {/* <UserContextProvider> */}
       <Navbar />
       <Routes>
         <Route path="" element={<HomePage />} />
@@ -51,35 +56,41 @@ function App() {
         <Route path="/store" element={<StorePage />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search/:word" element={<SearchPage />} />
+        <Route path="/community" element={<Forum />} />
+        <Route path="/products/:sellerId" element={<SellerProductsPage />} />
+
         {/* Protected Routes login ********************/}
-        <Route element={<ProtectedRoutesLogin />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/reset-password" element={<ResetPassword />} />
-          <Route path="/register" element={<UserRuleChoice />} />
-          <Route path="/register/seller" element={<RegisterSeller />} />
-          <Route path="/register/buyer" element={<RegisterBuyer />} />
-        </Route>
+        {/* <Route element={<ProtectedRoutesLogin />}> */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login/reset-password" element={<ResetPassword />} />
+        <Route path="/register" element={<UserRuleChoice />} />
+        <Route path="/register/seller" element={<RegisterSeller />} />
+        <Route path="/register/buyer" element={<RegisterBuyer />} />
+        {/* </Route> */}
         {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
         {/* *************************************************************************** */}
-        <Route element={<ProtectedRoutesProfile />}>
-          {/* <Route path="/" element={<ProtectedRoutesProfilebuyer />}> */}
-          <Route path={`/user/profile`} element={<UserProfile />}>
-            <Route path="" element={<UserProfileAccount />} />
-            <Route path="address" element={<UserProfileAddress />} />
-            <Route path="orders" element={<UserProfileOrders />} />
-          </Route>
-          {/* </Route> */}
-          {/* </Route> */}
-          {/* *************************************************************************** */}
-          <Route element={<ProtectedRoutesProfileSeller />}>
-            <Route path="/seller/profile" element={<SellerProfile />}>
-              <Route path="" element={<SellerProfileAccount />} />
-              <Route path="products" element={<SellerProfileProducts />} />
-            </Route>
-          </Route>
-          {/* *************************************************************************** */}
+        {/* <Route element={<ProtectedRoutesProfile />}> */}
+        {/* <Route path="/" element={<ProtectedRoutesProfilebuyer />}> */}
+        <Route path={`/user/profile`} element={<UserProfile />}>
+          <Route path="" element={<UserProfileAccount />} />
+          <Route path="address" element={<UserProfileAddress />} />
+          <Route path="orders" element={<UserProfileOrders />} />
+          <Route path="posts" element={<UserProfilePosts />} />
+          <Route path="wishlist" element={<UserProfileWishList />} />
         </Route>
+        {/* </Route> */}
+        {/* </Route> */}
+        {/* *************************************************************************** */}
+        {/* <Route element={<ProtectedRoutesProfileSeller />}> */}
+        <Route path="/seller/profile" element={<SellerProfile />}>
+          <Route path="" element={<SellerProfileAccount />} />
+          <Route path="products" element={<SellerProfileProducts />} />
+          <Route path="posts" element={<SellerProfilePosts />} />
+        </Route>
+        {/* </Route> */}
+        {/* *************************************************************************** */}
+        {/* </Route> */}
         {/* Protected Routes Profile ********************/}
         <Route path="/product-details/:id" element={<ProductDetailsPage />}>
           <Route path="" element={<ProductDetailsDesc />} />
@@ -90,7 +101,6 @@ function App() {
       </Routes>
 
       <Footer />
-      {/* </UserContextProvider> */}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React from "react";
 import { ProductsTable } from "./ProductsTable";
 import { CartPrices } from "./CartPrices";
+import { DocumentData } from "firebase/firestore";
 
 interface CartPurchasesProps {
   nextPage: (value: number) => void;
