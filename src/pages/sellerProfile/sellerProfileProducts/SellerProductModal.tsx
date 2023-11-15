@@ -1,78 +1,45 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { db } from "../../../firebase/firebase.config";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import { doc, updateDoc } from "firebase/firestore";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { storage } from "../../../firebase/firebase.config";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import Select from "react-select";
-import { auth } from "../../../firebase/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { ProductType } from "../../../Types/ProductType";
-
-type ImageObj = {
-  imgId: string;
-  imgUrl: string;
-};
-
-type Inputs = {
-  productTitle: string;
-  productPrice: string;
-  productDescription: string;
-  productCategory: {
-    value: string;
-    label: string;
-  };
-  brand: string;
-  discount: string;
-  productImages: ImageObj[];
-};
+import { ProductType, ImageObj } from "../../../Types/ProductType";
+import { firestore } from "../../../firebase/firebase";
 
 type SellerProductModalProps = {
-  productId: string;
-  productItem: Inputs;
+  productItem: ProductType;
 };
 
 export const SellerProductModal = ({
-  productId,
   productItem,
 }: SellerProductModalProps) => {
   const [productImages, setProductImages] = useState<ImageObj[]>([]);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [user] = useAuthState(auth);
 
-  const chooseImage = () => {
-    if (fileInputRef.current !== null) {
-      fileInputRef.current.click();
-    }
-  };
   const [uploadFile, uploading, , errorUploading] = useUploadFile();
-  const imgId = v4();
-  const productImageRef = ref(storage, `products images/${imgId}`);
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e?.target.files) {
-      let productImage = e?.target.files[0];
-      await uploadFile(productImageRef, productImage, {
-        contentType: productImage.type,
-      });
-      const imgUrl = await getDownloadURL(productImageRef);
-      setProductImages((prev) => [...prev, { imgId, imgUrl }]);
+      let imgFile = e?.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(imgFile);
+      reader.onload = (e) => {
+        const imgUrl = e.target?.result;
+        const imgId = v4();
+        setProductImages((prev) => [...prev, { imgId, imgUrl, imgFile }]);
+      };
     }
   };
 
   const deleteImage = (id: string) => {
-    const hasObjectWithId = productItem.productImages.some(
-      (obj) => obj.imgId === id
-    );
-    if (!hasObjectWithId) {
-      deleteObject(ref(storage, `products images/${id}`));
-      console.log("img deleted");
-    }
     setProductImages((prev) => prev.filter((obj) => obj.imgId !== id));
+    if (productImages.length === 1) {
+      setValue("productImage", null);
+    }
   };
 
   const {
@@ -80,30 +47,56 @@ export const SellerProductModal = ({
     handleSubmit,
     formState: { errors, isValid },
     control,
-  } = useForm<Inputs>({
+    setValue,
+  } = useForm<ProductType>({
     defaultValues: productItem,
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    if (productId) {
-      const notMatchedImages = productItem.productImages.filter(
+  const onSubmit: SubmitHandler<ProductType> = async (data) => {
+    if (productItem.productId) {
+      const imagesToBeDeleted = productItem.productImages.filter(
         (obj1) =>
           !productImages.some(
             (obj2) => obj1.imgId === obj2.imgId && obj1.imgUrl === obj2.imgUrl
           )
       );
 
-      notMatchedImages.map((obj) => {
-        deleteObject(ref(storage, `products images/${obj.imgId}`));
+      imagesToBeDeleted.map(async (obj) => {
+        await deleteObject(ref(storage, `products images/${obj.imgId}`));
       });
 
-      const docRef = doc(db, "products", productId);
+      for (let i = 0; i < productImages.length; i++) {
+        let obj1 = productImages[i];
+        let isExist = productItem.productImages.some(
+          (obj2) => obj1.imgId === obj2.imgId && obj1.imgUrl === obj2.imgUrl
+        );
+        if (!isExist) {
+          obj1.imgFile &&
+            (await uploadFile(
+              ref(storage, `products images/${obj1.imgId}`),
+              obj1.imgFile,
+              { contentType: obj1.imgFile?.type }
+            ));
+          const url = await getDownloadURL(
+            ref(storage, `products images/${obj1.imgId}`)
+          );
+          obj1.imgUrl = url;
+          delete obj1.imgFile;
+        }
+      }
 
+      const docRef = doc(firestore, "products", productItem.productId);
       updateDoc(docRef, {
-        ...data,
+        ...productItem,
+        productTitle: data.productTitle,
+        productPrice: data.productPrice,
+        productDescription: data.productDescription,
+        productCategory: {
+          value: data.productCategory?.value,
+          label: data.productCategory?.label,
+        },
+        discount: +data.discount || 0,
         productImages,
-        sellerId: user?.uid,
-        brand: user?.displayName,
       });
     }
     console.log(data);
@@ -114,7 +107,8 @@ export const SellerProductModal = ({
     { value: "مواد كيميائية", label: "مواد كيميائية" },
     { value: "خرز", label: "خرز" },
     { value: "خيوط", label: "خيوط" },
-    { value: "ملابس", label: "ملابس" },
+    { value: "تصميم", label: "تصميم" },
+    { value: "أزياء", label: "أزياء" },
   ];
 
   return (
@@ -124,13 +118,13 @@ export const SellerProductModal = ({
           style={{ cursor: "pointer" }}
           icon={faPenToSquare}
           data-bs-toggle="modal"
-          data-bs-target={`#a${productId}`}
+          data-bs-target={`#a${productItem.productId}`}
           onClick={() => setProductImages(productItem.productImages)}
         />
       </div>
       <div
         className="modal fade"
-        id={`a${productId}`}
+        id={`a${productItem.productId}`}
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel2"
@@ -159,7 +153,6 @@ export const SellerProductModal = ({
                     type="text"
                     className="form-control"
                     id="productTitle"
-                    // defaultValue={productItem.productTitle}
                     {...register("productTitle", {
                       required: "برجاء إدخال اسم المنتج",
                     })}
@@ -175,8 +168,7 @@ export const SellerProductModal = ({
                     اختر تصنيف المنتج
                   </label>
                   <Controller
-                    key={productId}
-                    // defaultValue={productItem.productCategory}
+                    key={productItem.productId}
                     name="productCategory"
                     control={control}
                     rules={{ required: true }}
@@ -197,7 +189,6 @@ export const SellerProductModal = ({
                     type="text"
                     className="form-control "
                     id="productPrice"
-                    // defaultValue={productItem.productPrice}
                     {...register("productPrice", {
                       required: "برجاء إدخال سعر المنتج",
                       pattern: {
@@ -218,7 +209,6 @@ export const SellerProductModal = ({
                     type="text"
                     className="form-control "
                     id="discount"
-                    // defaultValue={productItem.discount}
                     {...register("discount", {
                       pattern: {
                         value: /^(?:\d|[1-9]\d|100)$/,
@@ -237,7 +227,6 @@ export const SellerProductModal = ({
                   <textarea
                     className="form-control "
                     id="productDescription"
-                    // defaultValue={productItem.productDescription}
                     {...register("productDescription", {
                       required: "برجاء إدخال وصف المنتج",
                     })}
@@ -249,32 +238,32 @@ export const SellerProductModal = ({
                   )}
                 </div>
                 <div>
-                  <input
-                    id="jj"
-                    type="file"
-                    accept=".png, .jpg, .jpeg"
-                    name="productImage"
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    // {...register("productImage", {
-                    //   required: "برجاء إدخال صورة المنتج",
-                    // })}
-                    onChange={(event) => handleUpload(event)}
-                  />
-                  {/* {errors.productImage && (
-                    <p className=" text-danger">
-                      {errors.productImage.message}
-                    </p>
-                  )} */}
-
-                  <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={chooseImage}
-                    disabled={productImages?.length === 5}
+                  <label
+                    className={
+                      productImages.length < 2
+                        ? "btn btn-outline-secondary"
+                        : "btn-disabled"
+                    }
+                    htmlFor={productImages.length < 2 ? "productImage" : ""}
                   >
                     إضافة صورة
-                  </button>
+                  </label>
+                  <input
+                    id="productImage"
+                    type="file"
+                    hidden
+                    accept=".png, .jpg, .jpeg"
+                    {...register("productImage", {
+                      required: true,
+                      validate: {
+                        hasValue: (file) => file !== null,
+                      },
+                      onChange: (event) => handleUpload(event),
+                    })}
+                  />
+                  {errors.productImage && (
+                    <p className=" text-danger">برجاء إدخال صورة المنتج</p>
+                  )}
                 </div>
                 {errorUploading && (
                   <strong>Error: {errorUploading.message}</strong>
