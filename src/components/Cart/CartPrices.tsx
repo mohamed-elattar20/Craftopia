@@ -1,8 +1,21 @@
+import { UserContext } from "../../Contexts/UserContext";
+import { useContext } from "react";
+
 interface CartPurchasesProps {
   nextPage: (value: number) => void;
 }
 
 export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
+  const { myUser, authUser, userRef } = useContext(UserContext);
+  let total: number = 0;
+  if (authUser) {
+    const cartKeys = Object.keys(authUser[0]?.cart);
+    cartKeys.forEach((key, index) => {
+      total +=
+        authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
+    });
+  }
+
   return (
     <>
       <div className="card my-3">
@@ -10,15 +23,15 @@ export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
           <h5 className="card-title pb-3 text-center">إجمالي سلة المشتريات</h5>
           <div className="d-flex justify-content-between py-3 border-bottom">
             <h6 className="card-subtitle mb-2">المجموع</h6>
-            <h6 className="card-subtitle mb-2">1200EGP</h6>
+            <h6 className="card-subtitle mb-2">EGP {total}</h6>
           </div>
           <div className="d-flex justify-content-between pt-3  border-bottom">
             <h6 className="card-subtitle mb-2">الشحن</h6>
-            <h6 className="card-subtitle mb-2">60EGP</h6>
+            <h6 className="card-subtitle mb-2">EGP 60</h6>
           </div>
           <div className="d-flex justify-content-between pt-3">
             <h5 className="card-subtitle mb-2">الاجمالي</h5>
-            <h5 className="card-subtitle mb-2">1260EGP</h5>
+            <h5 className="card-subtitle mb-2">EGP {total + 60}</h5>
           </div>
         </div>
         <button
@@ -29,8 +42,6 @@ export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
           اتمام الطلب
         </button>
       </div>
-
-
     </>
   );
 };
