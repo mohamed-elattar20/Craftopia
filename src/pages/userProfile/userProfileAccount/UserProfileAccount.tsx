@@ -1,5 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import "./userProfileAccount.css";import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
+import "./userProfileAccount.css";
+import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 import { auth, db, usersRef } from "../../../firebase/firebase.config";
 import { useEffect, useState } from "react";
 import {
@@ -13,13 +14,11 @@ import {
   where,
 } from "firebase/firestore";
 
-
 type Inputs = {
   firstName: string;
   lastName: string;
   phone: string;
   address: string;
-
 };
 
 export const UserProfileAccount = () => {
@@ -34,7 +33,10 @@ export const UserProfileAccount = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const modifyUser = async () => {
-      await updateDoc(doc(db, "users", userDocId), {...data, displayName: `${data.firstName} ${data.lastName}`});
+      await updateDoc(doc(db, "users", userDocId), {
+        ...data,
+        displayName: `${data.firstName} ${data.lastName}`,
+      });
     };
     modifyUser();
   };
@@ -42,23 +44,25 @@ export const UserProfileAccount = () => {
 
   // getting user data
   const userUid = auth.currentUser?.uid;
-  const q = query(usersRef, where("uId", "==", userUid));
+  const q = userUid && query(usersRef, where("uId", "==", userUid));
+
   useEffect(() => {
     const getUserInfo = async () => {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUserDocId((old) => doc.id);
-        console.log(typeof doc.data());
-        console.log(doc.data());
-        setCurrentUser((current) => ({ ...doc.data() }));
-      });
+      if (q) {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          setUserDocId((old) => doc.id);
+          console.log(typeof doc.data());
+          console.log(doc.data());
+          setCurrentUser((current) => ({ ...doc.data() }));
+        });
+      }
       console.log(currentUser);
       reset({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
         phone: currentUser.phone,
         address: currentUser.address,
-
       });
     };
     getUserInfo();

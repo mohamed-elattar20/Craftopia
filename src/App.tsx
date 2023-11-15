@@ -51,13 +51,13 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/search/:word" element={<SearchPage />} />
         {/* Protected Routes login ********************/}
-        <Route element={<ProtectedRoutesLogin />}>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/login/reset-password" element={<ResetPassword />} />
-          <Route path="/register" element={<UserRuleChoice />} />
-          <Route path="/register/seller" element={<RegisterSeller />} />
-          <Route path="/register/buyer" element={<RegisterBuyer />} />
-        </Route>
+        {/* <Route element={<ProtectedRoutesLogin />}> */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login/reset-password" element={<ResetPassword />} />
+        <Route path="/register" element={<UserRuleChoice />} />
+        <Route path="/register/seller" element={<RegisterSeller />} />
+        <Route path="/register/buyer" element={<RegisterBuyer />} />
+        {/* </Route> */}
         {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
         {/* *************************************************************************** */}
