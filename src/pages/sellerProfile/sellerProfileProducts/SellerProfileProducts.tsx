@@ -1,25 +1,30 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { productsCol } from "../../../firebase/firebase.config";
-import { useUploadFile, useDownloadURL } from "react-firebase-hooks/storage";
+import { productsColRef } from "../../../firebase/firebase.config";
+import { useUploadFile } from "react-firebase-hooks/storage";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { addDoc } from "firebase/firestore";
-import { ChangeEvent, useRef, useState, useEffect } from "react";
+import { Timestamp, addDoc, query, where } from "firebase/firestore";
+import { ChangeEvent, useRef, useState } from "react";
 import { storage } from "../../../firebase/firebase.config";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
-import { SellerProduct } from "./SellerProduct";
-import { sellerProductType } from "../../../types/SellerProduct";
+import { SellerProductItem } from "./SellerProductItem";
+import { ProductType } from "../../../Types/ProductType";
 import Select from "react-select";
+import { auth } from "../../../firebase/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import "./SellerProfileProducts.css";
 
 type Inputs = {
   productTitle: string;
   productPrice: string;
   productDescription: string;
+  brand: string;
+  discount: string;
   productCategory: {
     value: string;
     label: string;
   };
-  productImage: FileList;
+  productImage: any;
 };
 
 type ImageObj = {
@@ -31,19 +36,30 @@ export const SellerProfileProducts = () => {
   const [productImages, setProductImages] = useState<ImageObj[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const chooseImage = () => {
-    if (fileInputRef.current !== null) {
-      fileInputRef.current.click();
-    }
-  };
+  const [user] = useAuthState(auth);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    control,
+    reset,
+    setValue,
+  } = useForm<Inputs>();
+
+  // const chooseImage = () => {
+  //   if (fileInputRef.current !== null) {
+  //     fileInputRef.current.click();
+  //   }
+  // };
   const [uploadFile, uploading, , errorUploading] = useUploadFile();
   const imgId = v4();
   const productImageRef = ref(storage, `products images/${imgId}`);
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e?.target.files) {
-      console.log(e?.target.files[0]);
+    console.log(e?.target.files);
 
+    if (e?.target.files) {
       let productImage = e?.target.files[0];
       await uploadFile(productImageRef, productImage, {
         contentType: productImage.type,
@@ -56,30 +72,48 @@ export const SellerProfileProducts = () => {
     deleteObject(ref(storage, `products images/${id}`));
     console.log("img deleted");
     setProductImages((prev) => prev.filter((img) => img.imgId !== id));
+    if (productImages.length === 1) {
+      setValue("productImage", null);
+    }
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    control,
-    reset,
-  } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    addDoc(productsCol, { ...data, productImages });
+    const productId = v4();
+    addDoc(productsColRef, {
+      productTitle: data.productTitle,
+      productPrice: data.productPrice,
+      productDescription: data.productPrice,
+      productCategory: {
+        value: data.productCategory.value,
+        label: data.productCategory.label,
+      },
+      discount: +data.discount || 0,
+      productImages,
+      sellerId: user?.uid,
+      brand: "",
+      productId,
+      generatedAt: Timestamp.now(),
+      rating: "",
+      reviewes: [],
+    });
     console.log(data);
-    reset();
-    setProductImages([]);
-  };
 
-  const handleClose = () => {
     reset();
     reset({ productCategory: {} });
     setProductImages([]);
   };
 
-  const [products, loading, error] = useCollection(productsCol);
+  const handleClose = () => {
+    reset();
+    reset({ productCategory: undefined });
+    setProductImages([]);
+  };
+
+  const sellerProductsColRef =
+    user && query(productsColRef, where("sellerId", "==", user?.uid));
+
+  const [products, loading, error] = useCollection(sellerProductsColRef);
+
   console.log(products);
 
   const categories = [
@@ -87,39 +121,54 @@ export const SellerProfileProducts = () => {
     { value: "مواد كيميائية", label: "مواد كيميائية" },
     { value: "خرز", label: "خرز" },
     { value: "خيوط", label: "خيوط" },
+    { value: "تصميم", label: "تصميم" },
+    { value: "ملابس", label: "ملابس" },
   ];
 
   return (
-    <div className="containr">
+    <div className="containr w-100 overflow-hidden">
       <button
         type="button"
         className="btn btn-primary"
         data-bs-toggle="modal"
-        data-bs-target="#staticBackdrop"
+        data-bs-target="#staticBackdrop1"
       >
         إضافة منتج
       </button>
 
       {error && <p>{error.message}</p>}
+
       {loading ? (
         <p>loading ...</p>
       ) : products?.docs && products?.docs.length > 0 ? (
-        <div className="row">
-          {products?.docs.map((doc) => (
-            <SellerProduct
-              key={doc.id}
-              item={doc.data() as sellerProductType}
-              id={doc.id}
-            />
-          ))}
-        </div>
+        <table className="tabel w-100 ">
+          <thead>
+            <tr className="row border-bottom py-2 align-items-center">
+              <th className="col">اسم المنتج</th>
+              <th className="col">التصنيف</th>
+              <th className="col text-center">السعر</th>
+              <th className="col text-center">الصورة</th>
+              <th className="col text-center">تعديل</th>
+              <th className="col text-center">إزالة</th>
+            </tr>
+          </thead>
+          <tbody>
+            {products?.docs.map((doc) => (
+              <SellerProductItem
+                key={doc.id}
+                productItem={doc.data() as ProductType}
+                id={doc.id}
+              />
+            ))}
+          </tbody>
+        </table>
       ) : (
         <p>لا يوجد منتجات</p>
       )}
 
       <div
         className="modal fade"
-        id="staticBackdrop"
+        id="staticBackdrop1"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel"
@@ -164,11 +213,16 @@ export const SellerProfileProducts = () => {
                     اختر تصنيف المنتج
                   </label>
                   <Controller
+                    key="add"
                     name="productCategory"
                     control={control}
                     rules={{ required: true }}
                     render={({ field }) => (
-                      <Select {...field} options={categories} />
+                      <Select
+                        {...field}
+                        options={categories}
+                        placeholder="اختر"
+                      />
                     )}
                   />
                   {errors.productCategory && (
@@ -197,6 +251,25 @@ export const SellerProfileProducts = () => {
                   )}
                 </div>
                 <div>
+                  <label htmlFor="discount" className="form-label">
+                    الخصم
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control "
+                    id="discount"
+                    {...register("discount", {
+                      pattern: {
+                        value: /^(?:\d|[1-9]\d|100)$/,
+                        message: "برجاء إدخال رقم بين 0 إلى 100",
+                      },
+                    })}
+                  />
+                  {errors.discount && (
+                    <p className=" text-danger">{errors.discount.message}</p>
+                  )}
+                </div>
+                <div>
                   <label htmlFor="productDescription" className="form-label">
                     وصف المنتج
                   </label>
@@ -213,34 +286,40 @@ export const SellerProfileProducts = () => {
                     </p>
                   )}
                 </div>
-                <label htmlFor="jj">kkk</label>
                 <div>
+                  <label
+                    className="btn btn-outline-secondary"
+                    htmlFor={productImages.length < 4 ? "productImage" : ""}
+                  >
+                    إضافة صورة
+                  </label>
                   <input
-                    id="jj"
+                    id="productImage"
                     type="file"
+                    hidden
                     accept=".png, .jpg, .jpeg"
-                    name="productImage"
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                    // {...register("productImage", {
-                    //   required: "برجاء إدخال صورة المنتج",
-                    // })}
-                    onChange={(event) => handleUpload(event)}
+                    {...register("productImage", {
+                      required: true,
+                      validate: {
+                        hasValue: (file) => file !== null,
+                        // hasValue: (file) => file.length > 0,
+                      },
+                      onChange: (event) => handleUpload(event),
+                    })}
+                    // onChange={(event) => handleUpload(event)}
                   />
                   {errors.productImage && (
-                    <p className=" text-danger">
-                      {errors.productImage.message}
-                    </p>
+                    <p className=" text-danger">برجاء إدخال صورة المنتج</p>
                   )}
 
-                  <button
+                  {/* <button
                     type="button"
                     className="btn btn-outline-secondary"
                     onClick={chooseImage}
                     disabled={productImages?.length === 5}
                   >
                     إضافة صورة
-                  </button>
+                  </button> */}
                 </div>
                 {errorUploading && (
                   <strong>Error: {errorUploading.message}</strong>
@@ -271,7 +350,6 @@ export const SellerProfileProducts = () => {
                     ))}
                   </div>
                 )}
-
                 <div className="modal-footer">
                   <button
                     className="btn btn-primary"
@@ -279,7 +357,6 @@ export const SellerProfileProducts = () => {
                   >
                     حفظ
                   </button>
-
                   <button
                     type="button"
                     className="btn btn-secondary"

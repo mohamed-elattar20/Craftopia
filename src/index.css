@@ -8,8 +8,9 @@ ul {
   list-style: none;
 }
 img {
-  display: inline-block;
+  display: block;
   width: 100%;
+ 
 }
 .input-style:focus {
   box-shadow: none !important;

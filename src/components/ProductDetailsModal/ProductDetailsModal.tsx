@@ -5,8 +5,13 @@ import AddToCartBtn from "../AddToCartBtn/AddToCartBtn";
 // Fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faStar, faEye } from "@fortawesome/free-solid-svg-icons";
-const ProductDetailsModal = () => {
+import { DocumentData } from "firebase/firestore";
+import { WishListIcon } from "../WishListIcon/WishListIcon";
+import { useEffect } from "react";
+
+const ProductDetailsModal = ({ modalData }: DocumentData) => {
   const arr = [1, 2, 3, 4, 5];
+  useEffect(() => {}, [modalData]);
   return (
     <>
       <button
@@ -14,14 +19,14 @@ const ProductDetailsModal = () => {
         type="button"
         className="btn bg-black bg-opacity-50 border-0 text-light rounded-pill"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
+        data-bs-target={`#d${modalData?.productId}`}
       >
         <FontAwesomeIcon icon={faEye} />
       </button>
 
       <div
         className="modal fade"
-        id="exampleModal"
+        id={`d${modalData?.productId}`}
         aria-labelledby="exampleModalLabel"
         aria-hidden="true"
       >
@@ -29,7 +34,7 @@ const ProductDetailsModal = () => {
           <div className="modal-content">
             <div className="modal-header d-flex justify-content-between">
               <h1 className="modal-title fs-5" id="exampleModalLabel">
-                leather wallet- محفظة رجالي جلد طبيعي محفور عليها الإسم
+                {modalData?.productTitle}
               </h1>
               <button
                 type="button"
@@ -42,14 +47,16 @@ const ProductDetailsModal = () => {
               <div className="row align-items-center text-end">
                 <div className="col-sm-12 col-md-12 col-lg-6">
                   <img
-                    src={wallet}
+                    src={modalData?.productImages[0].imgUrl}
                     alt="img"
                     className="d-block w-100 img-fluid"
                   />
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-6 bg-opacity-25">
-                  <h1>محفظة رجالي</h1>
-                  <p className="lead fw-medium">EGP 900.00</p>
+                  <h1>{modalData?.productTitle}</h1>
+                  <p className="lead fw-medium">
+                    EGP {modalData?.productPrice}
+                  </p>
                   <div className="rating-stars mb-2">
                     {arr.map((star) => (
                       <FontAwesomeIcon
@@ -60,18 +67,13 @@ const ProductDetailsModal = () => {
                     ))}
                     <span>( 165 )</span>
                   </div>
-                  <p>
-                    وصف المنتج: محفظة رجالي شيك جلد طبيعي بتقنية الحفر جلد بقري
-                    وجلد ماعز
-                  </p>
+                  <p>{modalData?.productDescription}</p>
                   <p className="lead">
-                    الفئة: <strong>مواد طبيعية</strong>
+                    الفئة: <strong> {modalData?.productCategory?.value}</strong>
                   </p>
                   <div>
-                    <AddToCartBtn />
-                    <button className="bg-primary border-0 rounded-3 p-2 me-3">
-                      <FontAwesomeIcon className="text-light" icon={faHeart} />
-                    </button>
+                    <AddToCartBtn product={modalData} />
+                    <WishListIcon data={modalData} />
                   </div>
                 </div>
               </div>

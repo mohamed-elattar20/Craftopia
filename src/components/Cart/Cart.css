@@ -1,7 +1,6 @@
-@media (min-width: 529px) and (max-width: 773px) {
+@media (min-width: 529px) and (max-width: 1200px) {
   .action-buttons {
-    width: 55.688px !important; 
-    
+    width: 55.688px !important;
   }
 }
 

@@ -1,8 +1,17 @@
-import heroSeller from "../../assets/images/Hero Section/hero-seller.png";
-import heroBuyer from "../../assets/images/Hero Section/hero6.jpg";
+import { Link } from "react-router-dom";
+import heroSeller from "../../../assets/images/Hero Section/hero-seller.png";
+import heroBuyer from "../../../assets/images/Hero Section/hero6.jpg";
 import "./hero-section.css";
+//  React
+import { useEffect, useState } from "react";
+// Firebase
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, usersCollRef } from "../../../firebase/firebase";
+import { query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export const HeroSection = () => {
+  const [myUser] = useAuthState(auth);
   return (
     <div
       id="carouselExampleAutoplaying"
@@ -17,9 +26,12 @@ export const HeroSection = () => {
               منصة فريدة للحرفيين الموهوبين وعشاق الفن
             </h2>
             <div className="text-center">
-              <button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5 ">
+              <Link
+                to={`/store`}
+                className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5 "
+              >
                 ابدأ التسوق
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -30,9 +42,21 @@ export const HeroSection = () => {
               انضموا إلينا وشاركوا في عرض مواهبكم
             </h2>
             <div className="">
-              <button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5">
-                انضموا الآن
-              </button>
+              {myUser ? (
+                <Link
+                  to={`/seller/profile`}
+                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
+                >
+                  إضافة منتج ؟
+                </Link>
+              ) : (
+                <Link
+                  to={`/register`}
+                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
+                >
+                  انضموا الآن
+                </Link>
+              )}
             </div>
           </div>
         </div>

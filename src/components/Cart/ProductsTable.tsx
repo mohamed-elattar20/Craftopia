@@ -1,4 +1,3 @@
-
 import Wallet from "../../assets/images/Product Details/wallet.png";
 import "./Cart.css";
 
@@ -21,12 +20,9 @@ export const ProductsTable = () => {
         <tbody>
           <tr>
             <th scope="row">
-              <img
-                src={Wallet}
-                alt="wallet"
-                className="img-fluid"
-                width={"100px"}
-              />
+              <div style={{ width: "100px" }}>
+                <img src={Wallet} alt="wallet" className="img-fluid" />
+              </div>
             </th>
             <td>إناء مصنوع من الفخار بجودة عالية مع بعض الزخارف والزينة</td>
             <td>200EGP</td>
@@ -50,12 +46,9 @@ export const ProductsTable = () => {
           </tr>
           <tr>
             <th scope="row">
-              <img
-                src={Wallet}
-                alt="wallet"
-                className="img-fluid"
-                width={"100px"}
-              />
+              <div style={{ width: "100px" }}>
+                <img src={Wallet} alt="wallet" className="img-fluid" />
+              </div>
             </th>
             <td>إناء مصنوع من الفخار بجودة عالية مع بعض الزخارف والزينة</td>
             <td>200EGP</td>

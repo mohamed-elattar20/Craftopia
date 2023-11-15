@@ -9,7 +9,7 @@ import Select from "react-select";
 //  CSS
 import "react-phone-number-input/style.css";
 //  Routing
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 //  Firebase
 import {
   User,
@@ -27,7 +27,7 @@ import {
 import { auth, usersCollRef } from "../../../firebase/firebase";
 import { addDoc } from "firebase/firestore";
 import { useState } from "react";
-function Register() {
+function RegisterBuyer() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
     register,
@@ -45,26 +45,30 @@ function Register() {
   //
   const navigate = useNavigate();
   //
-
   //
   const onSubmit = (data: any) => {
-    // console.log(data);
+    console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
+        res.user.getIdTokenResult().then((response) => {
+          localStorage.setItem("token", response.token);
+        });
         // console.log(res);
         // console.log(`added to auth users`, res);
-        //
         // setName(res?.user?.displayName);
-        //
-        updateProfile(res.user, {
-          displayName: `${data.firstName} ${data.lastName}`,
-        });
+        // updateProfile(res.user, {
+        //   displayName: `${data.firstName} ${data.lastName}`,
+        // });
         //
         addDoc(usersCollRef, {
-          email: data.email,
-          password: data.password, // *************************
+          ...data,
           uId: res.user.uid,
           displayName: `${data.firstName} ${data.lastName}`,
+          Rule: "buyer",
+          orders: [],
+          cart: [],
+          wishList: [],
+          posts: [],
         })
           .then(() => {
             // console.log(`user Added to fire Store`);
@@ -72,15 +76,13 @@ function Register() {
           .catch((err) => {
             console.log(err);
           });
-        navigate(`/user/profile`);
+        navigate(`/`);
       })
       .catch((err) => {
         console.log(err?.message);
       });
   };
-
   // Authentication *******************
-
   return (
     <>
       <div className="container">
@@ -91,7 +93,7 @@ function Register() {
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">الاسم الأول</div>
+              <div className="form-text mb-2">الاسم الأول</div>
 
               <input
                 id="firstName"
@@ -108,7 +110,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">الاسم الأخير</div>
+              <div className="form-text mb-2">الاسم الأخير</div>
               <input
                 id="lastName"
                 type="text"
@@ -125,14 +127,14 @@ function Register() {
             </div>
           </div>
           <div className="row">
-            <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">عنوان البريد الالكتروني</div>
+            <div className="col-12  pb-3">
+              <div className="form-text mb-2 ">عنوان البريد الالكتروني</div>
 
               <input
                 id="email"
                 type="text"
                 className="form-control"
-                placeholder="Email address"
+                placeholder="عنوان البريد الالكتروني الخاص بك"
                 aria-describedby="البريد الالكتروني"
                 {...register("email", {
                   required: true,
@@ -150,26 +152,10 @@ function Register() {
                 </div>
               ) : null}
             </div>
-            <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">اسم العلامة التجارية</div>
-              <input
-                id="brand"
-                type="text"
-                className="form-control"
-                placeholder=" العلامة التجارية  "
-                aria-describedby="العلامة التجارية"
-                {...register("brand", { required: true })}
-              />
-              {errors.brand?.type === "required" ? (
-                <div className="form-text  text-danger">
-                  برجاء ادخال العلامة التجارية
-                </div>
-              ) : null}
-            </div>
           </div>
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
-              <div className="form-text ">رقم الهاتف</div>
+              <div className="form-text mb-2">رقم الهاتف</div>
               <input
                 id="phone"
                 type="text"
@@ -191,7 +177,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">المحافظة</div>
+              <div className="form-text mb-2">المحافظة</div>
               {/* <Select options={governorates} /> */}
               <Controller
                 name="governorate"
@@ -208,7 +194,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">المدينة</div>
+              <div className="form-text mb-2">المدينة</div>
               <input
                 type="text"
                 className="form-control"
@@ -224,7 +210,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6">
-              <div className="form-text ">العنوان</div>
+              <div className="form-text mb-2">العنوان</div>
               <input
                 type="text"
                 className="form-control"
@@ -240,7 +226,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6 pt-3">
-              <div className="form-text ">كلمة السر</div>
+              <div className="form-text mb-2">كلمة السر</div>
               <input
                 type="password"
                 className="form-control"
@@ -265,7 +251,7 @@ function Register() {
               ) : null}
             </div>
             <div className="col-12 col-md-6 pt-3">
-              <div className="form-text ">تأكيد كلمة السر</div>
+              <div className="form-text mb-2">تأكيد كلمة السر</div>
               <input
                 type="password"
                 className="form-control"
@@ -292,9 +278,14 @@ function Register() {
               ) : null}
             </div>
           </div>
-          <button type="submit" className="btn btn-primary mt-5">
-            تسجيل
-          </button>
+          <div>
+            <button type="submit" className="btn btn-primary mt-5">
+              تسجيل
+            </button>
+            <Link to={`/register`} className="btn btn-primary mt-5 me-2">
+              العوده
+            </Link>
+          </div>
           <NavLink
             to={`/login`}
             className="text-primary d-block my-2 text-decoration-none"
@@ -307,4 +298,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default RegisterBuyer;

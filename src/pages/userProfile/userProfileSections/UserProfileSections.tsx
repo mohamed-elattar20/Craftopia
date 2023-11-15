@@ -4,38 +4,33 @@ import "./userProfileSections.css";
 // Authentication
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, usersCollRef } from "../../../firebase/firebase";
-import { useEffect, useMemo, useState } from "react";
-import { query } from "express";
-import { DocumentData, Query, where } from "@firebase/firestore";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { DocumentData, query, where } from "@firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { UserContext } from "../../../Contexts/UserContext";
 
 interface User {
   uid: string;
 }
 export const UserProfileSections = () => {
   //  Auth
-  const [user] = useAuthState(auth);
-  const [name, setName] = useState<string | null | undefined>("");
+  const { myUser, authUser } = useContext(UserContext);
+  const [userName, setUserName] = useState<string | null | undefined>("");
   useEffect(() => {
-    setName(user?.displayName);
-  }, [user]);
-  //
-
+    setUserName(authUser && authUser[0].displayName);
+  }, [authUser]);
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
         <div className="text-center">
           <img src={avatar} alt="" style={{ width: "70px" }} />
-          <h4 className="mt-2 fs-5">{user?.displayName}</h4>
+          {myUser && <h4 className="mt-2 fs-5">مرحبا {userName}</h4>}
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
             <NavLink end to={"/user/profile"}>
               حسابي
             </NavLink>
-          </li>
-          <li>
-            <NavLink to={"./address"}>العناوين</NavLink>
           </li>
           <li>
             <NavLink to={"./orders"}>الطلبات</NavLink>
