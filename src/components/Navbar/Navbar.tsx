@@ -22,7 +22,6 @@ import ProductWishListSidebar from "../ProductWishListSidebar/ProductWishListSid
 import "./Navbar.css";
 import ProductCard from "../ProductCard/ProductCard";
 
-
 function Navbar() {
   // Authentication **************
   const navigate = useNavigate();
@@ -52,8 +51,8 @@ function Navbar() {
   };
 
   return (
-    <div className="container justify-content-between">
-      <nav className="navbar navbar-expand-lg ">
+    <div className="container-fluid shadow justify-content-between sticky-top bg-white">
+      <nav className="navbar navbar-expand-lg px-5">
         <NavLink className="navbar-brand ms-5" to="/">
           <img
             src={logo}
@@ -130,7 +129,7 @@ function Navbar() {
                       />
                     </div>
                     <h4 className="fs-6 m-0">
-                      مرحبا {authUser && authUser[0].displayName}
+                      مرحبا {authUser && authUser[0].firstName}
                     </h4>
                   </div>
                 </li>
@@ -145,6 +144,14 @@ function Navbar() {
                       }
                     >
                       حسابي
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      className="py-2 px-3 text-end dropdown-item"
+                      to={`/community`}
+                    >
+                      مجتمع كرافتوبيا
                     </Link>
                   </li>
                   <li>
