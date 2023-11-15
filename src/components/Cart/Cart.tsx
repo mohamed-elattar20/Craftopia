@@ -17,6 +17,9 @@ function Cart() {
   const [stepperValue, setStepperValue] = useState(0);
   const [currentUserData, setCurrentUserData] = useState<DocumentData>({});
   const [user, setUser] = useState<User>();
+import CartPayment from "./CartPayment";
+function Cart() {
+  const [stepperValue, setStepperValue] = useState(2);
 
   return (
     <>
@@ -28,7 +31,7 @@ function Cart() {
         />
       )}
       {stepperValue === 1 && <CartInfo nextPage={setStepperValue} />}
-      {}
+      {stepperValue === 2 && <CartPayment nextPage={setStepperValue}/>}
     </>
   );
 }

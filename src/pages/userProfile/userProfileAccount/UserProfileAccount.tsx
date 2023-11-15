@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import Select from "react-select";
 
+
 type Inputs = {
   firstName: string;
   lastName: string;

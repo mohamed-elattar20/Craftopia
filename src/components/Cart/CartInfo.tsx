@@ -203,14 +203,14 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
             </div>
           </div>
           <div className="mx-auto text-center">
-            <button type="submit" className="btn btn-primary mt-5">
+            <button type="submit" className="btn btn-primary mt-5"
+              onClick={() => nextPage(2)}>
               تقدم إلى الدفع
             </button>
             <button
               className="btn btn-danger mt-5 me-3"
               type="submit"
-              onClick={() => nextPage(0)}
-            >
+              onClick={() => nextPage(0)}>
               رجوع
             </button>
           </div>
