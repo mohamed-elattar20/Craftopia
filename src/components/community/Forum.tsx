@@ -13,9 +13,14 @@ export default function Forum() {
       <Modal />
       <Container sx={{ paddingY: 3 }}>
         <Grid container spacing={3}>
-          {posts?.map((post) => (
+          {loading ? (
+            <h1 className="display-1">Loading</h1>
+          ) : (
+            posts?.map((post) => <Post post={post} key={post.postId} />)
+          )}
+          {/* {posts?.map((post) => (
             <Post post={post} key={post.postId} />
-          ))}
+          ))} */}
         </Grid>
       </Container>
     </>

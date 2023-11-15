@@ -105,7 +105,7 @@ export const SellerProfileProducts = () => {
 
   const handleClose = () => {
     reset();
-    reset({ productCategory: undefined });
+    reset({ productCategory: {} });
     setProductImages([]);
   };
 

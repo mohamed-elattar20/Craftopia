@@ -80,9 +80,7 @@ export const SellerProfileSections = () => {
             />
           </div>
 
-          {authUser && (
-            <h4 className="mt-2 fs-5">مرحبا {authUser[0].displayName} </h4>
-          )}
+          {authUser && <h4 className="mt-2 fs-5"> {authUser[0].fullName} </h4>}
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
@@ -95,9 +93,6 @@ export const SellerProfileSections = () => {
           </li>
           <li>
             <NavLink to={"./posts"}>المنشورات</NavLink>
-          </li>
-          <li>
-            <NavLink to={"./posts/saved"}>المنشورات المحفوظة</NavLink>
           </li>
         </ul>
         <div className="text-center border-top ">

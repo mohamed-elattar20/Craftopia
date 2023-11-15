@@ -17,4 +17,7 @@ export const firestore = getFirestore(app);
 export const usersCollRef = collection(firestore, "users");
 
 export const productsCollRef = collection(firestore, "products");
+
 export const postsCollRef = collection(firestore, "posts");
+
+export const commentsCollRef = collection(firestore, "comments");
