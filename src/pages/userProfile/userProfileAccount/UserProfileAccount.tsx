@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import Select from "react-select";
 
-
 type Inputs = {
   firstName: string;
   lastName: string;
@@ -51,19 +50,21 @@ export const UserProfileAccount = () => {
 
   // getting user data
   const userUid = auth.currentUser?.uid;
-  const q = query(usersRef, where("uId", "==", userUid));
+  const q = userUid && query(usersRef, where("uId", "==", userUid));
 
   useEffect(() => {
     const getUserInfo = async () => {
-      const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
-        setUserDocId((old) => doc.id);
-        console.log(typeof doc.data());
-        console.log(doc.data());
-        setCurrentUser((current) => ({ ...doc.data() }));
-        console.log(currentUser);
-        
-      });
+      if (q) {
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          setUserDocId((old) => doc.id);
+          console.log(typeof doc.data());
+          console.log(doc.data());
+          setCurrentUser((current) => ({ ...doc.data() }));
+          console.log(currentUser);
+        });
+      }
+
       reset({
         firstName: currentUser.firstName,
         lastName: currentUser.lastName,
@@ -89,7 +90,6 @@ export const UserProfileAccount = () => {
           </label>
           <input
             type="text"
-            
             className="form-control"
             id="firstName"
             defaultValue={currentUser.firstName}
