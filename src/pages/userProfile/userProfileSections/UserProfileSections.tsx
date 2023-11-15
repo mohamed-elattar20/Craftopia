@@ -3,30 +3,186 @@ import { NavLink } from "react-router-dom";
 import "./userProfileSections.css";
 // Authentication
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, usersCollRef } from "../../../firebase/firebase";
-import { useContext, useEffect, useMemo, useState } from "react";
-import { DocumentData, query, where } from "@firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { auth, firestore, usersCollRef } from "../../../firebase/firebase";
+import { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
+import {
+  DocumentData,
+  query,
+  where,
+  doc,
+  updateDoc,
+} from "@firebase/firestore";
+import {
+  useCollection,
+  useCollectionData,
+} from "react-firebase-hooks/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
+import { useUploadFile } from "react-firebase-hooks/storage";
+import { storage } from "../../../firebase/firebase.config";
+import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { signOut } from "firebase/auth";
 
-interface User {
-  uid: string;
-}
+
 export const UserProfileSections = () => {
   //  Auth
-  const { myUser, authUser } = useContext(UserContext);
-  const [userName, setUserName] = useState<string | null | undefined>("");
+  const { currentUser } = useContext(UserContext);
+  console.log(currentUser);
+
+  const [loading, setLoading] = useState(true);
+
+  const [uploadFile, uploading, error] = useUploadFile();
+
+  const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
+    setLoading(true);
+    const avatar = e.target.files && e.target.files[0];
+    const avatarRef = ref(storage, `avatars/${currentUser?.uId}`);
+    if (avatarRef && avatar) {
+      await uploadFile(avatarRef, avatar, {
+        contentType: avatar.type,
+      });
+      const url = await getDownloadURL(avatarRef);
+
+      const userDocRef = doc(firestore, "users", currentUser?.uId);
+      userDocRef &&
+        updateDoc(userDocRef, {
+          ...currentUser,
+          avatarURL: url,
+        });
+    }
+    setLoading(false);
+  };
+  const deleteAvatar = async (id: string) => {
+    setLoading(true);
+    await deleteObject(ref(storage, `avatars/${id}`));
+    await updateDoc(doc(firestore, "users", id), {
+      ...currentUser,
+      avatarURL: "",
+    });
+    setLoading(false);
+  };
+
   useEffect(() => {
-    setUserName(authUser && authUser[0].displayName);
-  }, [authUser]);
+    if (currentUser) {
+      setLoading(false);
+    }
+  }, [currentUser]);
+
   return (
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
-        <div className="text-center">
-          <img src={avatar} alt="" style={{ width: "70px" }} />
-          {myUser && <h4 className="mt-2 fs-5">مرحبا {userName}</h4>}
+        <div className="d-flex flex-column align-items-center">
+          <div className="profile-img">
+            {loading ? (
+              <div
+                className="d-flex align-items-center justify-content-center text-center rounded-circle"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <p className="m-0">loading</p>
+              </div>
+            ) : (
+              <div>
+                <div>
+                  <label className="d-none" htmlFor="profile-pic">
+                    تحديث
+                  </label>
+                  <input
+                    type="file"
+                    hidden
+                    id="profile-pic"
+                    onChange={(event) => uploadAvatar(event)}
+                  />
+                  {currentUser?.avatarURL && (
+                    <span
+                      className="delete-avatar rounded-circle position-absolute d-none"
+                      onClick={() => deleteAvatar(currentUser?.uId)}
+                    >
+                      x
+                    </span>
+                  )}
+                </div>
+
+                {currentUser && currentUser.avatarURL ? (
+                  <img
+                    src={currentUser?.avatarURL}
+                    alt=""
+                    style={{ width: "100px" }}
+                  />
+                ) : (
+                  <img src={avatar} alt="" style={{ width: "100px" }} />
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* <div className="profile-img">
+            {loading ? (
+              <div
+                className="d-flex align-items-center justify-content-center text-center rounded-circle"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                <p className="m-0">loading</p>
+              </div>
+            ) : (
+              <div>
+                {currentUser === undefined ? (
+                  <div
+                    className="d-flex align-items-center justify-content-center text-center rounded-circle"
+                    style={{
+                      width: "100px",
+                      height: "100px",
+                      backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    }}
+                  >
+                    <p className="m-0">loading</p>
+                  </div>
+                ) : (
+                  <div>
+                    <div>
+                      <label className="d-none" htmlFor="profile-pic">
+                        تحديث
+                      </label>
+                      <input
+                        type="file"
+                        hidden
+                        id="profile-pic"
+                        onChange={(event) => uploadAvatar(event)}
+                      />
+                      {currentUser?.avatarURL && (
+                        <span
+                          className="delete-avatar rounded-circle position-absolute d-none"
+                          onClick={() => deleteAvatar(currentUser?.uId)}
+                        >
+                          x
+                        </span>
+                      )}
+                    </div>
+
+                    {currentUser && currentUser.avatarURL ? (
+                      <img
+                        src={currentUser?.avatarURL}
+                        alt=""
+                        style={{ width: "100px" }}
+                      />
+                    ) : (
+                      <img src={avatar} alt="" style={{ width: "100px" }} />
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div> */}
+
+          <h4 className="mt-2 fs-5">{currentUser?.displayName} </h4>
         </div>
+
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
             <NavLink end to={"/user/profile"}>

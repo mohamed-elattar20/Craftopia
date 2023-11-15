@@ -19,39 +19,23 @@ import "./SellerProfileSections.css";
 import { UserContext } from "../../../Contexts/UserContext";
 
 export const SellerProfileSections = () => {
-  // const [myUser] = useAuthState(auth);
-  // const listOfUsers =
-  //   myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-
-  // const [authUser] = useCollectionData(listOfUsers);
-  // console.log(authUser);
-
-  // const [userName, setUserName] = useState<string | null | undefined>("");
-  // useEffect(() => {
-  //   setUserName(authUser && authUser[0].displayName);
-  // }, [authUser]);
-
-  const { myUser, authUser } = useContext(UserContext);
-
-  const listOfUsers =
-    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-  const userCollction = useCollection(listOfUsers);
-  const userDocId = userCollction[0]?.docs[0].id;
+  const { currentUser } = useContext(UserContext);
 
   const [uploadFile, uploading, error] = useUploadFile();
   const [avatarUrl, setAvatarUrl] = useState("");
+
   const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
     const avatar = e.target.files && e.target.files[0];
-    const avatarRef = authUser && ref(storage, `avatars/${authUser[0].uId}`);
+    const avatarRef = currentUser && ref(storage, `avatars/${currentUser.uId}`);
     if (avatarRef && avatar) {
       await uploadFile(avatarRef, avatar, {
         contentType: avatar.type,
       });
       const url = await getDownloadURL(avatarRef);
-      const userDocRef = userDocId && doc(firestore, "users", userDocId);
+      const userDocRef = doc(firestore, "users", currentUser.uId);
       userDocRef &&
         updateDoc(userDocRef, {
-          ...authUser[0],
+          ...currentUser,
           avatarURL: url,
         });
     }
@@ -62,9 +46,10 @@ export const SellerProfileSections = () => {
       <div className="border pt-4 rounded-4">
         <div className="d-flex flex-column align-items-center">
           <div className="profile-img">
-            {authUser && authUser[0].avatarURL ? (
+            {uploading && <p>loading</p>}
+            {currentUser && currentUser.avatarURL ? (
               <img
-                src={authUser[0].avatarURL}
+                src={currentUser.avatarURL}
                 alt=""
                 style={{ width: "100px" }}
               />
@@ -80,7 +65,10 @@ export const SellerProfileSections = () => {
             />
           </div>
 
-          {authUser && <h4 className="mt-2 fs-5"> {authUser[0].fullName} </h4>}
+          {currentUser && (
+            <h4 className="mt-2 fs-5">{currentUser.displayName} </h4>
+          )}
+
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
