@@ -4,3 +4,7 @@
     
   }
 }
+
+#flexRadioDefault1:focus, #flexRadioDefault2:focus{
+  box-shadow: none !important;
+}

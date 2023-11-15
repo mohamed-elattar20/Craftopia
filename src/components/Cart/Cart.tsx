@@ -3,16 +3,16 @@ import { CartStepper } from "./CartStepper";
 import { CartPurchases } from "./CartPurchases";
 import { useState } from "react";
 import { CartInfo } from "./CartInfo";
+import CartPayment from "./CartPayment";
 
 function Cart() {
-  const [stepperValue, setStepperValue] = useState(0);
+  const [stepperValue, setStepperValue] = useState(2);
   return (
     <>
-      <Navbar />
       <CartStepper stepUpdate={stepperValue} />
       {stepperValue === 0 && <CartPurchases nextPage={setStepperValue} />}
       {stepperValue === 1 && <CartInfo nextPage={setStepperValue} />}
-      {}
+      {stepperValue === 2 && <CartPayment nextPage={setStepperValue}/>}
     </>
   );
 }

@@ -1,4 +1,4 @@
-import AboutUs from "./components/AboutUs/AboutUs";
+import AboutUs from "./pages/HomePage/AboutUs/AboutUs";
 import Cart from "./components/Cart/Cart";
 import Explore from "./components/Explore/Explore";
 import Invest from "./components/Invest/Invest";
@@ -16,9 +16,9 @@ import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
 
-import { SellerProfileProducts } from "./pages/sellerProfile/SellerProfileProducts/SellerProfileProducts";
+import { SellerProfileProducts } from "./pages/sellerProfile/sellerProfileProducts/SellerProfileProducts";
 import { SellerProfile } from "./pages/sellerProfile/SellerProfile";
-import { SellerProfileAccount } from "./pages/sellerProfile/SellerProfileAccount/SellerProfileAccount";
+import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount/SellerProfileAccount";
 
 import HomePage from "./pages/HomePage/HomePage";
 import { Footer } from "./components/Footer/Footer";
@@ -47,6 +47,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/store" element={<StorePage />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/cart" element={<Cart/>} />
           {/* ******************************* */}
           {/* <Route path="*" element={<HomePage />} /> */}
           <Route path="/login" element={<LoginPage />} />
