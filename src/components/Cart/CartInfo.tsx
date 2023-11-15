@@ -1,13 +1,33 @@
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import egyptGovernoratesData from "../../pages/RegisterPage/RegisterSeller/governorates.json";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
+import { useEffect, useState } from "react";
+import {
+  DocumentData,
+  doc,
+  getDocs,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import { auth, db, usersRef } from "../../firebase/firebase.config";
 
 interface CartPurchasesProps {
   nextPage: (value: number) => void;
 }
+type Inputs = {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  address: string;
+  governorate: { label: string; value: string };
+  email: string;
+};
 
 export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
+  const [currentUser, setCurrentUser] = useState<DocumentData>({});
+  const [userDocId, setUserDocId] = useState("");
   const governorates = egyptGovernoratesData.egyptGovernorates;
   const {
     register,
@@ -15,9 +35,44 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
     watch,
     formState: { errors },
     control,
-  } = useForm();
+    reset,
+  } = useForm<Inputs>();
 
-  const onSubmit = (data: {}) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    const modifyUser = async () => {
+      await updateDoc(doc(db, "users", userDocId), {
+        ...data,
+        displayName: `${data.firstName} ${data.lastName}`,
+      });
+    };
+    modifyUser();
+  };
+
+  // getting user data
+  const userUid = auth.currentUser?.uid;
+  const q = query(usersRef, where("uId", "==", userUid));
+  useEffect(() => {
+    const getUserInfo = async () => {
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach((doc) => {
+        setUserDocId((old) => doc.id);
+        console.log(typeof doc.data());
+        console.log(doc.data());
+        setCurrentUser((current) => ({ ...doc.data() }));
+        console.log(currentUser);
+      });
+      console.log(currentUser);
+      reset({
+        firstName: currentUser.firstName,
+        lastName: currentUser.lastName,
+        phone: currentUser.phone,
+        address: currentUser.address,
+        governorate: currentUser.governorate,
+        email: currentUser.email,
+      });
+    };
+    getUserInfo();
+  }, [userDocId]);
 
   return (
     <>
@@ -27,9 +82,9 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
           <div className="row">
             <div className="col-12 col-md-6 pb-3">
               <div className="form-text mb-2 ">الاسم الأول</div>
-
               <input
                 id="firstName"
+                defaultValue={currentUser.firstName}
                 type="text"
                 className="form-control"
                 placeholder="الاسم الأول"
@@ -46,6 +101,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
               <div className="form-text mb-2">الاسم الأخير</div>
               <input
                 id="lastName"
+                defaultValue={currentUser.lastName}
                 type="text"
                 className="form-control"
                 placeholder="الاسم الأخير"
@@ -64,6 +120,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
               <div className="form-text mb-2"> البريد الالكتروني</div>
 
               <input
+                defaultValue={currentUser.email}
                 id="email"
                 type="text"
                 className="form-control"
@@ -89,6 +146,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
               <div className="form-text mb-2">رقم الهاتف</div>
               <input
                 id="phone"
+                defaultValue={currentUser.phone}
                 type="text"
                 className="form-control"
                 placeholder="  رقم الهاتف "
@@ -113,6 +171,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
               <div className="form-text mb-2">المحافظة</div>
               {/* <Select options={governorates} /> */}
               <Controller
+                defaultValue={currentUser.governorate}
                 name="governorate"
                 rules={{ required: true }}
                 control={control}
@@ -126,23 +185,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
                 </div>
               ) : null}
             </div>
-            <div className="col-12 col-md-6">
-              <div className="form-text mb-2">المدينة</div>
-              <input
-                type="text"
-                className="form-control"
-                id="city"
-                aria-describedby="cityHelp"
-                placeholder="المدينة"
-                {...register("city", { required: true })}
-              />
-              {errors.city?.type === "required" ? (
-                <div className="form-text  text-danger">
-                  برجاء ادخال المدينة{" "}
-                </div>
-              ) : null}
-            </div>
-            <div className="col-12 col-md-6 pt-3">
+            <div className="col-12 col-md-6 ">
               <div className="form-text mb-2">العنوان</div>
               <input
                 type="text"
