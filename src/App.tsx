@@ -15,12 +15,13 @@ import { SellerProfileAccount } from "./pages/sellerProfile/sellerProfileAccount
 import { UserProfileAccount } from "./pages/userProfile/userProfileAccount/UserProfileAccount";
 import { UserProfileAddress } from "./pages/userProfile/userProfileAddress/UserProfileAddress";
 import { UserProfileOrders } from "./pages/userProfile/userProfileOrders/UserProfileOrders";
+
 import StorePage from "./pages/StorePage/StorePage";
 import ProductDetailsPage from "./pages/ProductDetailsPage/ProductDetailsPage";
 import ProductDetailsDesc from "./pages/ProductDetailsPage/ProductDetailsDesc";
 import ProductDetailsReviews from "./pages/ProductDetailsPage/ProductDetailsReviews";
 import HomePage from "./pages/HomePage/HomePage";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/Footer/Footer";
 import ContactUs from "./pages/ContactUsPage/ContactUs/ContactUs";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import Register from "./pages/RegisterPage/RegisterSeller/RegisterSeller";
