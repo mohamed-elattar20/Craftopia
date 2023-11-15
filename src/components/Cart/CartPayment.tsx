@@ -2,12 +2,42 @@ import Visa from '../../assets/images/Cart Payment/Visa.png'
 import MasterCard from '../../assets/images/Cart Payment/MasterCard.png'
 import React, { useState } from 'react'
 import CartPaymentDetails from './CartPaymentDetails';
+import { useContext } from 'react';
+import { UserContext } from '../../Contexts/UserContext';
+import { ordersRef } from '../../firebase/firebase.config';
+import { addDoc, Timestamp } from 'firebase/firestore';
 
 interface CartPageProps {
     nextPage: (value: number) => void;
 }
 
+
+
 const CartPayment = ({ nextPage }: CartPageProps) => {
+
+    const { authUser } = useContext(UserContext);
+
+    const submitOrder = () => {
+        if (authUser) {
+            addDoc(ordersRef, {
+                clientId: "",
+                clientName: "",
+                governorate: {
+                    label: "",
+                    value: ""
+                },
+                orderAt: Timestamp,
+                price: "",
+                products: [
+                    {
+                        productID: "quantity"
+                    }
+                ],
+                shippingPrice: "",
+                totalPrice: ""
+            })
+        }
+    }
 
     let [bankCard, setBankCard] = useState(false);
 
@@ -51,17 +81,10 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
             </div>
             {bankCard && <CartPaymentDetails />}
             <div className="mx-auto text-center">
-            <button type="submit" className="btn btn-primary mt-5">
-              تقدم إلى الدفع
-            </button>
-            <button
-              className="btn btn-danger mt-5 me-3"
-              type="submit"
-              onClick={() => nextPage(1)}
-            >
-              رجوع
-            </button>
-          </div>
+                <button type="submit" className="btn btn-primary mt-5">تقدم إلى الدفع</button>
+                <button className="btn btn-danger mt-5 me-3" type="submit"
+                    onClick={() => nextPage(1)}>رجوع</button>
+            </div>
         </div>
 
     )

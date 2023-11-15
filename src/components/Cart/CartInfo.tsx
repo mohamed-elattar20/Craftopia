@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import egyptGovernoratesData from "../../pages/RegisterPage/RegisterSeller/governorates.json";
+import egyptGovernoratesData from "../../pages/RegisterPage/RegisterBuyer/governorates.json";
 import Select from "react-select";
 import "react-phone-number-input/style.css";
 
@@ -160,14 +160,14 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
             </div>
           </div>
           <div className="mx-auto text-center">
-            <button type="submit" className="btn btn-primary mt-5"
-              onClick={() => nextPage(2)}>
+            <button type="submit" className="btn btn-primary mt-5">
               تقدم إلى الدفع
             </button>
             <button
               className="btn btn-danger mt-5 me-3"
               type="submit"
-              onClick={() => nextPage(0)}>
+              onClick={() => nextPage(0)}
+            >
               رجوع
             </button>
           </div>
