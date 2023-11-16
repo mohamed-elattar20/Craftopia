@@ -7,25 +7,25 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as heartOutline } from "@fortawesome/free-regular-svg-icons";
 
 export const WishListIcon = ({ data }: DocumentData) => {
-  const { authUser, usersCollection } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [isInWishList, setIsInWishList] = useState(false);
 
   const toggleWishlist = (product: any) => {
-    if (usersCollection && authUser) {
-      const userRef = doc(firestore, "users", usersCollection.docs[0].id);
-      if (authUser[0].wishList[product.productId]) {
-        let updatedWishList = authUser[0].wishList;
+    if (currentUser) {
+      const userRef = doc(firestore, "users", currentUser.uId);
+      if (currentUser.wishList[product.productId]) {
+        let updatedWishList = currentUser.wishList;
         delete updatedWishList[product.productId];
         updateDoc(userRef, {
-          ...authUser[0],
+          ...currentUser,
           wishList: { ...updatedWishList },
         });
         console.log("product removed");
       } else {
-        if (authUser) {
+        if (currentUser) {
           updateDoc(userRef, {
-            ...authUser[0],
-            wishList: { ...authUser[0].wishList, [product.productId]: product },
+            ...currentUser,
+            wishList: { ...currentUser.wishList, [product.productId]: product },
           });
           console.log("product added");
         }
@@ -35,12 +35,11 @@ export const WishListIcon = ({ data }: DocumentData) => {
   };
 
   useEffect(() => {
-    if (authUser) {
-      if (authUser[0].wishList[data?.productId]) setIsInWishList(true);
-    } else {
+    if (currentUser?.wishList[data?.productId]) setIsInWishList(true);
+    else {
       setIsInWishList(false);
     }
-  }, [authUser, data]);
+  }, [currentUser, data]);
 
   return (
     <>
