@@ -11,6 +11,7 @@ import {
 } from "firebase/firestore";
 import { productsCollRef } from "../../firebase/firebase";
 import ProductCard from "../../components/ProductCard/ProductCard";
+import { SortComponent } from "../../components/SortComponent/SortComponent";
 // Firebase
 const SearchPage = () => {
   const [products, setProducts] = useState<any>([]);
@@ -44,10 +45,11 @@ const SearchPage = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container mt-5">
+        <SortComponent products={products} setProducts={setProducts} />
         <div className="row my-5 g-3">
           {products.map((prod: any) => (
-            <div key={prod.sellerId} className="col-6 col-md-6 col-lg-3">
+            <div key={prod.productId} className="col-6 col-md-6 col-lg-3">
               <ProductCard data={prod} />
             </div>
           ))}

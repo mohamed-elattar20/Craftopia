@@ -1,14 +1,38 @@
 import { useForm } from "react-hook-form";
+import { useStripe } from '@stripe/react-stripe-js';
 import './Cart.css'
+import { db, ordersRef } from "../../firebase/firebase.config";
+import { addDoc, collection, getDocs, Timestamp, updateDoc } from "firebase/firestore";
+import React, { useContext } from "react";
+import { UserContext } from "../../Contexts/UserContext";
+import { submitOrder } from "../../Hooks/StripeHook/useStripe";
 
 const CartPaymentDetails = () => {
 
-    const { register, handleSubmit, formState: { errors } } = useForm(); 
-    const onSubmit = (data: {}) => console.log(data);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { authUser, userRef } = useContext(UserContext);
+    let total = 0;
+    let bankCard = false;
+
+
+    const shippingPrice = 60;
+    if (authUser) {
+        const cartKeys = Object.keys(authUser[0]?.cart);
+        cartKeys.forEach((key, index) => {
+            total +=
+                authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
+        });
+    }
+    // handleSubmit(() => submitOrder)
+    const ayhaha = () => {
+        if(authUser){
+            submitOrder(authUser, ordersRef, total, shippingPrice);
+        }
+    }
 
     return (
         <div className="container pt-5">
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <form onSubmit={handleSubmit(ayhaha)} noValidate>
                 <div className="row g-4">
                     <div className="col-12 col-md-6 pb-3">
                         <h6 className="d-flex justify-content-between p-1">
@@ -75,6 +99,7 @@ const CartPaymentDetails = () => {
                         }
                     </div>
                 </div>
+                <button type="submit" className="btn btn-primary mt-5" onClick={() => ayhaha()}>اتمام عملية الدفع</button>
             </form>
         </div>
     )

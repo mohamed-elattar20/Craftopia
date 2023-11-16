@@ -24,8 +24,8 @@ import {
   useCollection,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
-import { auth, usersCollRef } from "../../../firebase/firebase";
-import { addDoc } from "firebase/firestore";
+import { auth, firestore, usersCollRef } from "../../../firebase/firebase";
+import { addDoc, doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 function RegisterBuyer() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
@@ -60,7 +60,7 @@ function RegisterBuyer() {
         //   displayName: `${data.firstName} ${data.lastName}`,
         // });
         //
-        addDoc(usersCollRef, {
+        setDoc(doc(firestore, "users", res.user.uid), {
           ...data,
           uId: res.user.uid,
           displayName: `${data.firstName} ${data.lastName}`,

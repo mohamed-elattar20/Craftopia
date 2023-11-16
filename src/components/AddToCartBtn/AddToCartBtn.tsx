@@ -17,6 +17,7 @@ import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import { firestore, usersCollRef } from "../../firebase/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { useNavigate } from "react-router-dom";
 
 type AddToCartBtnProps = {
   product?: DocumentData;
@@ -35,13 +36,6 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
   const userRef = userId && doc(firestore, "users", userId);
 
   const addToCartFunc = (product: any) => {
-    // ************************************************************************************************
-    // ************************************************************************************************
-    // *******************
-    // console.log(typeof productsMap);
-    //  *****************************************
-    // console.log(typeof currentUser?.docs[0].data().cart);
-
     let userCart = currentUser?.docs[0].data().cart;
     if (userRef && !userCart[product.productId]) {
       updateDoc(userRef, {
@@ -79,11 +73,11 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
     //   });
     // }
   };
-
+  const navigate = useNavigate();
   return (
     <>
       <button
-        onClick={() => addToCartFunc(product)}
+        onClick={() => (myUser ? addToCartFunc(product) : navigate(`/login`))}
         className="btn btn-primary "
       >
         أضف الى السلة

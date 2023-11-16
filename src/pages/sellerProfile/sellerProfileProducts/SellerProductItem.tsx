@@ -8,12 +8,11 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 type sellerProductProps = {
   productItem: ProductType;
-  id: string;
 };
 
-export const SellerProductItem = ({ productItem, id }: sellerProductProps) => {
+export const SellerProductItem = ({ productItem }: sellerProductProps) => {
   const deleteProduct = async () => {
-    await deleteDoc(doc(db, "products", id));
+    await deleteDoc(doc(db, "products", productItem.productId));
     productItem.productImages?.map((obj) => {
       let imgRef = ref(storage, `products images/${obj.imgId}`);
       deleteObject(imgRef)
@@ -46,7 +45,7 @@ export const SellerProductItem = ({ productItem, id }: sellerProductProps) => {
         </div>
       </td>
       <td className="col">
-        <SellerProductModal productId={id} productItem={productItem} />
+        <SellerProductModal productItem={productItem} />
       </td>
       <td className="col text-danger text-center">
         <FontAwesomeIcon

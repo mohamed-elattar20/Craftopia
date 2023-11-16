@@ -24,8 +24,8 @@ import {
   useCollection,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
-import { auth, usersCollRef } from "../../../firebase/firebase";
-import { addDoc } from "firebase/firestore";
+import { auth, firestore, usersCollRef } from "../../../firebase/firebase";
+import { addDoc, doc, setDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 function RegisterSeller() {
   const governorates = egyptGovernoratesData.egyptGovernorates;
@@ -52,7 +52,6 @@ function RegisterSeller() {
   const navigate = useNavigate();
   //
 
-  //
   const onSubmit = (data: any) => {
     console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
@@ -60,6 +59,7 @@ function RegisterSeller() {
         res.user.getIdTokenResult().then((response) => {
           localStorage.setItem("token", response.token);
         });
+
         // console.log(res);
         // console.log(`added to auth users`, res);
         // setName(res?.user?.displayName);
@@ -68,10 +68,11 @@ function RegisterSeller() {
         //   displayName: `${data.firstName} ${data.lastName}`,
         // });
         // *****************
-        addDoc(usersCollRef, {
+        setDoc(doc(firestore, "users", res.user.uid), {
           ...data,
           uId: res.user.uid,
-          displayName: `${data.firstName} ${data.lastName}`,
+          displayName: data.brand,
+          fullName: `${data.firstName} ${data.lastName}`,
           Rule: "seller",
           orders: [],
           cart: [],
@@ -88,6 +89,7 @@ function RegisterSeller() {
       .catch((err) => {
         console.log(err?.message);
       });
+    console.log(data);
   };
 
   // Authentication *******************
