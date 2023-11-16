@@ -8,8 +8,8 @@ import { faPhone } from "@fortawesome/free-solid-svg-icons";
 
 export const Footer = () => {
   return (
-    <footer className="container mx-auto py-5">
-      <div className="row text-center text-md-end g-5">
+    <footer className="container mx-auto py-5 mt-5">
+      <div className="row text-center text-md-end ">
         <ul className="list-unstyled fw-medium px-0 col-12 col-md-8 col-xl-5">
           <li>
             <h5 className="fw-semibold mb-4">كرافتوبيا</h5>

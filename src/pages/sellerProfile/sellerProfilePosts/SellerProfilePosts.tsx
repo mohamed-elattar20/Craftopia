@@ -1,11 +1,11 @@
+import { query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { firestore, postsCollRef } from "../../../firebase/firebase";
+import { postsCollRef } from "../../../firebase/firebase";
 import { useContext } from "react";
 import { UserContext } from "../../../Contexts/UserContext";
-import { query, where } from "firebase/firestore";
 import Post from "../../../components/community/Post";
 
-export const UserProfilePosts = () => {
+const SellerProfilePosts = () => {
   const { myUser, authUser } = useContext(UserContext);
   let userPosts: any;
   if (authUser && authUser[0]) {
@@ -15,12 +15,7 @@ export const UserProfilePosts = () => {
     );
   }
   const [posts, loading, error] = useCollectionData(userPosts);
-
-  return (
-    <>
-      <div>
-        {posts && posts.map((post) => <Post post={post} key={post.postId} />)}
-      </div>
-    </>
-  );
+  return <>{posts && posts.map((post) => <Post post={post} />)}</>;
 };
+
+export default SellerProfilePosts;

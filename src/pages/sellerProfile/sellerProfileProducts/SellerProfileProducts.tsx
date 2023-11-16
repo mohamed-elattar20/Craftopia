@@ -1,42 +1,23 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { productsColRef } from "../../../firebase/firebase.config";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { Timestamp, addDoc, query, where } from "firebase/firestore";
-import { ChangeEvent, useRef, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Timestamp, doc, query, setDoc, where } from "firebase/firestore";
+import { ChangeEvent, useContext, useState } from "react";
 import { storage } from "../../../firebase/firebase.config";
-import { getDownloadURL, ref, deleteObject } from "firebase/storage";
+import { getDownloadURL, ref } from "firebase/storage";
 import { v4 } from "uuid";
 import { SellerProductItem } from "./SellerProductItem";
-import { ProductType } from "../../../Types/ProductType";
+import { ProductType, ImageObj } from "../../../Types/ProductType";
 import Select from "react-select";
-import { auth } from "../../../firebase/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { firestore } from "../../../firebase/firebase";
 import "./SellerProfileProducts.css";
-
-type Inputs = {
-  productTitle: string;
-  productPrice: string;
-  productDescription: string;
-  brand: string;
-  discount: string;
-  productCategory: {
-    value: string;
-    label: string;
-  };
-  productImage: any;
-};
-
-type ImageObj = {
-  imgId: string;
-  imgUrl: string;
-};
+import { UserContext } from "../../../Contexts/UserContext";
 
 export const SellerProfileProducts = () => {
   const [productImages, setProductImages] = useState<ImageObj[]>([]);
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  const [user] = useAuthState(auth);
+  const { currentUser } = useContext(UserContext);
 
   const {
     register,
@@ -45,52 +26,59 @@ export const SellerProfileProducts = () => {
     control,
     reset,
     setValue,
-  } = useForm<Inputs>();
+  } = useForm<ProductType>();
 
-  // const chooseImage = () => {
-  //   if (fileInputRef.current !== null) {
-  //     fileInputRef.current.click();
-  //   }
-  // };
   const [uploadFile, uploading, , errorUploading] = useUploadFile();
-  const imgId = v4();
-  const productImageRef = ref(storage, `products images/${imgId}`);
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e?.target.files);
-
     if (e?.target.files) {
-      let productImage = e?.target.files[0];
-      await uploadFile(productImageRef, productImage, {
-        contentType: productImage.type,
-      });
-      const imgUrl = await getDownloadURL(productImageRef);
-      setProductImages((prev) => [...prev, { imgId, imgUrl }]);
+      let imgFile = e?.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(imgFile);
+      reader.onload = (e) => {
+        const imgUrl = e.target?.result;
+        const imgId = v4();
+        setProductImages((prev) => [...prev, { imgId, imgUrl, imgFile }]);
+      };
     }
   };
   const deleteImage = (id: string) => {
-    deleteObject(ref(storage, `products images/${id}`));
-    console.log("img deleted");
     setProductImages((prev) => prev.filter((img) => img.imgId !== id));
     if (productImages.length === 1) {
       setValue("productImage", null);
     }
   };
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<ProductType> = async (data) => {
+    for (let i = 0; i < productImages.length; i++) {
+      const img = productImages[i];
+      const productImageRef = ref(storage, `products images/${img.imgId}`);
+
+      if (img.imgFile) {
+        await uploadFile(productImageRef, img.imgFile, {
+          contentType: img.imgFile?.type,
+        });
+        const imgUrl = await getDownloadURL(productImageRef);
+        img.imgUrl = imgUrl;
+        delete img.imgFile;
+      }
+    }
+
     const productId = v4();
-    addDoc(productsColRef, {
+    console.log(productImages);
+
+    setDoc(doc(firestore, "products", productId), {
       productTitle: data.productTitle,
       productPrice: data.productPrice,
-      productDescription: data.productPrice,
+      productDescription: data.productDescription,
       productCategory: {
-        value: data.productCategory.value,
-        label: data.productCategory.label,
+        value: data.productCategory?.value,
+        label: data.productCategory?.label,
       },
       discount: +data.discount || 0,
       productImages,
-      sellerId: user?.uid,
-      brand: "",
+      sellerId: currentUser?.uId,
+      brand: currentUser?.displayName,
       productId,
       generatedAt: Timestamp.now(),
       rating: "",
@@ -99,20 +87,21 @@ export const SellerProfileProducts = () => {
     console.log(data);
 
     reset();
-    reset({ productCategory: {} });
+    reset({ productCategory: null });
     setProductImages([]);
   };
 
   const handleClose = () => {
     reset();
-    reset({ productCategory: undefined });
+    reset({ productCategory: null });
     setProductImages([]);
   };
 
   const sellerProductsColRef =
-    user && query(productsColRef, where("sellerId", "==", user?.uid));
+    currentUser &&
+    query(productsColRef, where("sellerId", "==", currentUser?.uId));
 
-  const [products, loading, error] = useCollection(sellerProductsColRef);
+  const [products, loading, error] = useCollectionData(sellerProductsColRef);
 
   console.log(products);
 
@@ -122,7 +111,7 @@ export const SellerProfileProducts = () => {
     { value: "خرز", label: "خرز" },
     { value: "خيوط", label: "خيوط" },
     { value: "تصميم", label: "تصميم" },
-    { value: "ملابس", label: "ملابس" },
+    { value: "أزياء", label: "أزياء" },
   ];
 
   return (
@@ -140,7 +129,7 @@ export const SellerProfileProducts = () => {
 
       {loading ? (
         <p>loading ...</p>
-      ) : products?.docs && products?.docs.length > 0 ? (
+      ) : products && products.length > 0 ? (
         <table className="tabel w-100 ">
           <thead>
             <tr className="row border-bottom py-2 align-items-center">
@@ -153,11 +142,10 @@ export const SellerProfileProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {products?.docs.map((doc) => (
+            {products.map((doc) => (
               <SellerProductItem
                 key={doc.id}
-                productItem={doc.data() as ProductType}
-                id={doc.id}
+                productItem={doc as ProductType}
               />
             ))}
           </tbody>
@@ -207,16 +195,16 @@ export const SellerProfileProducts = () => {
                     </p>
                   )}
                 </div>
-
                 <div>
                   <label htmlFor="productCategory" className="form-label">
                     اختر تصنيف المنتج
                   </label>
                   <Controller
                     key="add"
-                    name="productCategory"
                     control={control}
-                    rules={{ required: true }}
+                    {...register("productCategory", {
+                      required: "برجاء اختيار تصنيف المنتج",
+                    })}
                     render={({ field }) => (
                       <Select
                         {...field}
@@ -226,10 +214,11 @@ export const SellerProfileProducts = () => {
                     )}
                   />
                   {errors.productCategory && (
-                    <p className="text-danger ">برجاء اختيار تصنيف المنتج</p>
+                    <p className="text-danger ">
+                      {errors.productCategory.message}
+                    </p>
                   )}
                 </div>
-
                 <div>
                   <label htmlFor="productPrice" className="form-label">
                     السعر
@@ -288,8 +277,12 @@ export const SellerProfileProducts = () => {
                 </div>
                 <div>
                   <label
-                    className="btn btn-outline-secondary"
-                    htmlFor={productImages.length < 4 ? "productImage" : ""}
+                    className={
+                      productImages.length < 2
+                        ? "btn btn-outline-secondary"
+                        : "btn-disabled"
+                    }
+                    htmlFor={productImages.length < 2 ? "productImage" : ""}
                   >
                     إضافة صورة
                   </label>
@@ -302,11 +295,9 @@ export const SellerProfileProducts = () => {
                       required: true,
                       validate: {
                         hasValue: (file) => file !== null,
-                        // hasValue: (file) => file.length > 0,
                       },
                       onChange: (event) => handleUpload(event),
                     })}
-                    // onChange={(event) => handleUpload(event)}
                   />
                   {errors.productImage && (
                     <p className=" text-danger">برجاء إدخال صورة المنتج</p>

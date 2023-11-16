@@ -10,7 +10,7 @@ interface CartPurchasesProps {
 export const CartPurchases = ({ nextPage }: CartPurchasesProps) => {
   return (
     <div className="container">
-      <div className="row align-items-center">
+      <div className="row mt-5">
         <div className="col-12  col-lg-9 ">
           <div>
             <ProductsTable />
