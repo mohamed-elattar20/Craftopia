@@ -3,11 +3,14 @@ import { DocumentData, deleteDoc, doc } from "firebase/firestore";
 import avatar from "../../assets/images/User Profile/Avatar.png";
 import { CommentType } from "./Post";
 import { firestore } from "../../firebase/firebase";
+import { useContext } from "react";
+import { UserContext } from "../../Contexts/UserContext";
 
 type Comment = {
   comment: CommentType;
 };
 const Comment = ({ comment }: Comment) => {
+  const { currentUser } = useContext(UserContext);
   // ******************************************************
   const deleteComment = async (commentId: string) => {
     const res = await deleteDoc(doc(firestore, "comments", comment.commentId));
@@ -32,12 +35,14 @@ const Comment = ({ comment }: Comment) => {
                 <p>{comment.commentBody}</p>
               </div>
               <div>
-                <button
-                  onClick={() => deleteComment(comment.commentId)}
-                  className="btn btn-primary"
-                >
-                  X
-                </button>
+                {comment.userId === currentUser?.uId && (
+                  <button
+                    onClick={() => deleteComment(comment.commentId)}
+                    className="btn btn-primary"
+                  >
+                    X
+                  </button>
+                )}
               </div>
             </div>
           </div>

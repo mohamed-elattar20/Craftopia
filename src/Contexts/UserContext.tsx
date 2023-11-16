@@ -42,8 +42,8 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
   const [usersCollection] = useCollection(listOfUsers);
-  const [currentUser] = useCollection(listOfUsers);
-  const userId = currentUser?.docs[0].id;
+  const [currentUserr] = useCollection(listOfUsers);
+  const userId = currentUserr?.docs[0].id;
   const userRef = userId && doc(firestore, "users", userId);
   console.log(userRef);
 
@@ -54,6 +54,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
       } else {
         setCurrentUser(null);
       }
+      console.log(currentUser);
     });
     return () => {
       unSubscribe();
@@ -63,8 +64,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
   return (
     <>
       <UserContext.Provider
-        value={{ myUser, authUser, usersCollection, currentUser }}
-        value={{ myUser, authUser, usersCollection, userRef }}
+        value={{ myUser, authUser, usersCollection, currentUser, userRef }}
       >
         {children}
       </UserContext.Provider>
