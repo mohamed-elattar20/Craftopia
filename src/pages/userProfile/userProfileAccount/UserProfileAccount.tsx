@@ -2,7 +2,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import "./userProfileAccount.css";
 import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
 import { auth, db, usersRef } from "../../../firebase/firebase.config";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import egyptGovernoratesData from "../../RegisterPage/RegisterSeller/governorates.json";
 import {
   DocumentData,
@@ -14,6 +14,8 @@ import {
   where,
 } from "firebase/firestore";
 import Select from "react-select";
+import { UserContext } from "../../../Contexts/UserContext";
+import { firestore } from "../../../firebase/firebase";
 
 type Inputs = {
   firstName: string;
@@ -25,9 +27,9 @@ type Inputs = {
 
 export const UserProfileAccount = () => {
   const governoratesList = egyptGovernoratesData.egyptGovernorates;
-
-  const [currentUser, setCurrentUser] = useState<DocumentData>({});
-  const [userDocId, setUserDocId] = useState("");
+  const { currentUser } = useContext(UserContext);
+  // const [currentUser, setCurrentUser] = useState<DocumentData>({});
+  // const [userDocId, setUserDocId] = useState("");
   const {
     register,
     handleSubmit,
@@ -39,9 +41,11 @@ export const UserProfileAccount = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     const modifyUser = async () => {
-      await updateDoc(doc(db, "users", userDocId), {
+      await updateDoc(doc(firestore, "users", currentUser?.uId), {
+        ...currentUser,
         ...data,
         displayName: `${data.firstName} ${data.lastName}`,
+        fullName: `${data.firstName} ${data.lastName}`,
       });
     };
     modifyUser();
@@ -49,36 +53,43 @@ export const UserProfileAccount = () => {
   console.log(errors);
 
   // getting user data
-  const userUid = auth.currentUser?.uid;
-  const q = userUid && query(usersRef, where("uId", "==", userUid));
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      if (q) {
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setUserDocId((old) => doc.id);
-          console.log(typeof doc.data());
-          console.log(doc.data());
-          setCurrentUser((current) => ({ ...doc.data() }));
-          console.log(currentUser);
-        });
-      }
+    reset({
+      firstName: currentUser?.firstName,
+      lastName: currentUser?.lastName,
+      phone: currentUser?.phone,
+      address: currentUser?.address,
+      governorate: currentUser?.governorate,
+    });
 
-      reset({
-        firstName: currentUser.firstName,
-        lastName: currentUser.lastName,
-        phone: currentUser.phone,
-        address: currentUser.address,
-        governorate: currentUser.governorate,
-      });
-    };
-    getUserInfo();
-  }, []);
+    // const getUserInfo = async () => {
+    //   const userUid = auth.currentUser?.uid;
+    //   const q = userUid && query(usersRef, where("uId", "==", userUid));
+
+    //   if (q) {
+    //     const querySnapshot = await getDocs(q);
+    //     querySnapshot.forEach((doc) => {
+    //       setUserDocId((old) => doc.id);
+    //       console.log(typeof doc.data());
+    //       console.log(doc.data());
+    //       setCurrentUser((current) => ({ ...doc.data() }));
+    //       console.log(currentUser);
+    //     });
+    //   }
+    //   reset({
+    //     firstName: currentUser.firstName,
+    //     lastName: currentUser.lastName,
+    //     phone: currentUser.phone,
+    //     address: currentUser.address,
+    //     governorate: currentUser.governorate,
+    //   });
+    // };
+    // getUserInfo();
+  }, [currentUser]);
 
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
-      <UserProfileTaps />
       <h2 className="text-center my-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -92,7 +103,7 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="firstName"
-            defaultValue={currentUser.firstName}
+            // defaultValue={currentUser?.firstName}
             {...register("firstName", { required: true })}
           />
           {errors.firstName && (
@@ -107,7 +118,7 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="lastName"
-            defaultValue={currentUser.lastName}
+            // defaultValue={currentUser?.lastName}
             {...register("lastName", { required: true })}
           />
           {errors.lastName && (
@@ -122,7 +133,7 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="phoneNumber"
-            defaultValue={currentUser.phone}
+            // defaultValue={currentUser?.phone}
             {...register("phone", {
               required: "يجب ادخال رقم الهاتف",
               pattern: {
@@ -143,7 +154,7 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control "
             id="address"
-            defaultValue={currentUser.address}
+            // defaultValue={currentUser?.address}
             {...register("address", { required: true })}
           ></input>
           {errors.address && <p className=" text-danger">يجب ادخال العنوان</p>}
@@ -152,7 +163,7 @@ export const UserProfileAccount = () => {
           <div className="form-text ">المحافظة</div>
           {/* <Select options={governorates} /> */}
           <Controller
-            defaultValue={currentUser.governorate}
+            // defaultValue={currentUser?.governorate}
             name="governorate"
             rules={{ required: true }}
             control={control}

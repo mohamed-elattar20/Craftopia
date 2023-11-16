@@ -15,6 +15,7 @@ const AboutUs = () => {
   let aboutUsCards = aboutUsData.map((cardData) => {
     return (
       <AboutUsCard
+        key={cardData.title}
         title={cardData.title}
         imgSrc={cardData.imgSrc}
       ></AboutUsCard>

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import test from "../../assets/images/default.jpg";
+import invest from "../../assets/images/Invest.jpg";
 import { BookmarkCheck } from "react-bootstrap-icons";
 import { HouseFill } from "react-bootstrap-icons";
 import { StopwatchFill } from "react-bootstrap-icons";
@@ -12,7 +12,7 @@ const Invest = () => {
       <div className="row py-4">
         <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
           <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-3">استثمر مواهبك!</h2>
+          <h2 className="mb-4">استثمر مواهبك!</h2>
           <div className="d-flex align-items-center mb-4">
             <HouseFill size={25} />
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
@@ -31,7 +31,7 @@ const Invest = () => {
             </p>
           </div>
 
-          <Link
+          {/* <Link
             to={
               myUser && authUser && authUser[0].Rule == "seller"
                 ? `/seller/profile`
@@ -40,11 +40,11 @@ const Invest = () => {
             className="btn btn-primary fw-bold px-4 py-2 mb-4 mb-md-0"
           >
             ابدأ البيع
-          </Link>
+          </Link> */}
         </div>
         <div className="col-md-6 mb-3 mb-md-0">
           <div className="h-100">
-            <img src={test} alt="" className="h-100"></img>
+            <img src={invest} alt="" className="h-100"></img>
           </div>
         </div>
       </div>

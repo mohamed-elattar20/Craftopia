@@ -3,7 +3,11 @@ import logo from "../../assets/images/logo4-04.png";
 import avatar from "../../assets/images/User Profile/Avatar.png";
 // Fontawesome
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeart,
+  faCartPlus,
+  faArrowLeftLong,
+} from "@fortawesome/free-solid-svg-icons";
 // Routing
 import { Link, NavLink, useNavigate } from "react-router-dom";
 //  Firebase
@@ -15,7 +19,6 @@ import ProductCartSidebar from "../ProductCartSidebar/ProductCartSidebar";
 import ProductWishListSidebar from "../ProductWishListSidebar/ProductWishListSidebar";
 import "./Navbar.css";
 
-
 import ProductCard from "../ProductCard/ProductCard";
 
 function Navbar() {
@@ -23,11 +26,16 @@ function Navbar() {
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
 
+  const cartItemsCount = currentUser && Object.keys(currentUser?.cart).length;
+  const wishListItemsCount =
+    currentUser && Object.keys(currentUser?.wishList).length;
+
   // Search *********************************
   const [searchInput, setSearchInput] = useState<string>("");
   const searchFunc = () => {
     navigate(`search/${searchInput}`);
   };
+  console.log(cartItemsCount);
 
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
@@ -55,7 +63,7 @@ function Navbar() {
         </button>
 
         <div className="collapse navbar-collapse" id="navbarNav">
-          <form className="d-flex flex-grow-1" role="search">
+          <div className="d-flex flex-grow-1" role="search">
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
@@ -71,7 +79,7 @@ function Navbar() {
             >
               بحث
             </button>
-          </form>
+          </div>
           <ul className="navbar-nav flex-grow-1 justify-content-between align-items-center">
             <li className="nav-item">
               <NavLink className="nav-link" aria-current="page" to={`/`}>
@@ -102,12 +110,14 @@ function Navbar() {
                           currentUser.avatarURL ? currentUser.avatarURL : avatar
                         }
                         alt=""
-                        style={{ width: "40px", borderRadius: "50%" }}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                        }}
                       />
                     </div>
                     <h4 className="fs-6 m-0">مرحبا {currentUser.firstName}</h4>
-
-          
                   </div>
                 </li>
                 <ul className="navbar-dropdown-menu dropdown-menu">
@@ -158,23 +168,46 @@ function Navbar() {
                 {/* offcanvas controls */}
                 <button
                   title="fav"
-                  className="btn fs-5"
+                  className="btn fs-5 position-relative"
                   type="button"
                   data-bs-toggle="offcanvas"
                   data-bs-target="#fav"
                   aria-controls="fav"
                 >
+                  {wishListItemsCount && wishListItemsCount > 0 ? (
+                    <span
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
+                      style={{ fontSize: ".7rem" }}
+                    >
+                      {wishListItemsCount}
+                      <span className="visually-hidden">unread messages</span>
+                    </span>
+                  ) : (
+                    <span></span>
+                  )}
+
                   <FontAwesomeIcon icon={faHeart} className="text-primary" />
                 </button>
                 <button
                   title="cart"
-                  className="btn fs-5"
+                  className="btn fs-5 position-relative"
                   type="button"
                   data-bs-toggle="offcanvas"
                   data-bs-target="#cart"
                   aria-controls="cart"
                 >
                   <FontAwesomeIcon icon={faCartPlus} className="text-primary" />
+                  {cartItemsCount && cartItemsCount > 0 ? (
+                    <span
+                      style={{ fontSize: ".7rem" }}
+                      className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
+                    >
+                      {cartItemsCount}
+                      <span className="visually-hidden">unread messages</span>
+                    </span>
+                  ) : (
+                    <span></span>
+                  )}
                 </button>
               </div>
             </li>
@@ -201,6 +234,17 @@ function Navbar() {
           ></button>
         </div>
         <div className="offcanvas-body">
+          <div className="d-flex align-items-center">
+            {" "}
+            <Link to={"/cart"} className="text-decoration-underline">
+              اذهب إلى العربة
+            </Link>
+            <FontAwesomeIcon
+              icon={faArrowLeftLong}
+              className="text-primary me-2"
+            />
+          </div>
+
           {currentUser?.cart &&
             Object.values(currentUser.cart)?.map((prod: any) => (
               <ProductCartSidebar key={prod.productId} data={prod} />

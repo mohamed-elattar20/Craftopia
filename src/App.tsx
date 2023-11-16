@@ -43,7 +43,6 @@ import UserProfileWishList from "./pages/userProfile/userProfileWishList/UserPro
 import SellerProfilePosts from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
 import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 
-
 function App() {
   const { myUser, authUser } = useContext(UserContext);
 
@@ -92,11 +91,8 @@ function App() {
         {/* *************************************************************************** */}
         {/* </Route> */}
         {/* Protected Routes Profile ********************/}
-        <Route path="/product-details/:id" element={<ProductDetailsPage />}>
-          <Route path="" element={<ProductDetailsDesc />} />
-          <Route path="description" element={<ProductDetailsDesc />} />
-          <Route path="reviews" element={<ProductDetailsReviews />} />
-        </Route>{" "}
+        <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+
         <Route path="/community" element={<Forum />} />
       </Routes>
 

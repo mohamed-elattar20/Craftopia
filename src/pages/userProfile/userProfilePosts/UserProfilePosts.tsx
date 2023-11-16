@@ -15,11 +15,12 @@ export const UserProfilePosts = () => {
     );
   }
   const [posts, loading, error] = useCollectionData(userPosts);
-  console.log(posts && posts[0].postId);
 
   return (
     <>
-      <div>{posts && posts.map((post) => <Post post={post} />)}</div>
+      <div>
+        {posts && posts.map((post) => <Post post={post} key={post.postId} />)}
+      </div>
     </>
   );
 };
