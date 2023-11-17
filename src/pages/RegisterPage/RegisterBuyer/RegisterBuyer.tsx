@@ -46,8 +46,11 @@ function RegisterBuyer() {
   const navigate = useNavigate();
   //
   //
+  const [loadingSignup, setLoadingSignup] = useState<Boolean>(false);
+  const [registerFirebaseError, setRegisterFirebaseError] = useState<string>();
   const onSubmit = (data: any) => {
-    console.log(data);
+    setLoadingSignup(true);
+    // console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
         res.user.getIdTokenResult().then((response) => {
@@ -60,6 +63,7 @@ function RegisterBuyer() {
         //   displayName: `${data.firstName} ${data.lastName}`,
         // });
         //
+        setRegisterFirebaseError("");
         setDoc(doc(firestore, "users", res.user.uid), {
           ...data,
           uId: res.user.uid,
@@ -74,12 +78,14 @@ function RegisterBuyer() {
             // console.log(`user Added to fire Store`);
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
           });
+        setLoadingSignup(false);
         navigate(`/`);
       })
       .catch((err) => {
-        console.log(err?.message);
+        setRegisterFirebaseError(err.message);
+        // console.log(err?.message);
       });
   };
   // Authentication *******************
@@ -278,14 +284,31 @@ function RegisterBuyer() {
               ) : null}
             </div>
           </div>
-          <div>
-            <button type="submit" className="btn btn-primary mt-5">
-              تسجيل
-            </button>
-            <Link to={`/register`} className="btn btn-primary mt-5 me-2">
+          <div className="mt-4">
+            {loadingSignup ? (
+              <button className="btn btn-primary " type="button" disabled>
+                <span role="status">جاري التسجيل</span>
+                <span
+                  className="spinner-border spinner-border-sm ms-2"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-primary ">
+                تسجيل
+              </button>
+            )}
+            <Link to={`/register`} className="btn btn-primary  me-2">
               العوده
             </Link>
           </div>
+          {registerFirebaseError ? (
+            <p className="text-danger my-2">
+              عذرا لقد تم التسجيل بهذا البريد الالكتروني من قبل{" "}
+            </p>
+          ) : (
+            ""
+          )}
           <NavLink
             to={`/login`}
             className="text-primary d-block my-2 text-decoration-none"

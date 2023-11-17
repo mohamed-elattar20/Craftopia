@@ -123,8 +123,8 @@ const Form = () => {
             </small>
           </div>
         </div>
-        <div className="d-flex justify-content-end">
-          <button type="submit" className="btn btn-primary fw-bold fs-4">
+        <div className="d-flex justify-content-start">
+          <button type="submit" className="btn btn-primary fw-bold px-4 py-2 ">
             إرسال
           </button>
         </div>

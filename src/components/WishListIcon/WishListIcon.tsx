@@ -50,7 +50,7 @@ export const WishListIcon = ({ data }: DocumentData) => {
         className=" rounded-pill py-1 bg-black border-0 bg-opacity-50 text-light "
       >
         {isInWishList ? (
-          <FontAwesomeIcon icon={faHeart} />
+          <FontAwesomeIcon className="text-primary" icon={faHeart} />
         ) : (
           <FontAwesomeIcon icon={heartOutline} />
         )}

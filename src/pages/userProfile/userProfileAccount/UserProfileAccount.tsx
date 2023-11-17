@@ -16,7 +16,9 @@ import {
 import Select from "react-select";
 import { UserContext } from "../../../Contexts/UserContext";
 import { firestore } from "../../../firebase/firebase";
-
+// React Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 type Inputs = {
   firstName: string;
   lastName: string;
@@ -39,13 +41,18 @@ export const UserProfileAccount = () => {
     reset,
   } = useForm<Inputs>();
 
+  const [loading, setLoading] = useState<Boolean>(false);
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setLoading(true);
     const modifyUser = async () => {
       await updateDoc(doc(firestore, "users", currentUser?.uId), {
         ...currentUser,
         ...data,
         displayName: `${data.firstName} ${data.lastName}`,
         fullName: `${data.firstName} ${data.lastName}`,
+      }).then(() => {
+        notify();
+        setLoading(false);
       });
     };
     modifyUser();
@@ -88,8 +95,27 @@ export const UserProfileAccount = () => {
     // getUserInfo();
   }, [currentUser]);
 
+  const notify = () =>
+    toast.success("تم تعديل البيانات بنجاح", {
+      position: "top-left",
+      autoClose: 500,
+      hideProgressBar: true,
+      closeOnClick: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      pauseOnHover: false,
+      rtl: true,
+    });
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
+      <ToastContainer
+        autoClose={500}
+        closeOnClick
+        rtl={true}
+        theme="light"
+        hideProgressBar
+      />
       <h2 className="text-center my-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -176,9 +202,23 @@ export const UserProfileAccount = () => {
           ) : null}
         </div>
         <div className="">
-          <button className="btn btn-secondary text-white px-4" type="submit">
-            حفظ
-          </button>
+          {loading ? (
+            <button
+              className="btn btn-secondary text-light"
+              type="button"
+              disabled
+            >
+              <span role="status">جاري التحميل</span>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                aria-hidden="true"
+              ></span>
+            </button>
+          ) : (
+            <button className="btn btn-secondary text-white px-4" type="submit">
+              حفظ
+            </button>
+          )}
         </div>
       </form>
     </div>
