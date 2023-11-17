@@ -12,6 +12,7 @@ import ReactPaginate from "react-paginate";
 // CSS
 import "./StorePage.css";
 import Pagination from "../../components/Pagination/Pagination";
+import { Spinner } from "../../components/Spinner/Spinner";
 const StorePage = () => {
   // const [products, setProducts] = useState<Array<DocumentData>>([]);
   const [products, setProducts] = useState<any>([]);
@@ -23,10 +24,11 @@ const StorePage = () => {
     console.log(e);
     if (e.target.tagName === "BUTTON" && e.target.className.includes("cat")) {
       setCategory(e.target.innerText);
-      // setItemOffset(0);
+      setItemOffset(0);
     }
   };
   const [productss] = useCollectionData(productsCollRef);
+  const [loading, setLoading] = useState(true);
   // console.log(productss);
   // **************************************
 
@@ -34,9 +36,10 @@ const StorePage = () => {
 
   const [itemOffset, setItemOffset] = useState(0);
   const [pageCoun, setPageCount] = useState(0);
-  const itemsPerPage = 20;
+  const itemsPerPage = 5;
   useEffect(() => {
     // ***********************
+    setLoading(true);
     const q = query(
       productsColRef,
       category
@@ -44,12 +47,16 @@ const StorePage = () => {
         : where("productTitle", ">", "")
     );
     const getQuery = async () => {
-      const querySnapshot = await getDocs(q);
+      const querySnapshot = await getDocs(q)
+        .catch((er) => console.log(er))
+        .finally(() => setLoading(false));
+
       const queryProductsArray: Array<DocumentData> = [];
-      querySnapshot.forEach((doc) => {
-        console.log(doc);
-        queryProductsArray.push(doc.data());
-      });
+      querySnapshot &&
+        querySnapshot.forEach((doc) => {
+          console.log(doc);
+          queryProductsArray.push(doc.data());
+        });
       // console.log(queryProductsArray);
       if (productss && queryProductsArray.length === 0) {
         setFilterdProducts([...(productss as DocumentData[])]);
@@ -59,6 +66,7 @@ const StorePage = () => {
     };
     setItemOffset(0);
     getQuery();
+
     // ***********************
   }, [category, productss]);
 
@@ -135,41 +143,51 @@ const StorePage = () => {
         <div className="w-25">
           <SortComponent products={products} setProducts={setProducts} />
         </div>
-        <div className="row my-5 g-3 h-100">
-          {products &&
-            products?.map((prod: any) => (
-              <div
-                key={prod?.productId}
-                className="col-sm-12 col-md-6 col-lg-3"
-              >
-                <ProductCard data={prod} />
+        <div>
+          {loading ? (
+            <div className="d-flex justify-content-center mt-5">
+              <Spinner />
+            </div>
+          ) : (
+            <div>
+              {" "}
+              <div className="row my-5 g-3 h-100">
+                {products &&
+                  products?.map((prod: any) => (
+                    <div
+                      key={prod?.productId}
+                      className="col-sm-12 col-md-6 col-lg-3"
+                    >
+                      <ProductCard data={prod} />
+                    </div>
+                  ))}
               </div>
-            ))}
-        </div>
-      </div>
-      {/*  */}
-      <div className="container ">
-        <div className="row">
-          {/* <Pagination
+              <div className="container ">
+                <div className="row">
+                  {/* <Pagination
             filterdProducts={filterdProducts}
             setProducts={setProducts}
             itemOffset={itemOffset}
             setItemOffset={setItemOffset}
           /> */}
-          <ReactPaginate
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCoun}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-            containerClassName="pagination"
-            pageLinkClassName="page-num"
-            previousLinkClassName="page-num"
-            nextLinkClassName="page-num"
-            activeLinkClassName="active"
-          />
+                  <ReactPaginate
+                    breakLabel="..."
+                    nextLabel="next >"
+                    onPageChange={handlePageClick}
+                    pageRangeDisplayed={5}
+                    pageCount={pageCoun}
+                    previousLabel="< previous"
+                    renderOnZeroPageCount={null}
+                    containerClassName="pagination"
+                    pageLinkClassName="page-num"
+                    previousLinkClassName="page-num"
+                    nextLinkClassName="page-num"
+                    activeLinkClassName="active"
+                  />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>
