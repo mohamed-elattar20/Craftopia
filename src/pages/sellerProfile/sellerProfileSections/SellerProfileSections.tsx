@@ -58,7 +58,55 @@ export const SellerProfileSections = () => {
     <div className="user-profile-sections d-none d-md-block">
       <div className="border pt-4 rounded-4">
         <div className="d-flex flex-column align-items-center">
-          <div className="profile-img ">
+          <div className="profile-img mb-4">
+            {loading ? (
+              <p
+                className="d-flex align-items-center justify-content-center text-center rounded-circle"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  backgroundColor: "rgba(0, 0, 0, 0.2)",
+                }}
+              >
+                loading
+              </p>
+            ) : (
+              <div className="dropdown">
+                <img
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  role="button"
+                  src={currentUser?.avatarURL ? currentUser.avatarURL : avatar}
+                  alt=""
+                  style={{ width: "100px", height: "100px" }}
+                  className="rounded-circle"
+                />
+                <ul className="dropdown-menu">
+                  <li>
+                    <label htmlFor="profile-pic">تحديث</label>
+                    <input
+                      id="profile-pic"
+                      type="file"
+                      hidden
+                      onChange={(event) => uploadAvatar(event)}
+                    />
+                  </li>
+                  {!!currentUser?.avatarURL && (
+                    <li>
+                      <input
+                        type="button"
+                        className="dropdown-item"
+                        value={"إزلة"}
+                        onClick={() => deleteAvatar(currentUser?.uId)}
+                      />
+                    </li>
+                  )}
+                </ul>
+              </div>
+            )}
+          </div>
+
+          {/* <div className="profile-img ">
             <div>
               {loading ? (
                 <p
@@ -109,7 +157,7 @@ export const SellerProfileSections = () => {
                 </div>
               )}
             </div>
-          </div>
+          </div> */}
 
           {currentUser && (
             <h4 className="mt-2 fs-5 px-3">{currentUser.displayName} </h4>

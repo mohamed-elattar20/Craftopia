@@ -21,4 +21,5 @@ export type ProductType = {
   rating: "";
   sellerId: "";
   reviewes: [];
+  imgsNum: number;
 };
