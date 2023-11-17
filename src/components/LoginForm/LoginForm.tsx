@@ -23,7 +23,8 @@ import {
   useCollection,
   useCollectionData,
 } from "react-firebase-hooks/firestore";
-import { RefObject, useRef, useState } from "react";
+import { RefObject, useRef, useState, useContext } from "react";
+import { UserContext } from "../../Contexts/UserContext";
 // Types
 type Inputs = {
   email: string;
@@ -33,6 +34,7 @@ const LoginForm = () => {
   //  Auth
   const navigate = useNavigate();
   const [userLogin] = useAuthState(auth);
+  const { currentUser } = useContext(UserContext);
 
   // **************************************************
 
@@ -78,13 +80,12 @@ const LoginForm = () => {
     setLoadingSignin(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
-        res.user.getIdTokenResult().then((response) => {
-          localStorage.setItem("token", response.token);
-        });
         // console.log(`logged in`, res);
         setFirebaseError("");
         setLoadingSignin(false);
-        navigate(`/`);
+        if (currentUser) {
+          navigate(`/`);
+        }
       })
       .catch((err) => {
         setFirebaseError(err.message);
