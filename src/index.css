@@ -10,9 +10,14 @@ ul {
 img {
   display: block;
   width: 100%;
- 
 }
 .input-style:focus {
   box-shadow: none !important;
   outline: none;
+}
+.fixedBtn {
+  position: fixed;
+  bottom: 60px;
+  right: 60px;
+  z-index: 1;
 }

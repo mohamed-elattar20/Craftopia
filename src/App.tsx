@@ -43,13 +43,21 @@ import UserProfileWishList from "./pages/userProfile/userProfileWishList/UserPro
 import SellerProfilePosts from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
 import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 import { ProtectedRoutesNotSeller } from "./pages/ProtectedRoutes/ProtectedRoutesNotSeller";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
+  const scrollUp = () => {
+    window.scrollTo(0, 0);
+  };
   return (
     <div className="App">
+      <button onClick={scrollUp} className="btn btn-primary fixedBtn ">
+        <FontAwesomeIcon icon={faArrowUp} />
+      </button>
       <Navbar />
       <Routes>
         <Route element={<ProtectedRoutesNotSeller />}>
