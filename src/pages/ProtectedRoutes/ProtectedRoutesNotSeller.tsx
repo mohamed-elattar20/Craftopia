@@ -2,15 +2,15 @@ import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { UserContext } from "../../Contexts/UserContext";
 
-const ProtectedRoutesProfileSeller = () => {
+export const ProtectedRoutesNotSeller = () => {
   const { currentUser } = useContext(UserContext);
   const location = useLocation();
 
   if (currentUser && currentUser.Rule === "seller") {
-    return <Outlet />;
+    return (
+      <Navigate to={`/seller/profile`} state={{ from: location }} replace />
+    );
   } else {
-    return <Navigate to={`/`} state={{ from: location }} replace />;
+    return <Outlet />;
   }
 };
-
-export default ProtectedRoutesProfileSeller;

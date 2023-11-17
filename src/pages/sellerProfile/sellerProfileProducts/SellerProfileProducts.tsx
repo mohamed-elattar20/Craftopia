@@ -13,6 +13,7 @@ import Select from "react-select";
 import { firestore } from "../../../firebase/firebase";
 import "./SellerProfileProducts.css";
 import { UserContext } from "../../../Contexts/UserContext";
+import { DocumentData } from "firebase/firestore";
 
 export const SellerProfileProducts = () => {
   const [productImages, setProductImages] = useState<ImageObj[]>([]);
@@ -65,7 +66,6 @@ export const SellerProfileProducts = () => {
     }
 
     const productId = v4();
-    console.log(productImages);
 
     setDoc(doc(firestore, "products", productId), {
       productTitle: data.productTitle,
@@ -101,9 +101,9 @@ export const SellerProfileProducts = () => {
     currentUser &&
     query(productsColRef, where("sellerId", "==", currentUser?.uId));
 
-  const [products, loading, error] = useCollectionData(sellerProductsColRef);
-
-  console.log(products);
+  const [products, loading, error] = useCollectionData<
+    ProductType | null | undefined | DocumentData
+  >(sellerProductsColRef);
 
   const categories = [
     { value: "مواد طبيعية", label: "مواد طبيعية" },
@@ -142,12 +142,14 @@ export const SellerProfileProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((doc) => (
-              <SellerProductItem
-                key={doc.id}
-                productItem={doc as ProductType}
-              />
-            ))}
+            {products.map(
+              (doc: ProductType | null | undefined | DocumentData) => (
+                <SellerProductItem
+                  key={doc?.productId}
+                  productItem={doc as ProductType}
+                />
+              )
+            )}
           </tbody>
         </table>
       ) : (
@@ -201,10 +203,9 @@ export const SellerProfileProducts = () => {
                   </label>
                   <Controller
                     key="add"
+                    name="productCategory"
                     control={control}
-                    {...register("productCategory", {
-                      required: "برجاء اختيار تصنيف المنتج",
-                    })}
+                    rules={{ required: "برجاء اختيار تصنيف المنتج" }}
                     render={({ field }) => (
                       <Select
                         {...field}
@@ -282,12 +283,12 @@ export const SellerProfileProducts = () => {
                         ? "btn btn-outline-secondary"
                         : "btn-disabled"
                     }
-                    htmlFor={productImages.length < 2 ? "productImage" : ""}
+                    htmlFor={productImages.length < 2 ? "productImageAdd" : ""}
                   >
                     إضافة صورة
                   </label>
                   <input
-                    id="productImage"
+                    id="productImageAdd"
                     type="file"
                     hidden
                     accept=".png, .jpg, .jpeg"
@@ -302,15 +303,6 @@ export const SellerProfileProducts = () => {
                   {errors.productImage && (
                     <p className=" text-danger">برجاء إدخال صورة المنتج</p>
                   )}
-
-                  {/* <button
-                    type="button"
-                    className="btn btn-outline-secondary"
-                    onClick={chooseImage}
-                    disabled={productImages?.length === 5}
-                  >
-                    إضافة صورة
-                  </button> */}
                 </div>
                 {errorUploading && (
                   <strong>Error: {errorUploading.message}</strong>
