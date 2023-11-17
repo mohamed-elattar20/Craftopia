@@ -41,8 +41,12 @@ const LatestOffers = () => {
                 <p>Loading .....</p>
               </div>
             ))}
+
           {sortedOffers?.map((product) => (
-            <div className="col-6 col-md-6 col-lg-3" key={product?.productId}>
+            <div
+              className="col-sm-12 col-md-6 col-lg-3"
+              key={product?.productId}
+            >
               <ProductCard data={product} />
             </div>
           ))}

@@ -85,7 +85,9 @@ const ProductDetailsPage = () => {
             <h3>EGP {ProductData?.productPrice}</h3>
 
             <div className="my-4 d-flex gap-2 align-items-center">
-              <AddToCartBtn product={ProductData} />
+              <div className="w-50">
+                <AddToCartBtn product={ProductData} />
+              </div>
 
               <WishListIcon data={ProductData} />
             </div>
