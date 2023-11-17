@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import { User, onAuthStateChanged } from "firebase/auth";
 import CartPayment from "./CartPayment";
-
 function Cart() {
   const [stepperValue, setStepperValue] = useState(0);
   const [currentUserData, setCurrentUserData] = useState<DocumentData>({});

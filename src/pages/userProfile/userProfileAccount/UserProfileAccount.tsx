@@ -1,18 +1,8 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import "./userProfileAccount.css";
-import { UserProfileTaps } from "../userProfileTaps/UserProfileTaps";
-import { auth, db, usersRef } from "../../../firebase/firebase.config";
 import { useContext, useEffect, useState } from "react";
 import egyptGovernoratesData from "../../RegisterPage/RegisterSeller/governorates.json";
-import {
-  DocumentData,
-  doc,
-  getDocs,
-  query,
-  setDoc,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import Select from "react-select";
 import { UserContext } from "../../../Contexts/UserContext";
 import { firestore } from "../../../firebase/firebase";
@@ -30,13 +20,11 @@ type Inputs = {
 export const UserProfileAccount = () => {
   const governoratesList = egyptGovernoratesData.egyptGovernorates;
   const { currentUser } = useContext(UserContext);
-  // const [currentUser, setCurrentUser] = useState<DocumentData>({});
-  // const [userDocId, setUserDocId] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
     control,
     reset,
   } = useForm<Inputs>();
@@ -57,9 +45,6 @@ export const UserProfileAccount = () => {
     };
     modifyUser();
   };
-  console.log(errors);
-
-  // getting user data
 
   useEffect(() => {
     reset({
@@ -69,30 +54,6 @@ export const UserProfileAccount = () => {
       address: currentUser?.address,
       governorate: currentUser?.governorate,
     });
-
-    // const getUserInfo = async () => {
-    //   const userUid = auth.currentUser?.uid;
-    //   const q = userUid && query(usersRef, where("uId", "==", userUid));
-
-    //   if (q) {
-    //     const querySnapshot = await getDocs(q);
-    //     querySnapshot.forEach((doc) => {
-    //       setUserDocId((old) => doc.id);
-    //       console.log(typeof doc.data());
-    //       console.log(doc.data());
-    //       setCurrentUser((current) => ({ ...doc.data() }));
-    //       console.log(currentUser);
-    //     });
-    //   }
-    //   reset({
-    //     firstName: currentUser.firstName,
-    //     lastName: currentUser.lastName,
-    //     phone: currentUser.phone,
-    //     address: currentUser.address,
-    //     governorate: currentUser.governorate,
-    //   });
-    // };
-    // getUserInfo();
   }, [currentUser]);
 
   const notify = () =>
@@ -129,7 +90,6 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="firstName"
-            // defaultValue={currentUser?.firstName}
             {...register("firstName", { required: true })}
           />
           {errors.firstName && (
@@ -144,7 +104,6 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="lastName"
-            // defaultValue={currentUser?.lastName}
             {...register("lastName", { required: true })}
           />
           {errors.lastName && (
@@ -159,7 +118,6 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control"
             id="phoneNumber"
-            // defaultValue={currentUser?.phone}
             {...register("phone", {
               required: "يجب ادخال رقم الهاتف",
               pattern: {
@@ -180,16 +138,14 @@ export const UserProfileAccount = () => {
             type="text"
             className="form-control "
             id="address"
-            // defaultValue={currentUser?.address}
             {...register("address", { required: true })}
           ></input>
           {errors.address && <p className=" text-danger">يجب ادخال العنوان</p>}
         </div>
         <div className="col-12">
           <div className="form-text ">المحافظة</div>
-          {/* <Select options={governorates} /> */}
+
           <Controller
-            // defaultValue={currentUser?.governorate}
             name="governorate"
             rules={{ required: true }}
             control={control}

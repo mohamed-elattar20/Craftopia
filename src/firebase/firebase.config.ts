@@ -20,6 +20,7 @@ export const db = getFirestore(app);
 
 export const productsColRef = collection(db, "products");
 export const usersRef = collection(db, "users");
+export const ordersRef = collection(db, "orders");
 export const storage = getStorage(app);
 
 export const auth = getAuth(app);
