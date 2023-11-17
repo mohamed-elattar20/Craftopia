@@ -3,14 +3,19 @@ import { UserContext } from "../../Contexts/UserContext";
 import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoutesProfileSeller = () => {
-  const { myUser, authUser } = useContext(UserContext);
-  console.log(authUser && authUser[0].Rule);
+  const { currentUser } = useContext(UserContext);
 
-  return myUser && authUser && authUser[0].Rule === "seller" ? (
-    <Outlet />
-  ) : (
-    <Navigate to={`/`} />
-  );
+  if (currentUser && currentUser.Rule === "seller") {
+    return <Outlet />;
+  } else {
+    return <Navigate to={`/`} />;
+  }
+
+  // return myUser && authUser && authUser[0].Rule === "seller" ? (
+  //   <Outlet />
+  // ) : (
+  //   <Navigate to={`/`} />
+  // );
 };
 
 export default ProtectedRoutesProfileSeller;

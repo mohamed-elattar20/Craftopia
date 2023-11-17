@@ -45,7 +45,8 @@ import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
-  const STRIPE_PUBLISHABLE_KEY="pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
+  const STRIPE_PUBLISHABLE_KEY =
+    "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
   return (
     <div className="App">
@@ -60,35 +61,35 @@ function App() {
         <Route path="/products/:sellerId" element={<SellerProductsPage />} />
 
         {/* Protected Routes login ********************/}
-        {/* <Route element={<ProtectedRoutesLogin />}> */}
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/login/reset-password" element={<ResetPassword />} />
-        <Route path="/register" element={<UserRuleChoice />} />
-        <Route path="/register/seller" element={<RegisterSeller />} />
-        <Route path="/register/buyer" element={<RegisterBuyer />} />
-        {/* </Route> */}
+        <Route element={<ProtectedRoutesLogin />}>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/reset-password" element={<ResetPassword />} />
+          <Route path="/register" element={<UserRuleChoice />} />
+          <Route path="/register/seller" element={<RegisterSeller />} />
+          <Route path="/register/buyer" element={<RegisterBuyer />} />
+        </Route>
         {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
         {/* *************************************************************************** */}
         {/* <Route element={<ProtectedRoutesProfile />}> */}
-        {/* <Route path="/" element={<ProtectedRoutesProfilebuyer />}> */}
-        <Route path={`/user/profile`} element={<UserProfile />}>
-          <Route path="" element={<UserProfileAccount />} />
-          <Route path="address" element={<UserProfileAddress />} />
-          <Route path="orders" element={<UserProfileOrders />} />
-          <Route path="posts" element={<UserProfilePosts />} />
-          <Route path="wishlist" element={<UserProfileWishList />} />
+        <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
+          <Route path={`/user/profile`} element={<UserProfile />}>
+            <Route path="" element={<UserProfileAccount />} />
+            <Route path="address" element={<UserProfileAddress />} />
+            <Route path="orders" element={<UserProfileOrders />} />
+            <Route path="posts" element={<UserProfilePosts />} />
+            <Route path="wishlist" element={<UserProfileWishList />} />
+          </Route>
         </Route>
-        {/* </Route> */}
         {/* </Route> */}
         {/* *************************************************************************** */}
-        {/* <Route element={<ProtectedRoutesProfileSeller />}> */}
-        <Route path="/seller/profile" element={<SellerProfile />}>
-          <Route path="" element={<SellerProfileAccount />} />
-          <Route path="products" element={<SellerProfileProducts />} />
-          <Route path="posts" element={<SellerProfilePosts />} />
+        <Route element={<ProtectedRoutesProfileSeller />}>
+          <Route path="/seller/profile" element={<SellerProfile />}>
+            <Route path="" element={<SellerProfileAccount />} />
+            <Route path="products" element={<SellerProfileProducts />} />
+            <Route path="posts" element={<SellerProfilePosts />} />
+          </Route>
         </Route>
-        {/* </Route> */}
         {/* *************************************************************************** */}
         {/* </Route> */}
         {/* Protected Routes Profile ********************/}

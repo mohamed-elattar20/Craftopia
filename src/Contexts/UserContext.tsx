@@ -17,6 +17,7 @@ import {
   useCollectionData,
 } from "react-firebase-hooks/firestore";
 import { UserType } from "../Types/UserType";
+import { Spinner } from "../components/Spinner/Spinner";
 
 type UserContextProps = {
   children: React.ReactNode;
@@ -66,7 +67,13 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
       <UserContext.Provider
         value={{ myUser, authUser, usersCollection, currentUser, userRef }}
       >
-        {children}
+        {currentUser === undefined ? (
+          <div className="mt-5 d-flex justify-content-center">
+            <Spinner />
+          </div>
+        ) : (
+          children
+        )}
       </UserContext.Provider>
     </>
   );
