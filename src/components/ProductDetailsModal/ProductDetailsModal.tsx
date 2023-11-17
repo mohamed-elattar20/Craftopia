@@ -71,9 +71,13 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
                   <p className="lead">
                     الفئة: <strong> {modalData?.productCategory?.value}</strong>
                   </p>
-                  <div>
-                    <AddToCartBtn product={modalData} />
-                    <WishListIcon data={modalData} />
+                  <div className="d-flex">
+                    <div className="w-50">
+                      <AddToCartBtn product={modalData} />
+                    </div>
+                    <span className="me-3">
+                      <WishListIcon data={modalData} />
+                    </span>
                   </div>
                 </div>
               </div>

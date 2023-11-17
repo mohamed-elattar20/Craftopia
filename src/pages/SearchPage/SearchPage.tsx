@@ -46,7 +46,9 @@ const SearchPage = () => {
   return (
     <>
       <div className="container mt-5">
-        <SortComponent products={products} setProducts={setProducts} />
+        <div className="w-25">
+          <SortComponent products={products} setProducts={setProducts} />
+        </div>
         <div className="row my-5 g-3">
           {products.map((prod: any) => (
             <div key={prod.productId} className="col-6 col-md-6 col-lg-3">

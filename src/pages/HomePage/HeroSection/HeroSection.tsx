@@ -12,7 +12,8 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
 
 export const HeroSection = () => {
-  const { myUser, authUser } = useContext(UserContext);
+  const { currentUser, myUser } = useContext(UserContext);
+
   return (
     <div
       id="carouselExampleAutoplaying"
@@ -43,7 +44,10 @@ export const HeroSection = () => {
               انضموا إلينا وشاركوا في عرض مواهبكم
             </h2>
             <div className="">
-              {myUser && authUser && authUser[0].Rule === "seller" ? (
+              {/*  */}
+
+              {/*  */}
+              {myUser && currentUser && currentUser.Rule === "seller" ? (
                 <Link
                   to={`/seller/profile`}
                   className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"

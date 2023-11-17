@@ -1,3 +1,6 @@
+// React Toastify
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 // Routing
 import { Link, NavLink, useNavigate } from "react-router-dom";
 //  CSS
@@ -69,17 +72,23 @@ const LoginForm = () => {
   } = useForm<Inputs>();
 
   // Submit *******************
+  const [loadingSignin, setLoadingSignin] = useState<Boolean>(false);
+  const [firebaseError, setFirebaseError] = useState<string>();
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setLoadingSignin(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
         res.user.getIdTokenResult().then((response) => {
           localStorage.setItem("token", response.token);
         });
-        console.log(`logged in`, res);
+        // console.log(`logged in`, res);
+        setFirebaseError("");
+        setLoadingSignin(false);
         navigate(`/`);
       })
       .catch((err) => {
-        console.log(err.message);
+        setFirebaseError(err.message);
+        // console.log(err.message);
       });
   };
 
@@ -88,7 +97,7 @@ const LoginForm = () => {
       <div className="container margin-container  rounded-4 ">
         <div className="row justify-content-center">
           <h1 className="display-1 text-center mb-5 fw-bold">كرافتوبيا</h1>
-          <div className="col-sm-12 col-md-8 col-lg-4">
+          <div className="col-sm-12 col-md-8 col-lg-5">
             <form noValidate onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-3">
                 {/* Email */}
@@ -153,9 +162,31 @@ const LoginForm = () => {
                 <Link to={`/login/reset-password`}>هل نسيت كلمة المرور ؟</Link>
                 {/* **************************************************************** */}
               </div>
-              <button type="submit" className="btn btn-primary w-100">
-                تسجيل الدخول
-              </button>
+              {loadingSignin ? (
+                <button
+                  className="btn btn-primary w-100"
+                  type="button"
+                  disabled
+                >
+                  <span role="status">جاري تسجيل الدخول</span>
+                  <span
+                    className="spinner-border spinner-border-sm ms-2"
+                    aria-hidden="true"
+                  ></span>
+                </button>
+              ) : (
+                <button type="submit" className="btn btn-primary w-100">
+                  تسجيل الدخول
+                </button>
+              )}
+
+              {firebaseError ? (
+                <p className="text-danger my-2">
+                  يوجد خطأ في كلمة المرور او البريد الالكتروني
+                </p>
+              ) : (
+                ""
+              )}
 
               <div className="text-center">
                 <p className=" mt-3 text-muted">جديد الى كرافتوبيا ؟</p>

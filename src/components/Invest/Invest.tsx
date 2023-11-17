@@ -12,13 +12,13 @@ const Invest = () => {
       <div className="row py-4">
         <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
           <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-4">استثمر مواهبك!</h2>
+          <h2 className="mb-5">استثمر مواهبك!</h2>
           <div className="d-flex align-items-center mb-4">
             <HouseFill size={25} />
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
           </div>
           <div className="d-flex align-items-center mb-4">
-            <StopwatchFill size={30} className="align-self-start" />
+            <StopwatchFill size={25} className="align-self-start" />
             <p className="mb-0 me-2 text-end">
               نهتم بكل شيء بدءََ من استلام الطلب وحتى الشحن والتعامل مع
               المدفوعات وخدمة العملاء

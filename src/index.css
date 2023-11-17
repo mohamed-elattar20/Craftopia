@@ -10,9 +10,24 @@ ul {
 img {
   display: block;
   width: 100%;
- 
 }
 .input-style:focus {
   box-shadow: none !important;
   outline: none;
 }
+.slick-slide > div {
+  margin: 50px 10px;
+  /* padding: 10px; */
+}
+[dir="ltr"] .slick-prev:before {
+  content: "→";
+  color: #192655 !important;
+}
+[dir="ltr"] .slick-next:before {
+  content: "→";
+  color: #192655 !important;
+}
+/* .slick-prev:before,
+.slick-next:before {
+  color: blue !important;
+} */
