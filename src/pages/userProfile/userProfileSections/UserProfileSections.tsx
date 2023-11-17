@@ -69,7 +69,7 @@ export const UserProfileSections = () => {
                 loading
               </p>
             ) : (
-              <div className="dropdown">
+              <div className="dropdown ">
                 <img
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -79,6 +79,7 @@ export const UserProfileSections = () => {
                   style={{ width: "100px", height: "100px" }}
                   className="rounded-circle"
                 />
+
                 <ul className="dropdown-menu">
                   <li>
                     <label htmlFor="profile-pic">تحديث</label>

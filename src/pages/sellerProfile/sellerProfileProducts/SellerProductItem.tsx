@@ -29,8 +29,10 @@ export const SellerProductItem = ({ productItem }: sellerProductProps) => {
 
   return (
     <tr className="row border-bottom py-2 align-items-center">
-      <td className="col">{productItem?.productTitle}</td>
-      <td className="col">{productItem?.productCategory?.label}</td>
+      <td className="col seller-product-tilte">{productItem?.productTitle}</td>
+      <td className="col text-center ">
+        {productItem?.productCategory?.label}
+      </td>
       <td className="col text-center">{productItem?.productPrice}</td>
       <td className="col">
         <div className="text-center">
