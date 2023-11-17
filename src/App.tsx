@@ -42,9 +42,9 @@ import { UserProfilePosts } from "./pages/userProfile/userProfilePosts/UserProfi
 import UserProfileWishList from "./pages/userProfile/userProfileWishList/UserProfileWishList";
 import SellerProfilePosts from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
 import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
+import { ProtectedRoutesNotSeller } from "./pages/ProtectedRoutes/ProtectedRoutesNotSeller";
 
 function App() {
-  const { myUser, authUser } = useContext(UserContext);
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
@@ -52,14 +52,15 @@ function App() {
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="" element={<HomePage />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/store" element={<StorePage />} />
+        <Route element={<ProtectedRoutesNotSeller />}>
+          <Route path="" element={<HomePage />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/store" element={<StorePage />} />
+          <Route path="/search/:word" element={<SearchPage />} />
+          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
+          <Route path="/products/:sellerId" element={<SellerProductsPage />} />
+        </Route>
         <Route path="/contact-us" element={<ContactUs />} />
-        <Route path="/search/:word" element={<SearchPage />} />
-        <Route path="/community" element={<Forum />} />
-        <Route path="/products/:sellerId" element={<SellerProductsPage />} />
-
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
@@ -68,36 +69,29 @@ function App() {
           <Route path="/register/seller" element={<RegisterSeller />} />
           <Route path="/register/buyer" element={<RegisterBuyer />} />
         </Route>
-        {/* Protected Routes login ********************/}
         {/* Protected Routes Profile ********************/}
-        {/* *************************************************************************** */}
-        {/* <Route element={<ProtectedRoutesProfile />}> */}
-        <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
-          <Route path={`/user/profile`} element={<UserProfile />}>
-            <Route path="" element={<UserProfileAccount />} />
-            <Route path="address" element={<UserProfileAddress />} />
-            <Route path="orders" element={<UserProfileOrders />} />
-            <Route path="posts" element={<UserProfilePosts />} />
-            <Route path="wishlist" element={<UserProfileWishList />} />
+        <Route element={<ProtectedRoutesProfile />}>
+          <Route path="/community" element={<Forum />} />
+          {/*ProtectedRoutesProfile  */}
+          <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
+            <Route path={`/user/profile`} element={<UserProfile />}>
+              <Route path="" element={<UserProfileAccount />} />
+              <Route path="address" element={<UserProfileAddress />} />
+              <Route path="orders" element={<UserProfileOrders />} />
+              <Route path="posts" element={<UserProfilePosts />} />
+              <Route path="wishlist" element={<UserProfileWishList />} />
+            </Route>
+          </Route>
+          {/*ProtectedRoutesProfileSeller  */}
+          <Route element={<ProtectedRoutesProfileSeller />}>
+            <Route path="/seller/profile" element={<SellerProfile />}>
+              <Route path="" element={<SellerProfileAccount />} />
+              <Route path="products" element={<SellerProfileProducts />} />
+              <Route path="posts" element={<SellerProfilePosts />} />
+            </Route>
           </Route>
         </Route>
-        {/* </Route> */}
-        {/* *************************************************************************** */}
-        <Route element={<ProtectedRoutesProfileSeller />}>
-          <Route path="/seller/profile" element={<SellerProfile />}>
-            <Route path="" element={<SellerProfileAccount />} />
-            <Route path="products" element={<SellerProfileProducts />} />
-            <Route path="posts" element={<SellerProfilePosts />} />
-          </Route>
-        </Route>
-        {/* *************************************************************************** */}
-        {/* </Route> */}
-        {/* Protected Routes Profile ********************/}
-        <Route path="/product-details/:id" element={<ProductDetailsPage />} />
-
-        <Route path="/community" element={<Forum />} />
       </Routes>
-
       <Footer />
     </div>
   );
