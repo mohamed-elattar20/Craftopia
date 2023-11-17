@@ -9,11 +9,11 @@ const Explore = () => {
   const { myUser } = useContext(UserContext);
 
   return (
-    <div className="container border-bottom py-4">
-      <div className="row py-4 ">
+    <div className="container border-bottom py-4 ">
+      <div className="row py-4">
         <div className="col-md-6 text-center text-md-end">
           <h2 className="mb-5">تبحث عن منتج ولم تجده؟</h2>
-          <p className="mb-4 fs-5">
+          <p className="mb-4 fs-5 ps-5">
             شارك منشورك على مجتمع كرافتوبيا بين الاف البائعين
           </p>
           <p className="mb-4 fs-5">سيقوم امهر عملائنا بتنفيذ رغباتك</p>
@@ -25,7 +25,7 @@ const Explore = () => {
             استكشف
           </Link>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-6 ">
           <div className="d-flex justify-content-end align-items-center">
             <p>Mai Alaa</p>
             <div className="userimg-wrapper me-4 h-auto">

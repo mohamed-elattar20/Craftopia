@@ -20,11 +20,10 @@ const Comment = ({ comment }: Comment) => {
     <>
       {comment.commentImgUrl ? (
         <>
-          <div className="d-flex mt-3">
-            <div className="rounded-circle">
+          <div className="d-flex mt-1 p-2">
+            <div>
               <img
-                className="rounded-circle"
-                style={{ width: "50px" }}
+                className="user-img"
                 src={comment.userAvatarUrl || avatar}
                 alt=""
               />
@@ -46,7 +45,7 @@ const Comment = ({ comment }: Comment) => {
               </div>
             </div>
           </div>
-          <div style={{ width: "80%" }}>
+          <div>
             <img src={comment.commentImgUrl} alt="" />
           </div>
         </>

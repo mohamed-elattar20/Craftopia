@@ -45,7 +45,8 @@ import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 
 function App() {
   const { myUser, authUser } = useContext(UserContext);
-  const STRIPE_PUBLISHABLE_KEY="pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
+  const STRIPE_PUBLISHABLE_KEY =
+    "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
   return (
     <div className="App">
@@ -96,7 +97,7 @@ function App() {
 
         <Route path="/community" element={<Forum />} />
       </Routes>
-
+      <Forum />
       <Footer />
     </div>
   );

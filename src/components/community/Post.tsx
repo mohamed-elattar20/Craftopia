@@ -56,7 +56,7 @@ export type CommentType = {
   commentImgUrl: string;
 };
 export default function Post({ post }: DocumentData) {
-  console.log(post);
+  // console.log(post);
 
   const [isOpen, setIsOpen] = useState(false);
   const [hasVoted, setHasVoted] = useState<boolean>(false);
@@ -104,50 +104,26 @@ export default function Post({ post }: DocumentData) {
 
   return (
     <>
-      <Grid item xs={8} sx={{ margin: "1rem 0" }}>
+      <Grid item xs={7} sx={{ margin: "1rem 0" }}>
         <Item>
           <Paper elevation={8}>
-            <Stack direction={"column"} sx={{ height: "50%" }}>
-              <Box sx={{ padding: 1 }}>
-                <div className="">
+            <Stack direction={"column"}>
+              <Box>
+                <Box>
                   <img
-                    style={{ objectFit: "cover", maxHeight: "100%" }}
-                    className="item-img img-fluid d-block w-100 "
+                    style={{ objectFit: "cover" }}
+                    className="item-img"
                     src={post.postBodyImages[0].imageUrl}
                     alt=""
                   />
-                </div>
+                </Box>
                 <Stack
                   direction={"row"}
                   alignItems={"center"}
-                  justifyContent={"flex-end"}
-                  sx={{ paddingY: 1, marginBottom: 2, height: "50%" }}
+                  justifyContent={"flex-start"}
+                  sx={{ padding: 1, marginBottom: 2 }}
                 >
-                  <Box>
-                    <Typography sx={{ fontWeight: "bold" }}>
-                      {post.postOwnerName}
-                    </Typography>
-                    <Typography sx={{ opacity: 0.9 }}>
-                      {post.genratedAt && (
-                        <>
-                          <p>
-                            <span className="mx-4">
-                              {new Date(
-                                post.genratedAt.toDate()
-                              ).toDateString()}
-                            </span>
-                            <span>
-                              {" "}
-                              {new Date(
-                                post.genratedAt.toDate()
-                              ).toLocaleTimeString()}
-                            </span>
-                          </p>
-                        </>
-                      )}
-                    </Typography>
-                  </Box>
-                  <Box sx={{ height: "auto" }}>
+                  <Box sx={{ height: "auto", marginLeft: "1rem" }}>
                     <img
                       src={
                         post.postOwnerAvatarUrl
@@ -156,52 +132,104 @@ export default function Post({ post }: DocumentData) {
                       }
                       alt=""
                       className="user-img"
-                      style={{ objectFit: "cover" }}
                     />
                   </Box>
+
+                  <Box>
+                    <Typography sx={{ fontWeight: "bold" }}>
+                      {post.postOwnerName}
+                    </Typography>
+                    <Box sx={{ opacity: 0.9 }}>
+                      {post.genratedAt && (
+                        <>
+                          <Typography
+                            sx={{
+                              fontSize: "0.7rem",
+                              fontWeight: "bold",
+                              opacity: "0.7",
+                            }}
+                          >
+                            {new Date(post.genratedAt.toDate()).toDateString()}
+                          </Typography>
+                          <Typography
+                            sx={{
+                              fontSize: "0.6rem",
+                              fontWeight: "bold",
+                              opacity: "0.6",
+                            }}
+                          >
+                            {new Date(
+                              post.genratedAt.toDate()
+                            ).toLocaleTimeString()}
+                          </Typography>
+                        </>
+                      )}
+                    </Box>
+                  </Box>
                 </Stack>
-                <Typography sx={{ fontSize: "1.1rem", marginBottom: 1 }}>
+                <Typography
+                  sx={{ fontSize: "1.1rem", marginBottom: 1, padding: 1 }}
+                >
                   {post.postBody}
                 </Typography>
 
                 <Stack
                   direction="row"
                   alignItems="center"
-                  sx={{ marginBottom: 1 }}
+                  sx={{ marginBottom: 1, padding: 1 }}
                 >
                   <Button
                     sx={{
                       minWidth: 0,
                       padding: 0,
                       marginLeft: 3,
+                      fontFamily: "inherit",
                     }}
                     onClick={() => togglesVotes(post.postId)}
                   >
                     <FontAwesomeIcon
                       icon={faArrowUpLong}
                       color={hasVoted ? "blue" : "gray"}
-                      style={{ fontSize: 20, marginLeft: 5 }}
+                      style={{ fontSize: 20, marginLeft: 3 }}
                     />
-                    <span>{Object.keys(post.votes).length}</span>
+                    {/* <span>{Object.keys(post.votes).length}</span> */}
 
-                    <Typography sx={{ color: "#191970" }}>اعجاب</Typography>
+                    <Typography
+                      sx={{
+                        marginRight: 1,
+                        fontFamily: "inherit",
+                        color: "#000",
+                      }}
+                    >
+                      اعجاب
+                    </Typography>
                   </Button>
-                  {post.votes > 0 && <span>{post.votes}</span>}
+                  {post.votes > 0 && (
+                    <Typography>نال اعجاب {post.votes}</Typography>
+                  )}
                   <Button
                     onClick={() => setIsOpen((isOpen) => !isOpen)}
-                    sx={{ minWidth: 0, padding: 0 }}
+                    sx={{ minWidth: 0, padding: 0, fontFamily: "inherit" }}
                   >
                     <FontAwesomeIcon
                       icon={faCommentDots}
                       color="gray"
                       style={{ fontSize: 25 }}
                     />
-                    <Typography sx={{ color: "#191970", paddingX: 1.5 }}>
+                    <Typography
+                      sx={{
+                        paddingX: 1.5,
+                        fontFamily: "inherit",
+                        color: "#000",
+                      }}
+                    >
                       تعليق
                     </Typography>
                   </Button>
                 </Stack>
-                <Box>{isOpen && <UserAddCommentForm post={post} />}</Box>
+                <Box padding={1}>
+                  {isOpen && <UserAddCommentForm post={post} />}
+                </Box>
                 {/* Comments ****************************************** */}
                 {loading ? (
                   <h1 className="display-1">Loading</h1>
@@ -216,11 +244,11 @@ export default function Post({ post }: DocumentData) {
                     ))
                 )}
                 {/* {comments?.slice(0, 3).map((comment) => (
-                <Comment
-                  key={comment.commentId}
-                  comment={comment as CommentType}
-                />
-              ))} */}
+                  <Comment
+                    key={comment.commentId}
+                    comment={comment as CommentType}
+                  />
+                ))} */}
                 {comments && comments?.length > 3 && (
                   <>
                     {!commentState ? (
