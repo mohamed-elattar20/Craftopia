@@ -1,5 +1,5 @@
 table td {
-  overflow: hidden;
+  /* overflow: hidden; */
   text-overflow: ellipsis;
 }
 .btn-disabled {
@@ -7,4 +7,19 @@ table td {
   padding: 0.375rem 0.75rem;
   border-radius: 0.375rem;
   cursor: default !important;
+}
+.seller-product-tilte {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+.products-table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  white-space: nowrap;
+}
+table {
+  width: 100%;
 }
