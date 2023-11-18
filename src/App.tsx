@@ -47,6 +47,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
 function App() {
+
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
@@ -100,6 +101,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
+
       <Footer />
     </div>
   );

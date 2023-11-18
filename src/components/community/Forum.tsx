@@ -12,7 +12,11 @@ export default function Forum() {
     <>
       <Modal />
       <Container sx={{ paddingY: 3 }}>
-        <Grid container spacing={3}>
+        <Grid
+          container
+          spacing={3}
+          sx={{ display: "flex", justifyContent: "center" }}
+        >
           {loading ? (
             <h1 className="display-1">Loading</h1>
           ) : (
