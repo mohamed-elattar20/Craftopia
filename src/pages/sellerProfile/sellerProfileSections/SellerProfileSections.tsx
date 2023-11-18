@@ -94,7 +94,7 @@ export const SellerProfileSections = () => {
             <NavLink to={"./products"}>المنتجات</NavLink>
           </li>
           <li>
-            <NavLink to={"./posts"}>المنشورات</NavLink>
+            <NavLink to={"./posts"}>المنتجات المطلوبة</NavLink>
           </li>
           <li>
             <NavLink to={"./posts/saved"}>المنشورات المحفوظة</NavLink>
