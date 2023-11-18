@@ -54,7 +54,6 @@ const StorePage = () => {
       const queryProductsArray: Array<DocumentData> = [];
       querySnapshot &&
         querySnapshot.forEach((doc) => {
-          // console.log(doc);
           queryProductsArray.push(doc.data());
         });
       // console.log(queryProductsArray);

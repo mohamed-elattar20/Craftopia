@@ -11,7 +11,7 @@ const UserProfileWishList = () => {
       {currentUser &&
         Object.values(currentUser.wishList).length > 0 &&
         Object.values(currentUser.wishList).map((prod: any) => (
-          <div className="col-6 col-md-6 col-lg-4" key={prod.productId}>
+          <div className="col-12 col-sm-6 col-lg-4" key={prod.productId}>
             <ProductCard data={prod} />
           </div>
         ))}

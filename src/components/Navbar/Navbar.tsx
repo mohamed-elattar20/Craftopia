@@ -12,7 +12,7 @@ import {
 import { Link, NavLink, useNavigate } from "react-router-dom";
 //  Firebase
 import { auth } from "../../firebase/firebase";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { signOut } from "@firebase/auth";
 import { UserContext } from "../../Contexts/UserContext";
 import ProductCartSidebar from "../ProductCartSidebar/ProductCartSidebar";
@@ -20,6 +20,8 @@ import ProductWishListSidebar from "../ProductWishListSidebar/ProductWishListSid
 import "./Navbar.css";
 
 import ProductCard from "../ProductCard/ProductCard";
+import { ProductType } from "../../Types/ProductType";
+import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 
 function Navbar() {
   // Authentication **************
@@ -27,6 +29,7 @@ function Navbar() {
   const { currentUser } = useContext(UserContext);
 
   const cartItemsCount = currentUser && Object.keys(currentUser?.cart).length;
+
   const wishListItemsCount =
     currentUser && Object.keys(currentUser?.wishList).length;
 
@@ -35,7 +38,8 @@ function Navbar() {
   const searchFunc = () => {
     navigate(`search/${searchInput}`);
   };
-  // console.log(cartItemsCount);
+
+  const { anonymousCartItems } = useContext(AnonymousUserContext);
 
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
@@ -197,17 +201,24 @@ function Navbar() {
                   aria-controls="cart"
                 >
                   <FontAwesomeIcon icon={faCartPlus} className="text-primary" />
-                  {cartItemsCount && cartItemsCount > 0 ? (
-                    <span
-                      style={{ fontSize: ".7rem" }}
-                      className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
-                    >
-                      {cartItemsCount}
-                      <span className="visually-hidden">unread messages</span>
-                    </span>
-                  ) : (
-                    <span></span>
-                  )}
+
+                  <span
+                    style={{
+                      fontSize: ".7rem",
+                      display:
+                        (cartItemsCount === 0 || cartItemsCount === null) &&
+                        Object.values(anonymousCartItems)?.length === 0
+                          ? "none"
+                          : "block",
+                    }}
+                    className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
+                  >
+                    {cartItemsCount && cartItemsCount > 0
+                      ? cartItemsCount
+                      : Object.values(anonymousCartItems)?.length > 0 &&
+                        Object.values(anonymousCartItems)?.length}
+                    <span className="visually-hidden">unread messages</span>
+                  </span>
                 </button>
               </div>
             </li>
@@ -245,10 +256,14 @@ function Navbar() {
             />
           </div>
 
-          {currentUser?.cart &&
-            Object.values(currentUser.cart)?.map((prod: any) => (
-              <ProductCartSidebar key={prod.productId} data={prod} />
-            ))}
+          {currentUser?.cart
+            ? Object.values(currentUser.cart)?.map((prod: any) => (
+                <ProductCartSidebar key={prod.productId} data={prod} />
+              ))
+            : anonymousCartItems &&
+              Object.values(anonymousCartItems)?.map((prod: any) => (
+                <ProductCartSidebar key={prod.productId} data={prod} />
+              ))}
         </div>
       </div>
       {/* Favourites ****************************************************** */}

@@ -8,14 +8,17 @@ import { UserContextProvider } from "./Contexts/UserContext";
 // React Slick
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { AnonymousUserContextProvider } from "./Contexts/AnonymousUserContext";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <UserContextProvider>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <AnonymousUserContextProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </AnonymousUserContextProvider>
   </UserContextProvider>
 );
