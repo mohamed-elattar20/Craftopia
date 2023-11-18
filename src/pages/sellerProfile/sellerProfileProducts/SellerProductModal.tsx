@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { useUploadFile } from "react-firebase-hooks/storage";
 import { doc, updateDoc } from "firebase/firestore";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import { storage } from "../../../firebase/firebase.config";
 import { getDownloadURL, ref, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
@@ -22,6 +22,16 @@ export const SellerProductModal = ({
 
   const [uploadFile, uploading, , errorUploading] = useUploadFile();
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+    control,
+    reset,
+  } = useForm<ProductType>({
+    defaultValues: productItem,
+  });
+
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
     if (e?.target.files) {
       let imgFile = e?.target.files[0];
@@ -33,24 +43,18 @@ export const SellerProductModal = ({
         setProductImages((prev) => [...prev, { imgId, imgUrl, imgFile }]);
       };
     }
+
+    reset({
+      imgsNum: productImages.length + 1,
+    });
   };
 
   const deleteImage = (id: string) => {
     setProductImages((prev) => prev.filter((obj) => obj.imgId !== id));
-    if (productImages.length === 1) {
-      setValue("productImage", null);
-    }
+    reset({
+      imgsNum: productImages.length - 1,
+    });
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-    control,
-    setValue,
-  } = useForm<ProductType>({
-    defaultValues: productItem,
-  });
 
   const onSubmit: SubmitHandler<ProductType> = async (data) => {
     if (productItem.productId) {
@@ -60,11 +64,9 @@ export const SellerProductModal = ({
             (obj2) => obj1.imgId === obj2.imgId && obj1.imgUrl === obj2.imgUrl
           )
       );
-
       imagesToBeDeleted.map(async (obj) => {
         await deleteObject(ref(storage, `products images/${obj.imgId}`));
       });
-
       for (let i = 0; i < productImages.length; i++) {
         let obj1 = productImages[i];
         let isExist = productItem.productImages.some(
@@ -84,7 +86,6 @@ export const SellerProductModal = ({
           delete obj1.imgFile;
         }
       }
-
       const docRef = doc(firestore, "products", productItem.productId);
       updateDoc(docRef, {
         ...productItem,
@@ -111,6 +112,13 @@ export const SellerProductModal = ({
     { value: "أزياء", label: "أزياء" },
   ];
 
+  useEffect(() => {
+    reset({
+      imgsNum: productItem.productImages.length,
+    });
+    setProductImages(productItem.productImages);
+  }, [productItem]);
+
   return (
     <div>
       <div className="text-center">
@@ -119,7 +127,12 @@ export const SellerProductModal = ({
           icon={faPenToSquare}
           data-bs-toggle="modal"
           data-bs-target={`#a${productItem.productId}`}
-          onClick={() => setProductImages(productItem.productImages)}
+          onClick={() => {
+            setProductImages(productItem.productImages);
+            reset({
+              imgsNum: productItem.productImages.length,
+            });
+          }}
         />
       </div>
       <div
@@ -180,7 +193,6 @@ export const SellerProductModal = ({
                     <p className="text-danger ">برجاء اختيار تصنيف المنتج</p>
                   )}
                 </div>
-
                 <div>
                   <label htmlFor="productPrice" className="form-label">
                     السعر
@@ -244,31 +256,36 @@ export const SellerProductModal = ({
                         ? "btn btn-outline-secondary"
                         : "btn-disabled"
                     }
-                    htmlFor={productImages.length < 2 ? "productImage" : ""}
+                    htmlFor={
+                      productImages.length < 2
+                        ? `productImage${productItem.productId}`
+                        : ""
+                    }
                   >
                     إضافة صورة
                   </label>
                   <input
-                    id="productImage"
+                    type="number"
+                    hidden
+                    {...register("imgsNum", {
+                      required: true,
+                      validate: { hasValue: (file) => file !== 0 },
+                    })}
+                  />
+                  {errors.imgsNum && (
+                    <p className=" text-danger">برجاء إدخال صورة المنتج</p>
+                  )}
+                  <input
+                    id={`productImage${productItem.productId}`}
                     type="file"
                     hidden
                     accept=".png, .jpg, .jpeg"
-                    {...register("productImage", {
-                      required: true,
-                      validate: {
-                        hasValue: (file) => file !== null,
-                      },
-                      onChange: (event) => handleUpload(event),
-                    })}
+                    onChange={(event) => handleUpload(event)}
                   />
-                  {errors.productImage && (
-                    <p className=" text-danger">برجاء إدخال صورة المنتج</p>
-                  )}
                 </div>
                 {errorUploading && (
                   <strong>Error: {errorUploading.message}</strong>
                 )}
-
                 {uploading && <span>Uploading file...</span>}
                 {productImages?.length > 0 && (
                   <div className=" d-flex gap-3">
@@ -295,7 +312,6 @@ export const SellerProductModal = ({
                     ))}
                   </div>
                 )}
-
                 <div className="modal-footer">
                   <button
                     className="btn btn-primary"
@@ -303,7 +319,6 @@ export const SellerProductModal = ({
                   >
                     حفظ
                   </button>
-
                   <button
                     type="button"
                     className="btn btn-secondary"

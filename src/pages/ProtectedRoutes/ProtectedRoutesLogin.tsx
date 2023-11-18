@@ -1,13 +1,16 @@
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase/firebase";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useContext } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { UserContext } from "../../Contexts/UserContext";
 
 const ProtectedRoutesLogin = () => {
-  const { myUser, authUser } = useContext(UserContext);
-  console.log(myUser);
-  return localStorage.getItem("token") ? <Navigate to={`/`} /> : <Outlet />;
+  const { currentUser } = useContext(UserContext);
+  const location = useLocation();
+
+  if (currentUser !== null) {
+    return <Navigate to={`/`} state={{ from: location }} replace />;
+  } else {
+    return <Outlet />;
+  }
 };
 
 export default ProtectedRoutesLogin;

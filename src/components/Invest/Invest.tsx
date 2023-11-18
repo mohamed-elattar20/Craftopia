@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import invest from "../../assets/images/Invest.jpg";
-import { BookmarkCheck } from "react-bootstrap-icons";
-import { HouseFill } from "react-bootstrap-icons";
-import { StopwatchFill } from "react-bootstrap-icons";
+import {
+  faHouse,
+  faHandshake,
+  faClipboardCheck,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../Contexts/UserContext";
 const Invest = () => {
@@ -12,22 +15,26 @@ const Invest = () => {
       <div className="row py-4">
         <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
           <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-4">استثمر مواهبك!</h2>
+          <h2 className="mb-5">استثمر مواهبك!</h2>
           <div className="d-flex align-items-center mb-4">
-            <HouseFill size={25} />
+            <FontAwesomeIcon icon={faHouse} />
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
           </div>
-          <div className="d-flex align-items-center mb-4">
-            <StopwatchFill size={30} className="align-self-start" />
-            <p className="mb-0 me-2 text-end">
-              نهتم بكل شيء بدءََ من استلام الطلب وحتى الشحن والتعامل مع
-              المدفوعات وخدمة العملاء
-            </p>
-          </div>
-          <div className="d-flex align-items-center mb-5">
-            <BookmarkCheck size={25} className=" align-self-start" />
+
+
+          <div className="d-flex mb-4">
+            <FontAwesomeIcon icon={faClipboardCheck} className="mt-1" />
+
+         
             <p className="mb-0 me-2 text-end">
               قم بانشاء حساب خاص بك واعرض منتجاتك بدون أي رسوم
+            </p>
+          </div>
+          <div className="d-flex mb-5">
+            <FontAwesomeIcon icon={faHandshake} className="mt-1" />
+            <p className="mb-0  me-2 text-end">
+              نهتم بكل شيء بدءََ من استلام الطلب وحتى الشحن والتعامل مع
+              المدفوعات وخدمة العملاء
             </p>
           </div>
 

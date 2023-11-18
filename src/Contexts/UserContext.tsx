@@ -17,6 +17,7 @@ import {
   useCollectionData,
 } from "react-firebase-hooks/firestore";
 import { UserType } from "../Types/UserType";
+import { Spinner } from "../components/Spinner/Spinner";
 
 type UserContextProps = {
   children: React.ReactNode;
@@ -43,7 +44,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
   const [authUser] = useCollectionData(listOfUsers);
   const [usersCollection] = useCollection(listOfUsers);
   const [currentUserr] = useCollection(listOfUsers);
-  const userId = currentUserr?.docs[0].id;
+  const userId = currentUserr && currentUserr?.docs[0].id;
   const userRef = userId && doc(firestore, "users", userId);
   console.log(userRef);
 
@@ -54,7 +55,6 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
       } else {
         setCurrentUser(null);
       }
-      console.log(currentUser);
     });
     return () => {
       unSubscribe();
@@ -66,7 +66,13 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
       <UserContext.Provider
         value={{ myUser, authUser, usersCollection, currentUser, userRef }}
       >
-        {children}
+        {currentUser === undefined ? (
+          <div className="mt-5 d-flex justify-content-center">
+            <Spinner />
+          </div>
+        ) : (
+          children
+        )}
       </UserContext.Provider>
     </>
   );
