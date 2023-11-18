@@ -1,47 +1,65 @@
 import { NavLink } from "react-router-dom";
 import avatar from "../../../assets/images/User Profile/Avatar.png";
 // Authentication
-import { firestore } from "../../../firebase/firebase";
+import { auth, firestore } from "../../../firebase/firebase";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { doc, updateDoc } from "@firebase/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { storage } from "../../../firebase/firebase.config";
+import { storage } from "../../../firebase/firebase";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { signOut } from "firebase/auth";
 import "./userProfileTaps.css";
+import { Spinner } from "../../../components/Spinner/Spinner";
 
 export const UserProfileTaps = () => {
   const { currentUser } = useContext(UserContext);
+  const [uploadFile] = useUploadFile();
   const [loading, setLoading] = useState(true);
-  const [uploadFile, , error] = useUploadFile();
+  const [error, setError] = useState<string | null>(null);
 
   const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
+    setError(null);
     const avatar = e.target.files && e.target.files[0];
-    const avatarRef = ref(storage, `avatars/${currentUser?.uId}`);
-    if (avatarRef && avatar) {
-      await uploadFile(avatarRef, avatar, {
-        contentType: avatar.type,
-      });
-      const url = await getDownloadURL(avatarRef);
-
-      const userDocRef = doc(firestore, "users", currentUser?.uId);
-      userDocRef &&
-        updateDoc(userDocRef, {
-          ...currentUser,
-          avatarURL: url,
+    const avatarRef = currentUser && ref(storage, `avatars/${currentUser.uId}`);
+    try {
+      if (avatarRef && avatar) {
+        await uploadFile(avatarRef, avatar, {
+          contentType: avatar.type,
         });
+        const url = await getDownloadURL(avatarRef);
+        if (url) {
+          console.log(url);
+          const userDocRef = doc(firestore, "users", currentUser.uId);
+          userDocRef &&
+            updateDoc(userDocRef, {
+              ...currentUser,
+              avatarURL: url,
+            });
+        } else {
+          setError("Failed to get avatar URL");
+          throw new Error("Failed to get avatar URL");
+        }
+      }
+    } catch (err) {
+      setError("Error try again");
     }
+
     setLoading(false);
   };
+
   const deleteAvatar = async (id: string) => {
     setLoading(true);
-    await deleteObject(ref(storage, `avatars/${id}`));
-    await updateDoc(doc(firestore, "users", id), {
-      ...currentUser,
-      avatarURL: "",
-    });
+    try {
+      await deleteObject(ref(storage, `avatars/${id}`));
+      await updateDoc(doc(firestore, "users", id), {
+        ...currentUser,
+        avatarURL: "",
+      });
+    } catch (err) {
+      setError("Error try again");
+    }
     setLoading(false);
   };
 
@@ -55,34 +73,33 @@ export const UserProfileTaps = () => {
     <div className="d-md-none">
       <div className="d-flex flex-column align-items-center">
         <div className="profile-img mb-4">
+          {error && <p>{error}</p>}
           {loading ? (
-            <p
+            <div
               className="d-flex align-items-center justify-content-center text-center rounded-circle"
               style={{
-                width: "90px",
-                height: "90px",
-                backgroundColor: "rgba(0, 0, 0, 0.2)",
+                width: "100px",
+                height: "100px",
               }}
             >
-              loading
-            </p>
+              <Spinner />
+            </div>
           ) : (
-            <div className="dropdown btn-group">
+            <div className="dropdown">
               <img
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 role="button"
                 src={currentUser?.avatarURL ? currentUser.avatarURL : avatar}
                 alt=""
-                style={{ width: "90px", height: "90px" }}
+                style={{ width: "100px", height: "100px" }}
                 className="rounded-circle"
               />
-
               <ul className="dropdown-menu">
                 <li>
-                  <label htmlFor="profile-pic">تحديث</label>
+                  <label htmlFor="profile-pic1">تحديث</label>
                   <input
-                    id="profile-pic"
+                    id="profile-pic1"
                     type="file"
                     hidden
                     onChange={(event) => uploadAvatar(event)}
@@ -90,20 +107,18 @@ export const UserProfileTaps = () => {
                 </li>
                 {!!currentUser?.avatarURL && (
                   <li>
-                    <button
+                    <input
                       type="button"
                       className="dropdown-item"
+                      value={"إزلة"}
                       onClick={() => deleteAvatar(currentUser?.uId)}
-                    >
-                      إزلة
-                    </button>
+                    />
                   </li>
                 )}
               </ul>
             </div>
           )}
         </div>
-
         {currentUser && (
           <h4 className="mt-2 fs-5 px-3">{currentUser.displayName} </h4>
         )}

@@ -9,7 +9,7 @@ export const AboutUsCard = ({ title, imgSrc }: AboutUsCardProps) => {
       <div className="card dd-flex flex-column justify-content-center align-items-center py-5">
         <img src={imgSrc} alt="..." style={{ width: "fit-content" }} />
         <div className="card-body text-center">
-          <h5 className="card-title fw-semibold">{title}</h5>
+          <h5 className=" fw-semibold">{title}</h5>
         </div>
       </div>
     </article>

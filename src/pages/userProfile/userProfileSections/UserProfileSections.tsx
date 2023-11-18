@@ -1,48 +1,65 @@
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import avatar from "../../../assets/images/User Profile/Avatar.png";
 import { NavLink } from "react-router-dom";
 import "./userProfileSections.css";
 // Authentication
 import { auth, firestore } from "../../../firebase/firebase";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
-import { doc, updateDoc } from "@firebase/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
 import { useUploadFile } from "react-firebase-hooks/storage";
-import { storage } from "../../../firebase/firebase.config";
+import { storage } from "../../../firebase/firebase";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
+import { doc, updateDoc } from "@firebase/firestore";
 import { signOut } from "firebase/auth";
+import { Spinner } from "../../../components/Spinner/Spinner";
 
 export const UserProfileSections = () => {
   //  Auth
   const { currentUser } = useContext(UserContext);
+  const [uploadFile] = useUploadFile();
   const [loading, setLoading] = useState(true);
-  const [uploadFile, , error] = useUploadFile();
+  const [error, setError] = useState<string | null>(null);
 
   const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
     setLoading(true);
+    setError(null);
     const avatar = e.target.files && e.target.files[0];
-    const avatarRef = ref(storage, `avatars/${currentUser?.uId}`);
-    if (avatarRef && avatar) {
-      await uploadFile(avatarRef, avatar, {
-        contentType: avatar.type,
-      });
-      const url = await getDownloadURL(avatarRef);
-
-      const userDocRef = doc(firestore, "users", currentUser?.uId);
-      userDocRef &&
-        updateDoc(userDocRef, {
-          ...currentUser,
-          avatarURL: url,
+    const avatarRef = currentUser && ref(storage, `avatars/${currentUser.uId}`);
+    try {
+      if (avatarRef && avatar) {
+        await uploadFile(avatarRef, avatar, {
+          contentType: avatar.type,
         });
+        const url = await getDownloadURL(avatarRef);
+        if (url) {
+          console.log(url);
+          const userDocRef = doc(firestore, "users", currentUser.uId);
+          userDocRef &&
+            updateDoc(userDocRef, {
+              ...currentUser,
+              avatarURL: url,
+            });
+        } else {
+          setError("Failed to get avatar URL");
+          throw new Error("Failed to get avatar URL");
+        }
+      }
+    } catch (err) {
+      setError("Error try again");
     }
     setLoading(false);
   };
+
   const deleteAvatar = async (id: string) => {
     setLoading(true);
-    await deleteObject(ref(storage, `avatars/${id}`));
-    await updateDoc(doc(firestore, "users", id), {
-      ...currentUser,
-      avatarURL: "",
-    });
+    try {
+      await deleteObject(ref(storage, `avatars/${id}`));
+      await updateDoc(doc(firestore, "users", id), {
+        ...currentUser,
+        avatarURL: "",
+      });
+    } catch (err) {
+      setError("Error try again");
+    }
     setLoading(false);
   };
 
@@ -57,19 +74,19 @@ export const UserProfileSections = () => {
       <div className="border pt-4 rounded-4">
         <div className="d-flex flex-column align-items-center">
           <div className="profile-img mb-4">
+            {error && <p>{error}</p>}
             {loading ? (
-              <p
+              <div
                 className="d-flex align-items-center justify-content-center text-center rounded-circle"
                 style={{
                   width: "100px",
                   height: "100px",
-                  backgroundColor: "rgba(0, 0, 0, 0.2)",
                 }}
               >
-                loading
-              </p>
+                <Spinner />
+              </div>
             ) : (
-              <div className="dropdown ">
+              <div className="dropdown">
                 <img
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
@@ -79,7 +96,6 @@ export const UserProfileSections = () => {
                   style={{ width: "100px", height: "100px" }}
                   className="rounded-circle"
                 />
-
                 <ul className="dropdown-menu">
                   <li>
                     <label htmlFor="profile-pic">تحديث</label>
@@ -104,77 +120,10 @@ export const UserProfileSections = () => {
               </div>
             )}
           </div>
-
           {currentUser && (
             <h4 className="mt-2 fs-5 px-3">{currentUser.displayName} </h4>
           )}
         </div>
-
-        {/* <div className="profile-img">
-            {loading ? (
-              <div
-                className="d-flex align-items-center justify-content-center text-center rounded-circle"
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  backgroundColor: "rgba(0, 0, 0, 0.2)",
-                }}
-              >
-                <p className="m-0">loading</p>
-              </div>
-            ) : (
-              <div>
-                {currentUser === undefined ? (
-                  <div
-                    className="d-flex align-items-center justify-content-center text-center rounded-circle"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      backgroundColor: "rgba(0, 0, 0, 0.2)",
-                    }}
-                  >
-                    <p className="m-0">loading</p>
-                  </div>
-                ) : (
-                  <div>
-                    <div>
-                      <label className="d-none" htmlFor="profile-pic">
-                        تحديث
-                      </label>
-                      <input
-                        type="file"
-                        hidden
-                        id="profile-pic"
-                        onChange={(event) => uploadAvatar(event)}
-                      />
-                      {currentUser?.avatarURL && (
-                        <span
-                          className="delete-avatar rounded-circle position-absolute d-none"
-                          onClick={() => deleteAvatar(currentUser?.uId)}
-                        >
-                          x
-                        </span>
-                      )}
-                    </div>
-
-                    {currentUser && currentUser.avatarURL ? (
-                      <img
-                        src={currentUser?.avatarURL}
-                        alt=""
-                        style={{ width: "100px" }}
-                      />
-                    ) : (
-                      <img src={avatar} alt="" style={{ width: "100px" }} />
-                    )}
-                  </div>
-                )}
-              </div>
-            )}
-          </div> */}
-
-        {/* <h4 className="mt-2 fs-5">{currentUser?.displayName} </h4>
-        </div> */}
-
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">
           <li>
             <NavLink end to={"/user/profile"}>
@@ -192,7 +141,7 @@ export const UserProfileSections = () => {
           </li>
         </ul>
         <div className="text-center border-top ">
-          <NavLink onClick={() => signOut(auth)} to={"/"}>
+          <NavLink onClick={() => signOut(auth)} to={"/login"}>
             تسجيل الخروج
           </NavLink>
         </div>
