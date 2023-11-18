@@ -91,7 +91,6 @@ const LoginForm = () => {
         setFirebaseError(err.message);
       })
       .finally(() => setLoadingSignin(false));
-      });
   };
 
   return (
