@@ -1,5 +1,11 @@
+export type ImageObj = {
+  imgId: string;
+  imgUrl: any;
+  imgFile?: File;
+};
+
 export type ProductType = {
-  id: string;
+  productId: string;
   productTitle: string;
   productPrice: string;
   productDescription: string;
@@ -7,8 +13,12 @@ export type ProductType = {
   productCategory: {
     value: string;
     label: string;
-  };
-  productImages: { imgId: string; imgUrl: string }[];
+  } | null;
+  productImages: ImageObj[];
   generatedAt: object;
   discount: string;
+  productImage: any;
+  rating: "";
+  sellerId: "";
+  reviewes: [];
 };

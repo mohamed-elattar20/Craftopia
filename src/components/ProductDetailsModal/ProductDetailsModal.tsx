@@ -17,7 +17,7 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
       <button
         title="show details"
         type="button"
-        className="btn bg-black bg-opacity-50 border-0 text-light rounded-pill"
+        className="btn bg-black bg-opacity-50 border-0 text-light rounded-pill mt-2"
         data-bs-toggle="modal"
         data-bs-target={`#d${modalData?.productId}`}
       >

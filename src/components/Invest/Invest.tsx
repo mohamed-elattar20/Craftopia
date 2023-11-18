@@ -1,14 +1,18 @@
-import test from "../../assets/images/default.jpg";
+import { useContext } from "react";
+import invest from "../../assets/images/Invest.jpg";
 import { BookmarkCheck } from "react-bootstrap-icons";
 import { HouseFill } from "react-bootstrap-icons";
 import { StopwatchFill } from "react-bootstrap-icons";
+import { Link } from "react-router-dom";
+import { UserContext } from "../../Contexts/UserContext";
 const Invest = () => {
+  const { myUser, authUser } = useContext(UserContext);
   return (
     <div className="container py-4">
       <div className="row py-4">
         <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
           <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-3">استثمر مواهبك!</h2>
+          <h2 className="mb-4">استثمر مواهبك!</h2>
           <div className="d-flex align-items-center mb-4">
             <HouseFill size={25} />
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
@@ -27,13 +31,20 @@ const Invest = () => {
             </p>
           </div>
 
-          <button className="btn btn-primary fs-5 fw-bold px-4 py-3 mb-4 mb-md-0">
+          {/* <Link
+            to={
+              myUser && authUser && authUser[0].Rule == "seller"
+                ? `/seller/profile`
+                : `/register`
+            }
+            className="btn btn-primary fw-bold px-4 py-2 mb-4 mb-md-0"
+          >
             ابدأ البيع
-          </button>
+          </Link> */}
         </div>
         <div className="col-md-6 mb-3 mb-md-0">
           <div className="h-100">
-            <img src={test} alt="" className="h-100"></img>
+            <img src={invest} alt="" className="h-100"></img>
           </div>
         </div>
       </div>
