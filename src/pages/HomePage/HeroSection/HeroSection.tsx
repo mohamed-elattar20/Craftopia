@@ -10,9 +10,25 @@ import { auth, usersCollRef } from "../../../firebase/firebase";
 import { query, where } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
+import {
+  ButtonToolbar,
+  OverlayTrigger,
+  Button,
+  Popover,
+} from "react-bootstrap";
 
 export const HeroSection = () => {
   const { currentUser, myUser } = useContext(UserContext);
+
+  const popoverClickRootClose = (
+    <Popover
+      id="popover-trigger-click-root-close"
+      title="Popover bottom"
+      className="p-2 text-center"
+    >
+      قم بتسجيل الخروج حتى تتمكن من إنشاء حساب كبائع
+    </Popover>
+  );
 
   return (
     <div
@@ -43,10 +59,30 @@ export const HeroSection = () => {
             <h2 className="text-white mb-4 ">
               انضموا إلينا وشاركوا في عرض مواهبكم
             </h2>
-            <div className="">
-              {/*  */}
-
-              {/*  */}
+            <div>
+              {currentUser && currentUser.Rule === "buyer" ? (
+                <ButtonToolbar className="justify-content-center">
+                  <OverlayTrigger
+                    trigger="click"
+                    rootClose
+                    placement="bottom"
+                    overlay={popoverClickRootClose}
+                  >
+                    <Button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5">
+                      انضموا الآن
+                    </Button>
+                  </OverlayTrigger>
+                </ButtonToolbar>
+              ) : (
+                <Link
+                  to={`/register`}
+                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
+                >
+                  انضموا الآن
+                </Link>
+              )}
+            </div>
+            {/* <div className="">
               {myUser && currentUser && currentUser.Rule === "seller" ? (
                 <Link
                   to={`/seller/profile`}
@@ -62,7 +98,7 @@ export const HeroSection = () => {
                   انضموا الآن
                 </Link>
               )}
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

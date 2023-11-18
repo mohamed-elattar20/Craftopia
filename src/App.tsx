@@ -47,6 +47,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { ProductType } from "./Types/ProductType";
 import { doc, updateDoc } from "firebase/firestore";
+import { MainLayout } from "./pages/MainLayout/MainLayout";
 
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
@@ -61,17 +62,8 @@ function App() {
       <button onClick={scrollUp} className="btn btn-primary fixedBtn ">
         <FontAwesomeIcon icon={faArrowUp} />
       </button>
-      <Navbar />
+      {/* <Navbar /> */}
       <Routes>
-        <Route element={<ProtectedRoutesNotSeller />}>
-          <Route path="" element={<HomePage />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/store" element={<StorePage />} />
-          <Route path="/search/:word" element={<SearchPage />} />
-          <Route path="/product-details/:id" element={<ProductDetailsPage />} />
-          <Route path="/products/:sellerId" element={<SellerProductsPage />} />
-        </Route>
-        <Route path="/contact-us" element={<ContactUs />} />
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
@@ -80,31 +72,49 @@ function App() {
           <Route path="/register/seller" element={<RegisterSeller />} />
           <Route path="/register/buyer" element={<RegisterBuyer />} />
         </Route>
-        {/* Protected Routes Profile ********************/}
-        <Route element={<ProtectedRoutesProfile />}>
-          <Route path="/community" element={<Forum />} />
-          {/*ProtectedRoutesProfile  */}
-          <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
-            <Route path={`/user/profile`} element={<UserProfile />}>
-              <Route path="" element={<UserProfileAccount />} />
-              <Route path="address" element={<UserProfileAddress />} />
-              <Route path="orders" element={<UserProfileOrders />} />
-              <Route path="posts" element={<UserProfilePosts />} />
-              <Route path="wishlist" element={<UserProfileWishList />} />
-            </Route>
+
+        <Route path="/" element={<MainLayout />}>
+          <Route path="/contact-us" element={<ContactUs />} />
+          <Route element={<ProtectedRoutesNotSeller />}>
+            <Route path="" element={<HomePage />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/store" element={<StorePage />} />
+            <Route path="/search/:word" element={<SearchPage />} />
+            <Route
+              path="/product-details/:id"
+              element={<ProductDetailsPage />}
+            />
+            <Route
+              path="/products/:sellerId"
+              element={<SellerProductsPage />}
+            />
           </Route>
-          {/*ProtectedRoutesProfileSeller  */}
-          <Route element={<ProtectedRoutesProfileSeller />}>
-            <Route path="/seller/profile" element={<SellerProfile />}>
-              <Route path="" element={<SellerProfileAccount />} />
-              <Route path="products" element={<SellerProfileProducts />} />
-              <Route path="posts" element={<SellerProfilePosts />} />
+          {/* Protected Routes Profile ********************/}
+          <Route element={<ProtectedRoutesProfile />}>
+            <Route path="/community" element={<Forum />} />
+            {/*ProtectedRoutesProfile  */}
+            <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
+              <Route path={`/user/profile`} element={<UserProfile />}>
+                <Route path="" element={<UserProfileAccount />} />
+                <Route path="address" element={<UserProfileAddress />} />
+                <Route path="orders" element={<UserProfileOrders />} />
+                <Route path="posts" element={<UserProfilePosts />} />
+                <Route path="wishlist" element={<UserProfileWishList />} />
+              </Route>
+            </Route>
+            {/*ProtectedRoutesProfileSeller  */}
+            <Route element={<ProtectedRoutesProfileSeller />}>
+              <Route path="/seller/profile" element={<SellerProfile />}>
+                <Route path="" element={<SellerProfileAccount />} />
+                <Route path="products" element={<SellerProfileProducts />} />
+                <Route path="posts" element={<SellerProfilePosts />} />
+              </Route>
             </Route>
           </Route>
         </Route>
       </Routes>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }

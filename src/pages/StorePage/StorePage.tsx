@@ -27,6 +27,7 @@ const StorePage = () => {
       setItemOffset(0);
     }
   };
+
   const [productss] = useCollectionData(productsCollRef);
   const [loading, setLoading] = useState(true);
   // console.log(productss);
@@ -36,7 +37,8 @@ const StorePage = () => {
 
   const [itemOffset, setItemOffset] = useState(0);
   const [pageCoun, setPageCount] = useState(0);
-  const itemsPerPage = 5;
+  const itemsPerPage = 1;
+
   useEffect(() => {
     // ***********************
     setLoading(true);
@@ -63,7 +65,7 @@ const StorePage = () => {
         setFilterdProducts([...(queryProductsArray as any)]);
       }
     };
-    setItemOffset(0);
+
     getQuery();
 
     // ***********************
@@ -182,6 +184,7 @@ const StorePage = () => {
                     previousLinkClassName="page-num"
                     nextLinkClassName="page-num"
                     activeLinkClassName="active"
+                    forcePage={itemOffset}
                   />
                 </div>
               </div>
