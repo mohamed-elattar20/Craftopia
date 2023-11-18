@@ -90,11 +90,15 @@ function Navbar() {
                 الرئيسية
               </NavLink>
             </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" to={`/store`}>
-                التسوق
-              </NavLink>
-            </li>
+            {currentUser && currentUser.Rule === "seller" ? (
+              ""
+            ) : (
+              <li className="nav-item">
+                <NavLink className="nav-link" to={`/store`}>
+                  التسوق
+                </NavLink>
+              </li>
+            )}
             <li className="nav-item">
               <NavLink className="nav-link" to={`/contact-us`}>
                 تواصل معنا
