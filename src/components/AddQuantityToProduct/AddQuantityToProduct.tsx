@@ -13,48 +13,28 @@ import {
   faPlus,
   faMinus,
 } from "@fortawesome/free-solid-svg-icons";
+import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 
 type AddQuantityToProductProps = {
   data?: DocumentData;
 };
 const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
-  const { myUser, authUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
+  const { setCartItems, anonymousCartItems } = useContext(AnonymousUserContext);
 
-  const listOfUsers =
-    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-  const [currentUser] = useCollection(listOfUsers);
-  const userId = currentUser?.docs[0].id;
-  const userRef = userId && doc(firestore, "users", userId);
   //
+  const userRef = currentUser && doc(firestore, "users", currentUser?.uId);
   const AddQuantity = (product: any) => {
-    let userCart = currentUser?.docs[0].data().cart;
-    if (userRef && userCart[product.productId]) {
-      updateDoc(userRef, {
-        ...currentUser?.docs[0].data(),
-        cart: {
-          ...userCart,
-          [product.productId]: {
-            ...product,
-            quantity: userCart[product.productId].quantity + 1,
-          },
-        },
-      }).then((res) => {
-        console.log(`quantity plus by 1 *************************************`);
-      });
-    }
-  };
-
-  const DecreaseFromCart = (product: any) => {
-    let userCart = currentUser?.docs[0].data().cart;
-    if (userCart[product.productId].quantity > 1) {
+    if (currentUser) {
+      let userCart = currentUser?.cart;
       if (userRef && userCart[product.productId]) {
         updateDoc(userRef, {
-          ...currentUser?.docs[0].data(),
+          ...currentUser,
           cart: {
             ...userCart,
             [product.productId]: {
               ...product,
-              quantity: userCart[product.productId].quantity - 1,
+              quantity: userCart[product.productId].quantity + 1,
             },
           },
         }).then((res) => {
@@ -63,23 +43,78 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
           );
         });
       }
+    } else {
+      if (anonymousCartItems && anonymousCartItems[product.productId]) {
+        setCartItems((prev: any) => ({
+          ...prev,
+          [product.productId]: {
+            ...product,
+            quantity: prev[product.productId].quantity + 1,
+          },
+        }));
+      }
+    }
+  };
+
+  const DecreaseFromCart = (product: any) => {
+    if (currentUser) {
+      let userCart = currentUser?.cart;
+      if (userCart[product.productId].quantity > 1) {
+        if (userRef && userCart[product.productId]) {
+          updateDoc(userRef, {
+            ...currentUser,
+            cart: {
+              ...userCart,
+              [product.productId]: {
+                ...product,
+                quantity: userCart[product.productId].quantity - 1,
+              },
+            },
+          }).then((res) => {
+            console.log(
+              `quantity plus by 1 *************************************`
+            );
+          });
+        }
+      }
+    } else {
+      if (
+        anonymousCartItems &&
+        anonymousCartItems[product.productId].quantity > 1
+      ) {
+        setCartItems((prev: any) => ({
+          ...prev,
+          [product.productId]: {
+            ...product,
+            quantity: prev[product.productId].quantity - 1,
+          },
+        }));
+      }
     }
   };
   //  Delete ************************
   const deleteFromCart = (product: any) => {
-    let userCart = currentUser?.docs[0].data().cart;
-    if (userRef && userCart[product.productId]) {
-      let updatedProducts = userCart;
-      delete updatedProducts[product.productId];
-      console.log(updatedProducts);
-      updateDoc(userRef, {
-        ...currentUser?.docs[0].data(),
-        cart: {
-          ...updatedProducts,
-        },
-      }).then((res) => {
-        console.log(`Product Deleted ******************************`);
-      });
+    if (currentUser) {
+      let userCart = currentUser?.cart;
+      if (userRef && userCart[product.productId]) {
+        let updatedProducts = userCart;
+        delete updatedProducts[product.productId];
+        console.log(updatedProducts);
+        updateDoc(userRef, {
+          ...currentUser,
+          cart: {
+            ...updatedProducts,
+          },
+        }).then((res) => {
+          console.log(`Product Deleted ******************************`);
+        });
+      }
+    } else {
+      if (anonymousCartItems && anonymousCartItems[product.productId]) {
+        let updatedCart = anonymousCartItems;
+        delete updatedCart[product.productId];
+        setCartItems({ ...updatedCart });
+      }
     }
   };
 

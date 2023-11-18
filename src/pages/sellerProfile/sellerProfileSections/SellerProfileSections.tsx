@@ -1,18 +1,19 @@
-//  Routing
-import { NavLink } from "react-router-dom";
-// Assets
-import avatar from "../../../assets/images/User Profile/Avatar.png";
-// Firebase
-import { updateDoc, doc } from "@firebase/firestore";
-import { firestore } from "../../../firebase/firebase";
-import { useUploadFile } from "react-firebase-hooks/storage";
-import { ref, getDownloadURL, deleteObject } from "firebase/storage";
-import { storage } from "../../../firebase/firebase.config";
 // React
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import "./SellerProfileSections.css";
+// Routing
+import { NavLink } from "react-router-dom";
+// Firebase
+import { updateDoc, doc } from "@firebase/firestore";
+import { ref, getDownloadURL, deleteObject } from "firebase/storage";
+import { signOut } from "firebase/auth";
+import { useUploadFile } from "react-firebase-hooks/storage";
+import { firestore, auth } from "../../../firebase/firebase";
+import { storage } from "../../../firebase/firebase";
+// Internal
 import { UserContext } from "../../../Contexts/UserContext";
 import { Spinner } from "../../../components/Spinner/Spinner";
+// Assets
+import avatar from "../../../assets/images/User Profile/Avatar.png";
 
 export const SellerProfileSections = () => {
   const { currentUser } = useContext(UserContext);
@@ -22,15 +23,15 @@ export const SellerProfileSections = () => {
   const [error, setError] = useState<string | null>(null);
 
   const uploadAvatar = async (e: ChangeEvent<HTMLInputElement>) => {
-    const avatar = e.target.files && e.target.files[0];
     setLoading(true);
     setError(null);
+    const avatar = e.target.files && e.target.files[0];
     const avatarRef = currentUser && ref(storage, `avatars/${currentUser.uId}`);
     try {
       if (avatarRef && avatar) {
         await uploadFile(avatarRef, avatar, {
           contentType: avatar.type,
-        }).catch((err) => console.log(err));
+        });
         const url = await getDownloadURL(avatarRef);
         if (url) {
           console.log(url);
@@ -45,20 +46,23 @@ export const SellerProfileSections = () => {
           throw new Error("Failed to get avatar URL");
         }
       }
-    } catch (err: any) {
-      console.log(err);
-      setError(err.message);
+    } catch (err) {
+      setError("Error try again");
     }
     setLoading(false);
   };
 
   const deleteAvatar = async (id: string) => {
     setLoading(true);
-    await deleteObject(ref(storage, `avatars/${id}`));
-    await updateDoc(doc(firestore, "users", id), {
-      ...currentUser,
-      avatarURL: "",
-    });
+    try {
+      await deleteObject(ref(storage, `avatars/${id}`));
+      await updateDoc(doc(firestore, "users", id), {
+        ...currentUser,
+        avatarURL: "",
+      });
+    } catch (err) {
+      setError("Error try again");
+    }
     setLoading(false);
   };
 
@@ -75,7 +79,13 @@ export const SellerProfileSections = () => {
           <div className="profile-img mb-4">
             {error && <p>{error}</p>}
             {loading ? (
-              <div>
+              <div
+                className="d-flex align-items-center justify-content-center text-center rounded-circle"
+                style={{
+                  width: "100px",
+                  height: "100px",
+                }}
+              >
                 <Spinner />
               </div>
             ) : (
@@ -131,7 +141,9 @@ export const SellerProfileSections = () => {
           </li>
         </ul>
         <div className="text-center border-top ">
-          <NavLink to={"/"}>تسجيل الخروج</NavLink>
+          <NavLink onClick={() => signOut(auth)} to={"/login"}>
+            تسجيل الخروج
+          </NavLink>
         </div>
       </div>
     </div>

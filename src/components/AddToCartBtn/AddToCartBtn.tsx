@@ -21,41 +21,39 @@ import { useNavigate } from "react-router-dom";
 // React Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ProductType } from "../../Types/ProductType";
+import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 type AddToCartBtnProps = {
   product?: DocumentData;
 };
 
 const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
-  // ***************************************
-  const { myUser, authUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
+  const { setCartItems, anonymousCartItems } = useContext(AnonymousUserContext);
 
-  const listOfUsers =
-    myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
-  const [currentUser] = useCollection(listOfUsers);
-  const userId = currentUser?.docs[0].id;
-  // console.log(CurrentUser?.docs[0].id);
-
-  const userRef = userId && doc(firestore, "users", userId);
-
-  const addToCartFunc = (product: any) => {
-    let userCart = currentUser?.docs[0].data().cart;
+  const addToCartFuncUser = async (product: any, quantity?: number) => {
+    const userRef = doc(firestore, "users", currentUser?.uId);
+    let userCart = currentUser?.cart;
     if (userRef && !userCart[product.productId]) {
-      updateDoc(userRef, {
-        ...currentUser?.docs[0].data(),
-        cart: { ...userCart, [product.productId]: { ...product, quantity: 1 } },
+      await updateDoc(userRef, {
+        ...currentUser,
+        cart: {
+          ...userCart,
+          [product.productId]: { ...product, quantity: quantity ?? 1 },
+        },
       }).then((res) => {
         notify();
         console.log(`Added *************************************`);
       });
     } else {
       if (userRef) {
-        updateDoc(userRef, {
-          ...currentUser?.docs[0].data(),
+        await updateDoc(userRef, {
+          ...currentUser,
           cart: {
             ...userCart,
             [product.productId]: {
               ...product,
-              quantity: userCart[product.productId].quantity + 1,
+              quantity: userCart[product.productId].quantity + (quantity ?? 1),
             },
           },
         }).then((res) => {
@@ -66,17 +64,31 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
         });
       }
     }
-    // ***************************************
-    // if (productRef) {
-    //   updateDoc(productRef, {
-    //     ...currentUser?.docs[0].data(),
-    //     cart: [...currentUser?.docs[0].data().cart, product],
-    //   }).then((res) => {
-    //     console.log(res);
-    //     console.log(`Added *************************************`);
-    //   });
-    // }
   };
+
+  const addToCartFunc = (product: any) => {
+    if (currentUser) {
+      addToCartFuncUser(product);
+    } else {
+      if (anonymousCartItems && anonymousCartItems[product.productId]) {
+        setCartItems((prev: any) => ({
+          ...prev,
+          [product.productId]: {
+            ...product,
+            quantity: prev[product.productId].quantity + 1,
+          },
+        }));
+      } else {
+        setCartItems((prev: object) => ({
+          ...prev,
+          [product.productId]: { ...product, quantity: 1 },
+        }));
+      }
+      localStorage.setItem("cart", JSON.stringify(anonymousCartItems));
+      notify();
+    }
+  };
+
   const navigate = useNavigate();
   const notify = () =>
     toast.success("تم إضافة المنتج بنجاح", {
@@ -103,7 +115,7 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
         toastClassName={`shadow-sm `}
       />
       <button
-        onClick={() => (myUser ? addToCartFunc(product) : navigate(`/login`))}
+        onClick={() => addToCartFunc(product)}
         className="btn btn-primary w-100"
       >
         أضف الى السلة

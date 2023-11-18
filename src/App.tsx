@@ -4,7 +4,7 @@ import { Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { UserContext } from "./Contexts/UserContext";
 // Firebase
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/firebase";
+import { auth, firestore } from "./firebase/firebase";
 import { useContext, useEffect, useState } from "react";
 import { User } from "firebase/auth";
 //  Components & Pages
@@ -45,15 +45,65 @@ import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 import { ProtectedRoutesNotSeller } from "./pages/ProtectedRoutes/ProtectedRoutesNotSeller";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
+import { ProductType } from "./Types/ProductType";
+import { doc, updateDoc } from "firebase/firestore";
 
 function App() {
-
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
 
   const scrollUp = () => {
     window.scrollTo(0, 0);
   };
+  const { currentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    let userCart = currentUser?.cart;
+    const userRef = currentUser && doc(firestore, "users", currentUser?.uId);
+    const addToCartFuncUser = async (product: any, quantity: number) => {
+      if (userRef && !userCart[product.productId]) {
+        userCart = {
+          ...userCart,
+          [product.productId]: { ...product, quantity: quantity },
+        };
+        await updateDoc(userRef, {
+          ...currentUser,
+          cart: userCart,
+        }).then((res) => {
+          console.log(`Added *************************************`);
+        });
+      } else {
+        if (userRef) {
+          userCart = {
+            ...userCart,
+            [product.productId]: {
+              ...product,
+              quantity: userCart[product.productId].quantity + quantity,
+            },
+          };
+          await updateDoc(userRef, {
+            ...currentUser,
+            cart: userCart,
+          }).then((res) => {
+            console.log(
+              `quantity plus by 1 *************************************`
+            );
+          });
+        }
+      }
+    };
+
+    if (currentUser) {
+      if (localStorage.getItem("cart")) {
+        const cartItems: Object = JSON.parse(localStorage.getItem("cart")!);
+        for (let i = 0; i < Object.values(cartItems).length; i++) {
+          let product = Object.values(cartItems)[i];
+          addToCartFuncUser(product, product.quantity);
+        }
+        localStorage.removeItem("cart");
+      }
+    }
+  }, [currentUser]);
   return (
     <div className="App">
       <button onClick={scrollUp} className="btn btn-primary fixedBtn ">
