@@ -6,6 +6,6 @@ type SpinnerProps = {
 
 export const Spinner = ({ size }: SpinnerProps) => {
   return (
-    <SphereSpinner size={size ? size : 50} color="#686769" loading={true} />
+    <SphereSpinner size={size ? size : 50} color="#192655" loading={true} />
   );
 };

@@ -37,7 +37,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
     UserType | undefined | null | DocumentData
   >();
   const [myUser] = useAuthState(auth);
-  console.log(myUser);
+  // console.log(myUser);
 
   const listOfUsers =
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
@@ -46,7 +46,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
   const [currentUserr] = useCollection(listOfUsers);
   const userId = currentUserr && currentUserr?.docs[0].id;
   const userRef = userId && doc(firestore, "users", userId);
-  console.log(userRef);
+  // console.log(userRef);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {

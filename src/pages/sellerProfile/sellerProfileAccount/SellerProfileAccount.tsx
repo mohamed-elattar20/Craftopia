@@ -1,10 +1,11 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import egyptGovernoratesData from "../../RegisterPage/RegisterSeller/governorates.json";
 import { doc, updateDoc } from "firebase/firestore";
 import Select from "react-select";
 import { UserContext } from "../../../Contexts/UserContext";
 import { firestore } from "../../../firebase/firebase";
+import { ToastContainer, toast } from "react-toastify";
 
 type Inputs = {
   firstName: string;
@@ -16,6 +17,20 @@ type Inputs = {
 };
 
 export const SellerProfileAccount = () => {
+  //
+  const notify = () =>
+    toast.success("تم تعديل البيانات بنجاح", {
+      position: "top-left",
+      autoClose: 500,
+      hideProgressBar: true,
+      closeOnClick: false,
+      draggable: false,
+      progress: undefined,
+      theme: "light",
+      pauseOnHover: false,
+      rtl: true,
+    });
+  //
   const governoratesList = egyptGovernoratesData.egyptGovernorates;
   const { currentUser } = useContext(UserContext);
   const {
@@ -26,13 +41,18 @@ export const SellerProfileAccount = () => {
     reset,
   } = useForm<Inputs>();
 
+  const [loading, setLoading] = useState<Boolean>(false);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
+    setLoading(true);
     const modifyUser = async () => {
       await updateDoc(doc(firestore, "users", currentUser?.uId), {
         ...currentUser,
         ...data,
         fullName: `${data.firstName} ${data.lastName}`,
       });
+      notify();
+      setLoading(false);
     };
     modifyUser();
   };
@@ -51,6 +71,13 @@ export const SellerProfileAccount = () => {
 
   return (
     <div className="user-profile border py-5 px-2 px-sm-5 flex-grow-1 rounded-4">
+      <ToastContainer
+        autoClose={500}
+        closeOnClick
+        rtl={true}
+        theme="light"
+        hideProgressBar
+      />
       <h2 className="text-center my-4">بيانات الحساب</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -147,9 +174,28 @@ export const SellerProfileAccount = () => {
           )}
         </div>
         <div className="">
-          <button className="btn btn-secondary text-white px-4" type="submit">
+          {/*  */}
+          {loading ? (
+            <button
+              className="btn btn-secondary text-light"
+              type="button"
+              disabled
+            >
+              <span role="status">جاري التحميل</span>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                aria-hidden="true"
+              ></span>
+            </button>
+          ) : (
+            <button className="btn btn-secondary text-white px-4" type="submit">
+              حفظ
+            </button>
+          )}
+          {/*  */}
+          {/* <button className="btn btn-secondary text-white px-4" type="submit">
             حفظ
-          </button>
+          </button> */}
         </div>
       </form>
     </div>

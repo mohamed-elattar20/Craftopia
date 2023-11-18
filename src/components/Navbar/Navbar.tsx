@@ -35,7 +35,7 @@ function Navbar() {
   const searchFunc = () => {
     navigate(`search/${searchInput}`);
   };
-  console.log(cartItemsCount);
+  // console.log(cartItemsCount);
 
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
