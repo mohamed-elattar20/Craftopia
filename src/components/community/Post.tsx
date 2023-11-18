@@ -27,6 +27,7 @@ import {
   commentsCollRef,
   firestore,
   postsCollRef,
+  usersCollRef,
 } from "../../firebase/firebase";
 import {
   useCollection,
@@ -102,6 +103,11 @@ export default function Post({ post }: DocumentData) {
 
   const [commentState, setCommentState] = useState<Boolean>(false);
 
+  // brand Name on post for seller ********************************************************
+  const postOwner = query(usersCollRef, where("uId", "==", post.postOwnerId));
+  const [postOwnerDoc] = useCollectionData(postOwner);
+  // console.log(postOwnerDoc);
+
   return (
     <>
       <Grid item xs={7} sx={{ margin: "1rem 0" }}>
@@ -139,6 +145,15 @@ export default function Post({ post }: DocumentData) {
                     <Typography sx={{ fontWeight: "bold" }}>
                       {post.postOwnerName}
                     </Typography>
+                    {/*  */}
+                    {/* {postOwnerDoc?.Rule === "seller" ? (
+                      <Typography sx={{ fontWeight: "bold" }}>
+                        {post.displayName}
+                      </Typography>
+                    ) : (
+                      ""
+                    )} */}
+                    {/*  */}
                     <Box sx={{ opacity: 0.9 }}>
                       {post.genratedAt && (
                         <>
@@ -204,8 +219,10 @@ export default function Post({ post }: DocumentData) {
                       اعجاب
                     </Typography>
                   </Button>
-                  {post.votes > 0 && (
-                    <Typography>نال اعجاب {post.votes}</Typography>
+                  {Object.keys(post.votes).length > 0 && (
+                    <Typography>
+                      نال اعجاب {Object.keys(post.votes).length}
+                    </Typography>
                   )}
                   <Button
                     onClick={() => setIsOpen((isOpen) => !isOpen)}

@@ -51,25 +51,31 @@ const SearchPage = () => {
   // *****************************************
 
   return (
-    <div className="container mt-5">
-      <div className="w-25">
-        <SortComponent products={products} setProducts={setProducts} />
-      </div>
-      {error && <h2>{error}</h2>}
-      {loading ? (
-        <div className="d-flex justify-content-center mt-4">
-          <Spinner />
+    <>
+      {products ? (
+        <div className="container mt-5">
+          <div className="w-25">
+            <SortComponent products={products} setProducts={setProducts} />
+          </div>
+          {error && <h2>{error}</h2>}
+          {loading ? (
+            <div className="d-flex justify-content-center mt-4">
+              <Spinner />
+            </div>
+          ) : (
+            <div className="row my-5 g-3">
+              {products.map((prod: any) => (
+                <div key={prod.productId} className="col-6 col-md-6 col-lg-3">
+                  <ProductCard data={prod} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       ) : (
-        <div className="row my-5 g-3">
-          {products.map((prod: any) => (
-            <div key={prod.productId} className="col-6 col-md-6 col-lg-3">
-              <ProductCard data={prod} />
-            </div>
-          ))}
-        </div>
+        <h1>Hello</h1>
       )}
-    </div>
+    </>
   );
 };
 

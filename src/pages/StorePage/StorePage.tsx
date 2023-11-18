@@ -71,7 +71,7 @@ const StorePage = () => {
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     const currentItems: any = filterdProducts?.slice(itemOffset, endOffset);
 
     if (filterdProducts?.length) {

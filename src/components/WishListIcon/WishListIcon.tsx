@@ -20,14 +20,14 @@ export const WishListIcon = ({ data }: DocumentData) => {
           ...currentUser,
           wishList: { ...updatedWishList },
         });
-        console.log("product removed");
+        // console.log("product removed");
       } else {
         if (currentUser) {
           updateDoc(userRef, {
             ...currentUser,
             wishList: { ...currentUser.wishList, [product.productId]: product },
           });
-          console.log("product added");
+          // console.log("product added");
         }
       }
     }
