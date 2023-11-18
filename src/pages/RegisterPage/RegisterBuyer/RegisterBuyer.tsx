@@ -53,9 +53,6 @@ function RegisterBuyer() {
     // console.log(data);
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then((res) => {
-        res.user.getIdTokenResult().then((response) => {
-          localStorage.setItem("token", response.token);
-        });
         // console.log(res);
         // console.log(`added to auth users`, res);
         // setName(res?.user?.displayName);
@@ -84,6 +81,7 @@ function RegisterBuyer() {
         navigate(`/`);
       })
       .catch((err) => {
+        setLoadingSignup(false);
         setRegisterFirebaseError(err.message);
         // console.log(err?.message);
       });
@@ -289,7 +287,7 @@ function RegisterBuyer() {
               <button className="btn btn-primary " type="button" disabled>
                 <span role="status">جاري التسجيل</span>
                 <span
-                  className="spinner-border spinner-border-sm ms-2"
+                  className="spinner-border spinner-border-sm me-2"
                   aria-hidden="true"
                 ></span>
               </button>

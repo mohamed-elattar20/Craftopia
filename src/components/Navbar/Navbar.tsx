@@ -41,8 +41,6 @@ function Navbar() {
 
   const { anonymousCartItems } = useContext(AnonymousUserContext);
 
-  console.log(anonymousCartItems);
-
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
       <nav className="navbar navbar-expand-lg px-5">

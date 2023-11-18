@@ -43,7 +43,7 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
         },
       }).then((res) => {
         notify();
-        console.log(`Added *************************************`);
+        // console.log(`Added *************************************`);
       });
     } else {
       if (userRef) {
@@ -58,9 +58,9 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
           },
         }).then((res) => {
           notify();
-          console.log(
-            `quantity plus by 1 *************************************`
-          );
+          // console.log(
+          //   `quantity plus by 1 *************************************`
+          // );
         });
       }
     }

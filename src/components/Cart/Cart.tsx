@@ -13,21 +13,20 @@ import {
 } from "firebase/firestore";
 import { User, onAuthStateChanged } from "firebase/auth";
 import CartPayment from "./CartPayment";
+import React from "react";
+
 function Cart() {
   const [stepperValue, setStepperValue] = useState(0);
   const [currentUserData, setCurrentUserData] = useState<DocumentData>({});
   const [user, setUser] = useState<User>();
-
   return (
     <>
-      <CartStepper stepUpdate={stepperValue} />
       {stepperValue === 0 && <CartPurchases nextPage={setStepperValue} />}
       {stepperValue === 1 && <CartInfo nextPage={setStepperValue} />}
       {stepperValue === 2 && <CartPayment nextPage={setStepperValue} />}
     </>
   );
 }
-
 export default Cart;
 
 // useEffect(() => {
