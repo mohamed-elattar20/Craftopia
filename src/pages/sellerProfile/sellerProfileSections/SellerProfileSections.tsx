@@ -137,7 +137,7 @@ export const SellerProfileSections = () => {
             <NavLink to={"./products"}>المنتجات</NavLink>
           </li>
           <li>
-            <NavLink to={"./posts"}>المنشورات</NavLink>
+            <NavLink to={"./posts"}>المنتجات المطلوبة</NavLink>
           </li>
         </ul>
         <div className="text-center border-top ">
