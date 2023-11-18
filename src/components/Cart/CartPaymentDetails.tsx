@@ -1,108 +1,97 @@
 import { useForm } from "react-hook-form";
-import { useStripe } from '@stripe/react-stripe-js';
-import './Cart.css'
-import { db, ordersRef } from "../../firebase/firebase.config";
-import { addDoc, collection, getDocs, Timestamp, updateDoc } from "firebase/firestore";
-import React, { useContext } from "react";
+import "./Cart.css";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Contexts/UserContext";
-import { submitOrder } from "../../Hooks/StripeHook/useStripe";
-
+import {
+  authReq,
+  orderReg,
+  paymentReq,
+} from "../../Hooks/PaymobHook/usePaymob";
+import { Timestamp, addDoc, updateDoc } from "firebase/firestore";
+import { ordersRef } from "../../firebase/firebase.config";
 const CartPaymentDetails = () => {
+  const [iframeURL, setIframeURL] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const { authUser, userRef } = useContext(UserContext);
+  let total = 0;
+  let bankCard = false;
 
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { authUser, userRef } = useContext(UserContext);
-    let total = 0;
-    let bankCard = false;
+  const shippingPrice = 60;
+  if (authUser) {
+    const cartKeys = Object.keys(authUser[0]?.cart);
+    cartKeys.forEach((key, index) => {
+      total +=
+        authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
+    });
+  }
+  const makeCartEmpty = async () => {
+    if (userRef) {
+      await updateDoc(userRef, {
+        ["cart"]: {},
+      }).then(() => {
+        console.log("cart has been emptied");
+      });
+    }
+  };
 
-
-    const shippingPrice = 60;
-    if (authUser) {
-        const cartKeys = Object.keys(authUser[0]?.cart);
-        cartKeys.forEach((key, index) => {
-            total +=
-                authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
+  useEffect(() => {
+    let tok: any;
+    let orderId;
+    authReq().then((data) => {
+      tok = data;
+      if (authUser) {
+        orderReg(authUser, tok).then((res: any) => {
+          console.log(res);
+          orderId = res.id;
+          console.log(orderId);
+          paymentReq(authUser, tok, orderId).then((res) => {
+            setIframeURL(
+              (old) =>
+                `https://accept.paymob.com/api/acceptance/iframes/802610?payment_token=${res}`
+            );
+          });
         });
-    }
-    // handleSubmit(() => submitOrder)
-    const ayhaha = () => {
-        if(authUser){
-            submitOrder(authUser, ordersRef, total, shippingPrice);
-        }
-    }
+      }
+    });
 
-    return (
-        <div className="container pt-5">
-            <form onSubmit={handleSubmit(ayhaha)} noValidate>
-                <div className="row g-4">
-                    <div className="col-12 col-md-6 pb-3">
-                        <h6 className="d-flex justify-content-between p-1">
-                            <span>رقم البطاقة البنكية</span>
-                            <span>Card Number</span>
-                        </h6>
-                        <input
-                            id="CardNumber"
-                            type="text"
-                            className="form-control"
-                            placeholder="رقم البطاقة البنكية"
-                            {...register("CardNumber", { required: true })}
-                        />
-                        {errors.CardNumber &&
-                            <p className=" text-danger">برجاء ادخال رقم البطاقة</p>
-                        }
-                    </div>
-                    <div className="col-12 col-md-6 pb-3">
-                        <h6 className="d-flex justify-content-between p-1">
-                            <span>اسم حامل البطاقة</span>
-                            <span>Cardholder Name</span>
-                        </h6>
-                        <input
-                            id="CardHolder"
-                            type="text"
-                            className="form-control"
-                            placeholder="رقم البطاقة البنكية"
-                            {...register("CardHolder", { required: true })}
-                        />
-                        {errors.CardHolder &&
-                            <p className=" text-danger">برجاء ادخال الاسم</p>
-                        }
-                    </div>
-                    <div className="col-12 col-md-6 pb-3">
-                        <h6 className="d-flex justify-content-between p-1">
-                            <span>تاريخ الانتهاء</span>
-                            <span>Expirey Date</span>
-                        </h6>
-                        <input
-                            id="ExpireyDate"
-                            type="text"
-                            className="form-control"
-                            placeholder="تاريخ الانتهاء"
-                            {...register("ExpireyDate", { required: true })}
-                        />
-                        {errors.ExpireyDate &&
-                            <p className=" text-danger">برجاء ادخال تاريخ الانتهاء</p>
-                        }
-                    </div>
-                    <div className="col-12 col-md-6 pb-3">
-                        <h6 className="d-flex justify-content-between p-1">
-                            <span>الرقم السرى</span>
-                            <span>CCV</span>
-                        </h6>
-                        <input
-                            id="Ccv"
-                            type="text"
-                            className="form-control"
-                            placeholder="رقم البطاقة البنكية"
-                            {...register("Ccv", { required: true })}
-                        />
-                        {errors.Ccv &&
-                            <p className=" text-danger">برجاء ادخال الرقم السرى</p>
-                        }
-                    </div>
-                </div>
-                <button type="submit" className="btn btn-primary mt-5" onClick={() => ayhaha()}>اتمام عملية الدفع</button>
-            </form>
-        </div>
-    )
-}
+    const handleBeforeUnload = async () => {
+      await makeCartEmpty();
+      if (authUser) {
+        await addDoc(ordersRef, {
+          clientId: authUser[0]["uId"],
+          clientName: authUser[0]["displayName"],
+          governorate: authUser[0]["governorate"],
+          orderAt: Timestamp.fromDate(new Date()),
+          price: total,
+          products: authUser[0]["cart"],
+          shippingPrice: shippingPrice,
+          totalPrice: total + shippingPrice,
+          address: authUser[0]["address"],
+          status: "pending",
+          paymentMethod: !bankCard ? "On Delivery" : "Card Payment",
+        });
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [authUser]);
+
+  return (
+    <div className="container pt-5 h-100">
+      <iframe
+        src={iframeURL}
+        style={{ width: "100%", height: "800px" }}
+      ></iframe>
+    </div>
+  );
+};
 
 export default CartPaymentDetails;
