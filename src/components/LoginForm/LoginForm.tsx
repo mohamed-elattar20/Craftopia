@@ -88,7 +88,9 @@ const LoginForm = () => {
         }
       })
       .catch((err) => {
+        setLoadingSignin(false);
         setFirebaseError(err.message);
+
         // console.log(err.message);
       });
   };
@@ -171,7 +173,7 @@ const LoginForm = () => {
                 >
                   <span role="status">جاري تسجيل الدخول</span>
                   <span
-                    className="spinner-border spinner-border-sm ms-2"
+                    className="spinner-border spinner-border-sm me-2"
                     aria-hidden="true"
                   ></span>
                 </button>

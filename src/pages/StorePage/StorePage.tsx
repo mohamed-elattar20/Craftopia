@@ -54,7 +54,7 @@ const StorePage = () => {
       const queryProductsArray: Array<DocumentData> = [];
       querySnapshot &&
         querySnapshot.forEach((doc) => {
-          console.log(doc);
+          // console.log(doc);
           queryProductsArray.push(doc.data());
         });
       // console.log(queryProductsArray);
@@ -72,7 +72,7 @@ const StorePage = () => {
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
+    // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
     const currentItems: any = filterdProducts?.slice(itemOffset, endOffset);
 
     if (filterdProducts?.length) {
