@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import avatar from "../../../assets/images/User Profile/Avatar.png";
 // Authentication
-import { firestore } from "../../../firebase/firebase";
+import { auth, firestore } from "../../../firebase/firebase";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { doc, updateDoc } from "@firebase/firestore";
 import { UserContext } from "../../../Contexts/UserContext";
@@ -9,9 +9,8 @@ import { useUploadFile } from "react-firebase-hooks/storage";
 import { storage } from "../../../firebase/firebase.config";
 import { deleteObject, getDownloadURL, ref } from "firebase/storage";
 import { signOut } from "firebase/auth";
-import "./userProfileTaps.css";
 
-export const UserProfileTaps = () => {
+export const SellerProfileTaps = () => {
   const { currentUser } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
   const [uploadFile, , error] = useUploadFile();
@@ -111,23 +110,17 @@ export const UserProfileTaps = () => {
 
       <ul className="user-profile-taps nav nav-pills nav-fill row row-cols-1 ">
         <li className="nav-item col">
-          <NavLink to={"/user/profile"} end className="nav-link">
+          <NavLink className="nav-link" end to={"/seller/profile"}>
             حسابي
           </NavLink>
         </li>
-
         <li className="nav-item col">
-          <NavLink to={"/user/profile/orders"} className="nav-link">
-            الطلبات
+          <NavLink className="nav-link" to={"./products"}>
+            المنتجات
           </NavLink>
         </li>
         <li className="nav-item col">
-          <NavLink to={"/user/profile/wishlist"} className="nav-link">
-            المنتجات المفضلة
-          </NavLink>
-        </li>
-        <li className="nav-item col">
-          <NavLink to={"/user/profile/posts"} className="nav-link">
+          <NavLink className="nav-link" to={"./posts"}>
             المنشورات
           </NavLink>
         </li>

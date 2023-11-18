@@ -44,7 +44,7 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
   const [authUser] = useCollectionData(listOfUsers);
   const [usersCollection] = useCollection(listOfUsers);
   const [currentUserr] = useCollection(listOfUsers);
-  const userId = currentUserr?.docs[0].id;
+  const userId = currentUserr && currentUserr?.docs[0].id;
   const userRef = userId && doc(firestore, "users", userId);
   console.log(userRef);
 
@@ -55,7 +55,6 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
       } else {
         setCurrentUser(null);
       }
-      console.log(currentUser);
     });
     return () => {
       unSubscribe();

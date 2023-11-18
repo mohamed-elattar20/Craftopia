@@ -15,14 +15,17 @@ const Invest = () => {
       <div className="row py-4">
         <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
           <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-4">استثمر مواهبك!</h2>
+          <h2 className="mb-5">استثمر مواهبك!</h2>
           <div className="d-flex align-items-center mb-4">
             <FontAwesomeIcon icon={faHouse} />
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
           </div>
 
+
           <div className="d-flex mb-4">
             <FontAwesomeIcon icon={faClipboardCheck} className="mt-1" />
+
+         
             <p className="mb-0 me-2 text-end">
               قم بانشاء حساب خاص بك واعرض منتجاتك بدون أي رسوم
             </p>
