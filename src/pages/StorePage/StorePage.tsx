@@ -113,7 +113,7 @@ const StorePage = () => {
                   products?.map((prod: any) => (
                     <div
                       key={prod?.productId}
-                      className="col-sm-12 col-md-6 col-lg-3"
+                      className="col-12 col-sm-6 col-lg-3"
                     >
                       <ProductCard data={prod} />
                     </div>

@@ -20,6 +20,7 @@ const SearchPage = () => {
       setLoading(true);
       setError(null);
       setItemOffset(0);
+
       const q = query(
         productsCollRef,
         where("productTitle", ">=", keyword),
@@ -27,6 +28,7 @@ const SearchPage = () => {
       );
       const querySnapshot = await getDocs(q);
       const documents = querySnapshot.docs.map((doc) => doc.data());
+
       setFilterdProducts(documents);
     } catch (error) {
       setError("Error searching documents");

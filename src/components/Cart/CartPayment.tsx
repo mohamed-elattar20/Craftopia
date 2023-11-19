@@ -27,7 +27,9 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
 
   const submitOrder = async () => {
     if (authUser) {
+      const orderId = crypto.randomUUID();
       await addDoc(ordersRef, {
+        orderId,
         clientId: authUser[0]["uId"],
         clientName: authUser[0]["displayName"],
         governorate: authUser[0]["governorate"],

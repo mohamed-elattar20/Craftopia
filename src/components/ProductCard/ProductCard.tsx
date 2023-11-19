@@ -26,7 +26,7 @@ const ProductCard = ({ data }: ProductCardProps) => {
 
   return (
     <>
-      <div className="card border-0 shadow ">
+      <div className="card border-0 shadow">
         <div className="img-icons-container position-relative">
           <NavLink
             to={{ pathname: `/product-details/${data?.productId}` }}
@@ -56,7 +56,20 @@ const ProductCard = ({ data }: ProductCardProps) => {
         </div>
         <div className="card-body text-end">
           <h5 className="card-title mb-3">{data?.productTitle} </h5>
-          <h4 className="card-text mb-3">{data?.productPrice} EGP</h4>
+          {data?.discount ? (
+            <div className="d-flex gap-2 align-items-baseline">
+              <h4 className="fs-5">
+                EGP{" "}
+                {(+data?.productPrice * (1 - +data.discount / 100)).toFixed(2)}
+              </h4>
+              <h4 className="text-decoration-line-through fw-normal fs-6">
+                EGP {data?.productPrice}
+              </h4>
+            </div>
+          ) : (
+            <h4 className="fs-5">EGP {data?.productPrice}</h4>
+          )}
+          {/* <h4 className="card-text mb-3">{data?.productPrice} EGP</h4> */}
           <div className="d-flex">
             <div className="flex-grow-1">
               <AddToCartBtn product={data} />

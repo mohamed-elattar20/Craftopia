@@ -11,9 +11,9 @@ table td {
 .seller-product-tilte {
   overflow: hidden;
   text-overflow: ellipsis;
-  display: -webkit-box;
+  /* display: -webkit-box;
   -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: vertical; */
 }
 .products-table-container {
   overflow-x: auto;
