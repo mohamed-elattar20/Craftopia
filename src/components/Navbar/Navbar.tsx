@@ -40,16 +40,17 @@ function Navbar() {
   };
 
   const { anonymousCartItems } = useContext(AnonymousUserContext);
+  console.log(cartItemsCount);
+  console.log(anonymousCartItems);
 
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
       <nav className="navbar navbar-expand-lg px-5">
-        <NavLink className="navbar-brand ms-5" to="/">
+        <NavLink className="navbar-brand ms-3" to="/">
           <img
             src={logo}
             alt="logo"
-            width="100"
-            height="40"
+            style={{ width: "100px" }}
             className="d-inline-block align-text-top"
           />
         </NavLink>
@@ -71,7 +72,7 @@ function Navbar() {
             <input
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="form-control me-4"
+              className="form-control"
               type="search"
               placeholder="ابحث..."
               aria-label="Search"
@@ -84,9 +85,9 @@ function Navbar() {
               بحث
             </button>
           </div>
-          <ul className="navbar-nav flex-grow-1 justify-content-between align-items-center">
+          <ul className="navbar-nav align-items-center pe-3 gap-2">
             <li className="nav-item">
-              <NavLink className="nav-link" aria-current="page" to={`/`}>
+              <NavLink className="nav-link p-1" aria-current="page" to={`/`}>
                 الرئيسية
               </NavLink>
             </li>
@@ -94,13 +95,13 @@ function Navbar() {
               ""
             ) : (
               <li className="nav-item">
-                <NavLink className="nav-link" to={`/store`}>
+                <NavLink className="nav-link p-1" to={`/store`}>
                   التسوق
                 </NavLink>
               </li>
             )}
             <li className="nav-item">
-              <NavLink className="nav-link" to={`/contact-us`}>
+              <NavLink className="nav-link p-1" to={`/contact-us`}>
                 تواصل معنا
               </NavLink>
             </li>
@@ -128,7 +129,7 @@ function Navbar() {
                     <h4 className="fs-6 m-0">مرحبا {currentUser.firstName}</h4>
                   </div>
                 </li>
-                <ul className="navbar-dropdown-menu dropdown-menu">
+                <ul className="navbar-dropdown-menu dropdown-menu p-0">
                   <li>
                     <Link
                       className="py-2 px-3 text-end dropdown-item"
@@ -165,67 +166,81 @@ function Navbar() {
             ) : (
               <li className="nav-item">
                 <NavLink className="nav-link" to={`/login`}>
-                  مرحباً. تسجيل الدخول؟
+                  تسجيل الدخول؟
                 </NavLink>
               </li>
             )}
 
-            {/*  */}
-            <li className="nav-item">
-              <div className="d-flex">
-                {/* offcanvas controls */}
-                <button
-                  title="fav"
-                  className="btn fs-5 position-relative"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#fav"
-                  aria-controls="fav"
-                >
-                  {wishListItemsCount && wishListItemsCount > 0 ? (
+            {currentUser && currentUser.Rule === "seller" ? (
+              ""
+            ) : (
+              <li className="nav-item">
+                <div className="d-flex align-items-center gap-3">
+                  {/* offcanvas controls */}
+                  <button
+                    title="fav"
+                    className="btn fs-5 position-relative p-0"
+                    style={{ height: "fit-content" }}
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#fav"
+                    aria-controls="fav"
+                  >
+                    {wishListItemsCount && wishListItemsCount > 0 ? (
+                      <span
+                        className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary p-0 d-flex justify-content-center align-items-center"
+                        style={{
+                          fontSize: ".7rem",
+                          width: "16px",
+                          height: "16px",
+                        }}
+                      >
+                        {wishListItemsCount}
+                        <span className="visually-hidden">unread messages</span>
+                      </span>
+                    ) : (
+                      <span></span>
+                    )}
+
+                    <FontAwesomeIcon icon={faHeart} className="text-primary" />
+                  </button>
+                  <button
+                    title="cart"
+                    className="btn fs-5 position-relative p-0"
+                    style={{ height: "fit-content" }}
+                    type="button"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#cart"
+                    aria-controls="cart"
+                  >
+                    <FontAwesomeIcon
+                      icon={faCartPlus}
+                      className="text-primary"
+                    />
                     <span
-                      className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
-                      style={{ fontSize: ".7rem" }}
+                      style={{
+                        fontSize: ".7rem",
+                        width: "16px",
+                        height: "16px",
+                      }}
+                      className={
+                        (cartItemsCount === 0 || cartItemsCount === null) &&
+                        anonymousCartItems &&
+                        Object.values(anonymousCartItems)?.length === 0
+                          ? "position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary p-0 d-flex justify-content-center align-items-center d-none"
+                          : "position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary p-0 d-flex justify-content-center align-items-center d-flex"
+                      }
                     >
-                      {wishListItemsCount}
+                      {cartItemsCount && cartItemsCount > 0
+                        ? cartItemsCount
+                        : Object.values(anonymousCartItems)?.length > 0 &&
+                          Object.values(anonymousCartItems)?.length}
                       <span className="visually-hidden">unread messages</span>
                     </span>
-                  ) : (
-                    <span></span>
-                  )}
-
-                  <FontAwesomeIcon icon={faHeart} className="text-primary" />
-                </button>
-                <button
-                  title="cart"
-                  className="btn fs-5 position-relative"
-                  type="button"
-                  data-bs-toggle="offcanvas"
-                  data-bs-target="#cart"
-                  aria-controls="cart"
-                >
-                  <FontAwesomeIcon icon={faCartPlus} className="text-primary" />
-
-                  <span
-                    style={{
-                      fontSize: ".7rem",
-                      display:
-                        (cartItemsCount === 0 || cartItemsCount === null) &&
-                        Object.values(anonymousCartItems)?.length === 0
-                          ? "none"
-                          : "block",
-                    }}
-                    className="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-secondary"
-                  >
-                    {cartItemsCount && cartItemsCount > 0
-                      ? cartItemsCount
-                      : Object.values(anonymousCartItems)?.length > 0 &&
-                        Object.values(anonymousCartItems)?.length}
-                    <span className="visually-hidden">unread messages</span>
-                  </span>
-                </button>
-              </div>
-            </li>
+                  </button>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
       </nav>
