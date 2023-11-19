@@ -16,7 +16,7 @@ const Pagination = ({
   setItemOffset,
 }: PaginationProps) => {
   const [pageCount, setPageCount] = useState(0);
-  const itemsPerPage = 4;
+  const itemsPerPage = 10;
 
   console.log(filterdProducts);
 

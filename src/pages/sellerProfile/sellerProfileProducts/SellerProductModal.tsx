@@ -252,12 +252,12 @@ export const SellerProductModal = ({
                 <div>
                   <label
                     className={
-                      productImages.length < 2
+                      productImages.length < 5
                         ? "btn btn-outline-secondary"
                         : "btn-disabled"
                     }
                     htmlFor={
-                      productImages.length < 2
+                      productImages.length < 5
                         ? `productImage${productItem.productId}`
                         : ""
                     }
