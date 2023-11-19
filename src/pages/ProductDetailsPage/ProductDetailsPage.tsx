@@ -21,7 +21,6 @@ import { productsCollRef } from "../../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 const ProductDetailsPage = () => {
-  let arr = [1, 2, 3, 4];
   const location = useLocation();
   const { state } = location;
   const ProductData: ProductType = state && state.data;
@@ -30,7 +29,7 @@ const ProductDetailsPage = () => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  console.log(ProductData);
+  const [activeImageUrl, setActiveImageUrl] = useState<string>();
   const relatedProductsQ = query(
     productsCollRef,
     where("productCategory", "==", ProductData.productCategory)
@@ -44,45 +43,67 @@ const ProductDetailsPage = () => {
   console.log(filteredRelatedProducts);
 
   const [flag, setFlag] = useState<Boolean>(false);
+
+  useEffect(() => {
+    setActiveImageUrl(ProductData.productImages[0].imgUrl);
+  }, [ProductData]);
+
   return (
     <>
       <div className="container my-5 ">
-        <div className="row ">
-          <div className="col-sm-12 col-md-12 col-lg-6">
-            <div className="row g-3">
-              <div className="col-12">
-                <img
-                  className="rounded-3"
-                  src={ProductData?.productImages[0]?.imgUrl}
-                  alt="product"
-                />
-              </div>
-              <div className="col-4">
-                <img
-                  className="rounded-3"
-                  src={ProductData?.productImages[0]?.imgUrl}
-                  alt="product"
-                />
-              </div>
-              <div className="col-4">
-                <img
-                  className="rounded-3"
-                  src={ProductData?.productImages[0]?.imgUrl}
-                  alt="product"
-                />
-              </div>
-              <div className="col-4">
-                <img
-                  className="rounded-3"
-                  src={ProductData?.productImages[0]?.imgUrl}
-                  alt="product"
-                />
-              </div>
+        <div className="row d-flex g-4 flex-column-reverse flex-md-row">
+          <div className="col-12 col-md-6 col-lg-5 col-xl-4 d-flex flex-column gap-3 align-items-start">
+            <div style={{ height: "400px" }} className="">
+              <img
+                className="rounded-3 object-fit-contain"
+                src={activeImageUrl}
+                alt="product"
+                style={{ height: "100%" }}
+              />
+            </div>
+            <div className="d-flex gap-2">
+              {ProductData?.productImages.map((img) => (
+                <div
+                  style={{ cursor: "pointer", width: "40px", height: "40px" }}
+                >
+                  <img
+                    className="rounded-3 h-100"
+                    style={{
+                      border:
+                        img.imgUrl === activeImageUrl
+                          ? "1px solid #777"
+                          : "none",
+                    }}
+                    src={img?.imgUrl}
+                    alt="product"
+                    onClick={(e: React.MouseEvent<HTMLImageElement>) =>
+                      setActiveImageUrl(e.currentTarget.src)
+                    }
+                  />
+                </div>
+              ))}
             </div>
           </div>
-          <div className="col-sm-12 col-md-12 col-lg-6">
-            <h2 className="display-6 mb-3 ">{ProductData?.productTitle}</h2>
-            <h3>EGP {ProductData?.productPrice}</h3>
+
+          <div className="col-12 col-md-6">
+            <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
+
+            {ProductData?.discount ? (
+              <div className="d-flex gap-2 align-items-baseline">
+                <h3>
+                  EGP{" "}
+                  {(
+                    +ProductData?.productPrice *
+                    (1 - +ProductData.discount / 100)
+                  ).toFixed(2)}
+                </h3>
+                <h3 className="text-decoration-line-through fw-normal fs-5">
+                  EGP {ProductData?.productPrice}
+                </h3>
+              </div>
+            ) : (
+              <h3>EGP {ProductData?.productPrice}</h3>
+            )}
 
             <div className="my-4 d-flex gap-2 align-items-center">
               <div className="w-50">
@@ -104,6 +125,60 @@ const ProductDetailsPage = () => {
             {/* </a> */}
           </div>
         </div>
+        {/* <div className="row g-5 ">
+          <div className="col-sm-12 col-md-12 col-lg-4">
+            <div className="d-flex flex-column gap-3 h-100">
+              <div style={{ maxHeight: "80%" }}>
+                <img
+                  className="rounded-3 "
+                  src={activeImageUrl}
+                  alt="product"
+                  style={{ maxHeight: "100%" }}
+                />
+              </div>
+              <div className="d-flex gap-2">
+                {ProductData?.productImages.map((img) => (
+                  <div className="" style={{ cursor: "pointer" }}>
+                    <img
+                      className="rounded-3"
+                      style={{
+                        border:
+                          img.imgUrl === activeImageUrl
+                            ? "1px solid #777"
+                            : "none",
+                      }}
+                      src={img?.imgUrl}
+                      alt="product"
+                      onClick={(e: React.MouseEvent<HTMLImageElement>) =>
+                        setActiveImageUrl(e.currentTarget.src)
+                      }
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="col-sm-12 col-md-12 col-lg-6">
+            <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
+            <h3>EGP {ProductData?.productPrice}</h3>
+
+            <div className="my-4 d-flex gap-2 align-items-center">
+              <div className="w-50">
+                <AddToCartBtn product={ProductData} />
+              </div>
+
+              <WishListIcon data={ProductData} />
+            </div>
+            <Link to={`/products/${ProductData?.sellerId}`}>
+              <h5>{ProductData?.brand}</h5>
+            </Link>
+          
+
+            <span>سياسة الشحن والاسترجاع</span>
+        
+          </div>
+        </div> */}
+
         <div className="row">
           <div className="col-12 text-center my-5 d-flex justify-content-center">
             <button
@@ -126,10 +201,10 @@ const ProductDetailsPage = () => {
             <ProductDetailsReviews product={ProductData as ProductType} />
           )}
         </div>
-        <div className="row my-5 ">
+        <div className="row my-5  g-3">
           <h2 className="mb-4 display-4 text-center ">منتجات ذات صلة</h2>
           {filteredRelatedProducts?.map((prod: any) => (
-            <div className="col-6 col-md-6 col-lg-3" key={prod.productId}>
+            <div className="col-12 col-sm-6 col-lg-3" key={prod.productId}>
               <ProductCard data={prod} />
             </div>
           ))}
