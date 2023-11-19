@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 
 export type PaginationProps = {
-  filterdProducts?: any;
-  setProducts?: any;
+  filterdProducts: any;
+  setProducts: any;
   itemOffset: any;
   setItemOffset: any;
 };
@@ -15,30 +15,27 @@ const Pagination = ({
   itemOffset,
   setItemOffset,
 }: PaginationProps) => {
-  //   const [itemOffset, setItemOffset] = useState(0);
-  const [pageCoun, setPageCount] = useState(0);
-  const itemsPerPage = 5;
+  const [pageCount, setPageCount] = useState(0);
+  const itemsPerPage = 10;
+
+  console.log(filterdProducts);
+
   useEffect(() => {
-    console.log(itemOffset);
+    if (filterdProducts) {
+      const endOffset = itemOffset + itemsPerPage;
+      const currentItems: any = filterdProducts?.slice(itemOffset, endOffset);
 
-    const endOffset = itemOffset + itemsPerPage;
-    console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-    const currentItems: any = filterdProducts?.slice(itemOffset, endOffset);
-
-    if (filterdProducts?.length) {
-      setPageCount(Math.ceil(filterdProducts?.length / itemsPerPage));
+      if (filterdProducts?.length) {
+        setPageCount(Math.ceil(filterdProducts?.length / itemsPerPage));
+      }
+      setProducts(currentItems && [...currentItems]);
     }
-    // const pageCount = Math.ceil(products.length / itemsPerPage);
-    setProducts(currentItems && [...currentItems]);
-  }, [itemOffset, filterdProducts, pageCoun]);
+  }, [itemOffset, filterdProducts, setProducts]);
 
   const handlePageClick = (event: any) => {
     if (filterdProducts?.length) {
       const newOffset =
         (event.selected * itemsPerPage) % filterdProducts?.length;
-      console.log(
-        `User requested page number ${event.selected}, which is offset ${newOffset}`
-      );
       setItemOffset(newOffset);
     }
   };
@@ -46,11 +43,11 @@ const Pagination = ({
     <>
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel="التالي"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
-        pageCount={pageCoun}
-        previousLabel="< previous"
+        pageCount={pageCount}
+        previousLabel="السابق"
         renderOnZeroPageCount={null}
         containerClassName="pagination"
         pageLinkClassName="page-num"

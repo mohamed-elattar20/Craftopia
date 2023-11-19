@@ -82,17 +82,15 @@ const LoginForm = () => {
       .then((res) => {
         // console.log(`logged in`, res);
         setFirebaseError("");
-        setLoadingSignin(false);
+
         if (currentUser) {
           navigate(`/`);
         }
       })
       .catch((err) => {
-        setLoadingSignin(false);
         setFirebaseError(err.message);
-
-        // console.log(err.message);
-      });
+      })
+      .finally(() => setLoadingSignin(false));
   };
 
   return (
