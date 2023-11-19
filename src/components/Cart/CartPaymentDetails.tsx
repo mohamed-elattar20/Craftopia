@@ -61,7 +61,9 @@ const CartPaymentDetails = () => {
     const handleBeforeUnload = async () => {
       await makeCartEmpty();
       if (authUser) {
+        const orderId = crypto.randomUUID();
         await addDoc(ordersRef, {
+          orderId,
           clientId: authUser[0]["uId"],
           clientName: authUser[0]["displayName"],
           governorate: authUser[0]["governorate"],
