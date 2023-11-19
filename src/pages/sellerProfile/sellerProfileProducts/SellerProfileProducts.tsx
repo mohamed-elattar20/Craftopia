@@ -97,6 +97,8 @@ export const SellerProfileProducts = () => {
       },
       discount: +data.discount || 0,
       productImages,
+      priceAfterDiscount:
+        +data.productPrice * (1 - (+data.discount / 100 || 0)),
       sellerId: currentUser?.uId,
       brand: currentUser?.displayName,
       productId,
@@ -136,7 +138,7 @@ export const SellerProfileProducts = () => {
     <div className="containr w-100 overflow-hidden">
       <button
         type="button"
-        className="btn btn-primary"
+        className="btn btn-primary mb-2"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop1"
       >

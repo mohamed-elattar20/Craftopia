@@ -28,7 +28,7 @@ export const AnonymousUserContextProvider = ({
   }, []);
 
   useEffect(() => {
-    if (anonymousCartItems && Object.values(anonymousCartItems)?.length > 0) {
+    if (anonymousCartItems) {
       localStorage.setItem("cart", JSON.stringify(anonymousCartItems));
     }
   }, [anonymousCartItems]);

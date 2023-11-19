@@ -97,6 +97,8 @@ export const SellerProductModal = ({
           label: data.productCategory?.label,
         },
         discount: +data.discount || 0,
+        priceAfterDiscount:
+          +data.productPrice * (1 - (+data.discount / 100 || 0)),
         productImages,
       });
     }

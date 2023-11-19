@@ -5,12 +5,12 @@ import { faFacebookF } from "@fortawesome/free-brands-svg-icons";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import './Footer.css'
+import "./Footer.css";
 
 export const Footer = () => {
   return (
     <footer className="container mx-auto py-5 home-page-footer">
-      <div className="row text-center text-md-end g-5">
+      <div className="row text-center text-md-end gy-3">
         <ul className="list-unstyled fw-medium px-0 col-12 col-md-8 col-xl-4">
           <li>
             <h5 className="fw-semibold mb-4">كرافتوبيا</h5>
@@ -74,9 +74,15 @@ export const Footer = () => {
             <h5 className="fw-semibold mb-4">تابعونا على</h5>
           </li>
           <li className="d-flex gap-4 justify-content-center justify-content-md-start">
-            <a href="https://instagram.com"><FontAwesomeIcon icon={faInstagram} className="text-primary" /></a>
-            <a href="https://twitter.com"><FontAwesomeIcon icon={faTwitter} className="text-primary" /></a>
-            <a href="https://facebook.com"><FontAwesomeIcon icon={faFacebookF} className="text-primary" /></a>
+            <a href="https://instagram.com">
+              <FontAwesomeIcon icon={faInstagram} className="text-primary" />
+            </a>
+            <a href="https://twitter.com">
+              <FontAwesomeIcon icon={faTwitter} className="text-primary" />
+            </a>
+            <a href="https://facebook.com">
+              <FontAwesomeIcon icon={faFacebookF} className="text-primary" />
+            </a>
           </li>
         </ul>
       </div>
