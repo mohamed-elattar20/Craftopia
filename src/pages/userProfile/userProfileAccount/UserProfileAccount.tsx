@@ -38,10 +38,14 @@ export const UserProfileAccount = () => {
         ...data,
         displayName: `${data.firstName} ${data.lastName}`,
         fullName: `${data.firstName} ${data.lastName}`,
-      }).then(() => {
-        notify();
-        setLoading(false);
-      });
+      })
+        .then(() => {
+          setLoading(false);
+        })
+        .catch(() => {
+          setLoading(false);
+        });
+      notify();
     };
     modifyUser();
   };

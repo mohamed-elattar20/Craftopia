@@ -62,7 +62,7 @@ export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
   const [img, setImg] = useState<CommentImg>({} as CommentImg);
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files && e.target.files[0]);
+    // console.log(e.target.files && e.target.files[0]);
     // **********************************************************************
     if (e.target.files) {
       let imgFile = e.target.files[0];

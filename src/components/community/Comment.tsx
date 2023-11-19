@@ -1,11 +1,23 @@
 // Assest
-import { DocumentData, deleteDoc, doc } from "firebase/firestore";
 import avatar from "../../assets/images/User Profile/Avatar.png";
+// Components
 import { CommentType } from "./Post";
-import { firestore } from "../../firebase/firebase";
-import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
-
+// FireBase
+import { DocumentData, deleteDoc, doc } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
+// React
+import { useContext } from "react";
+// Fontawesome
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faTrashCan,
+  faTrash,
+  faTrashAlt,
+  faCartPlus,
+  faPlus,
+  faMinus,
+} from "@fortawesome/free-solid-svg-icons";
 type Comment = {
   comment: CommentType;
 };
@@ -14,8 +26,10 @@ const Comment = ({ comment }: Comment) => {
   // ******************************************************
   const deleteComment = async (commentId: string) => {
     const res = await deleteDoc(doc(firestore, "comments", comment.commentId));
-    console.log(res);
+    // console.log(res);
   };
+  // console.log(comment);
+
   return (
     <>
       {comment.commentImgUrl ? (
@@ -31,7 +45,14 @@ const Comment = ({ comment }: Comment) => {
             <div className="d-flex justify-content-between w-100 ">
               <div className="me-3">
                 <h5>{comment.userName}</h5>
-                <p>{comment.commentBody}</p>
+                <p
+                  style={{ fontSize: "11.2px" }}
+                  className="me-3 fw-bold text-muted m-0 "
+                >
+                  {new Date(comment.generatedAt.toDate()).toDateString()}
+                </p>
+
+                <p className="lead">{comment.commentBody}</p>
               </div>
               <div>
                 {comment.userId === currentUser?.uId && (
@@ -39,7 +60,8 @@ const Comment = ({ comment }: Comment) => {
                     onClick={() => deleteComment(comment.commentId)}
                     className="btn btn-primary"
                   >
-                    X
+                    {" "}
+                    <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
                 )}
               </div>

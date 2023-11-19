@@ -23,6 +23,7 @@ export default function UserAddProductForm() {
   const { authUser } = useContext(UserContext);
 
   const submitControl = async (data: any) => {
+    console.log(data);
     imgs.forEach(async (img: any) => {
       const imgRef = ref(storage, `posts/${img.imageId}`);
       await uploadFile(imgRef, img.postImg);
@@ -36,7 +37,7 @@ export default function UserAddProductForm() {
         setDoc(doc(firestore, "posts", postId), {
           postId: postId,
           postBody: data.addComment,
-          postBodyImages: imgs,
+          postBodyImages: imgs.length > 0 ? imgs : [],
           postOwnerName: authUser[0].displayName,
           postOwnerAvatarUrl: authUser[0].avatarURL || "",
           genratedAt: Timestamp.now(),
@@ -61,7 +62,6 @@ export default function UserAddProductForm() {
         // });
       }
     });
-
     reset();
     setImgs([]);
   };
@@ -94,6 +94,13 @@ export default function UserAddProductForm() {
         <label htmlFor="exampleFormControlInput1" className="form-label">
           اضافة صورة المنتج
         </label>
+        {/* <input
+          type="file"
+          accept="image/*"
+          className="form-control"
+          id="exampleFormControlInput1"
+          {...register("add-img")}
+        /> */}
         <input
           type="file"
           accept="image/*"
@@ -115,7 +122,12 @@ export default function UserAddProductForm() {
           imgs?.map((img: any) => (
             <div key={img.imageId}>
               <img src={img.imageUrl} alt="" />
-              <span onClick={() => deleteImg(img)}>x</span>
+              <span
+                className="fw-bold my-1 btn btn-danger"
+                onClick={() => deleteImg(img)}
+              >
+                x
+              </span>
             </div>
           ))}
       </div>
