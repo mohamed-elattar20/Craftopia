@@ -111,7 +111,6 @@ export const SellerProductModal = ({
     { value: "خرز", label: "خرز" },
     { value: "خيوط", label: "خيوط" },
     { value: "تصميم", label: "تصميم" },
-    { value: "أزياء", label: "أزياء" },
   ];
 
   useEffect(() => {

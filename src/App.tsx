@@ -52,6 +52,7 @@ import { MainLayout } from "./pages/MainLayout/MainLayout";
 import { OrderDone } from "./components/Cart/OrderDone";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
+
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
     "pk_test_51OCi4LJasLK18SRGg5xOYbWi3Va4ZWDMeOJHFKLW1uKefFe4ISHXbDrgDLeZJHomGUmMawXy1VIfovrpccyMLPEX00nGQbXtZ2";
@@ -59,6 +60,7 @@ function App() {
   const scrollUp = () => {
     window.scrollTo(0, 0);
   };
+
 
   // const [scrollHeight, setScrollHeight] = useState(0);
   // useEffect(() => {
@@ -85,8 +87,8 @@ function App() {
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
       )} */}
+
       <Routes>
-        {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/reset-password" element={<ResetPassword />} />
@@ -94,7 +96,6 @@ function App() {
           <Route path="/register/seller" element={<RegisterSeller />} />
           <Route path="/register/buyer" element={<RegisterBuyer />} />
         </Route>
-
         <Route path="/" element={<MainLayout />}>
           <Route path="/contact-us" element={<ContactUs />} />
           <Route element={<ProtectedRoutesNotSeller />}>
@@ -111,9 +112,9 @@ function App() {
               element={<SellerProductsPage />}
             />
           </Route>
-          {/* Protected Routes Profile ********************/}
           <Route element={<ProtectedRoutesProfile />}>
             <Route path="/community" element={<Forum />} />
+
             {/*ProtectedRoutesProfilebuyer  */}
             <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
               <Route path={`/user/profile`} element={<UserProfile />}>

@@ -77,7 +77,7 @@ const CartPaymentDetails = () => {
           address: authUser[0]["address"],
           status: "pending",
           paymentMethod: !bankCard ? "On Delivery" : "Card Payment",
-        });
+        })
       }
     };
 

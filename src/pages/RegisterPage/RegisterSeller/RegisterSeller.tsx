@@ -337,6 +337,7 @@ function RegisterSeller() {
           <NavLink
             to={`/login`}
             className="text-secondary d-block my-2 text-decoration-none"
+            style={{ width: "fit-content" }}
           >
             هل أنت عضو بالفعل؟
           </NavLink>

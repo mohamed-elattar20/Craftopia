@@ -8,3 +8,12 @@
 .navbar-dropdown-menu li button {
   border-radius: 0 0 5px 5px !important;
 }
+.navbar-toggler:focus {
+  border: none !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+.navbar-toggler {
+  border: 0 !important;
+  text-shadow: none !important;
+}

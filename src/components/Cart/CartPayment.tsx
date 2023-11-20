@@ -46,7 +46,7 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
         status: "pending",
         paymentMethod: !bankCard ? "On Delivery" : "Card Payment",
       }).then(async () => {
-        if (userRef) {
+        if (userRef) {     
           await updateDoc(userRef, {
             ["cart"]: {},
           })

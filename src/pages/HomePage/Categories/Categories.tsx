@@ -10,7 +10,7 @@ const Categories = () => {
   const categories = [
     { categoryType: "مواد طبيعية", img: gems },
     { categoryType: "مواد كيميائية", img: candles },
-    { categoryType: "مواد خيوط", img: crochet },
+    { categoryType: "خيوط", img: crochet },
     { categoryType: "للمزيد اضغط هنا", img: forMore },
   ];
   return (
