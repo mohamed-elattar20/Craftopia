@@ -51,6 +51,7 @@ export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
         userName: authUser[0].displayName,
         userAvatarUrl: authUser[0].avatarURL || "",
         commentImgUrl: url,
+        userRole: authUser[0].Rule,
       }).then(() => {
         // setLoad(false);
       });

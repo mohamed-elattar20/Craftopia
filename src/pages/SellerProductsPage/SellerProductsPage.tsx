@@ -30,7 +30,7 @@ const SellerProductsPage = () => {
         ) : (
           <>
             <h1 className="display-6  my-4">
-              إسم البائع : {sellerDoc && sellerDoc[0].displayName}
+              العلامة التجارية: {sellerDoc && sellerDoc[0].displayName}
             </h1>
             <div className="row g-3">
               {sellerProducts?.map((product) => (

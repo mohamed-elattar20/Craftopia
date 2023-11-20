@@ -27,7 +27,7 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
       <div
         className="modal fade"
         id={`d${modalData?.productId}`}
-        aria-labelledby="exampleModalLabel"
+        aria-labelledby={`exampleModalLabel${modalData?.productId}`}
         aria-hidden="true"
       >
         <div className="modal-dialog modal-xl">

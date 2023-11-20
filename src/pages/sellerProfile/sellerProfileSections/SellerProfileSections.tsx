@@ -124,7 +124,7 @@ export const SellerProfileSections = () => {
             )}
           </div>
           {currentUser && (
-            <h4 className="mt-2 fs-5 px-3">{currentUser.displayName} </h4>
+            <h4 className="mt-2 fs-5 px-3">{currentUser.fullName} </h4>
           )}
         </div>
         <ul className="mt-4 mb-0 d-flex flex-column p-0 ">

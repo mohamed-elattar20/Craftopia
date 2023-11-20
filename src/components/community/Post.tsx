@@ -62,6 +62,7 @@ export type CommentType = {
   userId: string;
   userName: string;
   commentImgUrl: string;
+  userRole: string;
 };
 export default function Post({ post }: DocumentData) {
   // console.log(post);

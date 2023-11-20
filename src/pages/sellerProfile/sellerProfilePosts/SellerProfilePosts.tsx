@@ -6,41 +6,50 @@ import { UserContext } from "../../../Contexts/UserContext";
 import Post from "../../../components/community/Post";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebase.config";
+import { Spinner } from "../../../components/Spinner/Spinner";
 
 const SellerProfilePosts = () => {
   const { myUser, authUser } = useContext(UserContext);
   const [requestedProducts, setRequestedProducts] = useState<
     Array<DocumentData>
   >([]);
-  useEffect(() => {
-    const getOrders = async () => {
-      if (authUser && authUser[0]) {
-        const currentSellerProducts: Array<DocumentData> = [];
-        const querySnapshot = await getDocs(collection(db, "orders"));
-        console.log(querySnapshot);
+  const [loading, setLoading] = useState(true);
+  const getOrders = async () => {
+    if (authUser && authUser[0]) {
+      const currentSellerProducts: Array<DocumentData> = [];
+      const querySnapshot = await getDocs(collection(db, "orders")).finally(
+        () => {
+          setLoading(false);
+        }
+      );
+      console.log(querySnapshot);
 
-        querySnapshot.forEach((doc) => {
-          let products = doc.data()["products"];
-          if (products) {
-            for (let productId of Object.keys(products)) {
-              // console.log(productId, "=>", products[productId]);
-              if (products[productId]["sellerId"] === authUser[0]["uId"]) {
-                products[productId]["orderId"] = doc.id;
-                currentSellerProducts.push(products[productId]);
-              }
+      querySnapshot.forEach((doc) => {
+        let products = doc.data()["products"];
+        if (products) {
+          for (let productId of Object.keys(products)) {
+            // console.log(productId, "=>", products[productId]);
+            if (products[productId]["sellerId"] === authUser[0]["uId"]) {
+              products[productId]["orderId"] = doc.id;
+              currentSellerProducts.push(products[productId]);
             }
           }
-        });
-        setRequestedProducts((old) => currentSellerProducts);
-      }
-    };
+        }
+      });
+      setRequestedProducts((old) => currentSellerProducts);
+    }
+  };
+  useEffect(() => {
     getOrders();
   }, []);
 
   return (
     <div className="d-flex flex-column">
-      {requestedProducts.length === 0 && <h2>لا يوجد طلبات حتى الآن</h2>}
-      {requestedProducts &&
+      {loading ? (
+        <div className="h-100 d-flex justify-content-center">
+          <Spinner />
+        </div>
+      ) : requestedProducts && requestedProducts.length > 0 ? (
         requestedProducts.map((product) => {
           return (
             <div className="shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -69,7 +78,10 @@ const SellerProfilePosts = () => {
               </div>
             </div>
           );
-        })}
+        })
+      ) : (
+        <h2>لا يوجد طلبات حتى الآن</h2>
+      )}
     </div>
   );
 };

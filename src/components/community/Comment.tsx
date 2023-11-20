@@ -18,6 +18,7 @@ import {
   faPlus,
   faMinus,
 } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 type Comment = {
   comment: CommentType;
 };
@@ -41,18 +42,40 @@ const Comment = ({ comment }: Comment) => {
             <div className={`d-flex mt-1 p-2 py-3 flex-column`}>
               <div className="d-flex">
                 <div>
-                  <img
-                    className="user-img"
-                    src={comment.userAvatarUrl || avatar}
-                    alt=""
-                  />
+                  {comment.userRole === "seller" ? (
+                    <NavLink to={`/products/${comment.userId}`}>
+                      <img
+                        className="user-img"
+                        src={comment.userAvatarUrl || avatar}
+                        alt=""
+                      />
+                    </NavLink>
+                  ) : (
+                    <img
+                      className="user-img"
+                      src={comment.userAvatarUrl || avatar}
+                      alt=""
+                    />
+                  )}
                 </div>
                 <div className="me-2 d-flex justify-content-between w-100 ">
                   <div>
-                    <h5>{comment.userName}</h5>
+                    <h5>
+                      {comment.userName}
+                      {comment.userRole === "seller" ? (
+                        <span
+                          className="badge text-bg-secondary me-2"
+                          style={{ fontSize: "6px" }}
+                        >
+                          Seller
+                        </span>
+                      ) : (
+                        ""
+                      )}
+                    </h5>
                     <p
                       style={{ fontSize: "11.2px" }}
-                      className="me-3 fw-bold text-muted m-0 "
+                      className=" fw-bold text-muted m-0 "
                     >
                       {new Date(comment.generatedAt.toDate()).toDateString()}
                     </p>
