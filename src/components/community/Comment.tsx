@@ -65,7 +65,7 @@ const Comment = ({ comment }: Comment) => {
                       {comment.userRole === "seller" ? (
                         <span
                           className="badge text-bg-secondary me-2"
-                          style={{ fontSize: "6px" }}
+                          style={{ fontSize: "12px" }}
                         >
                           Seller
                         </span>

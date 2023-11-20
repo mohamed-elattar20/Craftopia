@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import test from "../../assets/images/default.jpg";
+import test from "../../assets/images/com_2.png";
 import "./Explore.css";
 import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
@@ -26,13 +26,6 @@ const Explore = () => {
           </Link>
         </div>
         <div className="col-md-6 ">
-          <div className="d-flex justify-content-end align-items-center">
-            <p>Mai Alaa</p>
-            <div className="userimg-wrapper me-4 h-auto">
-              <img src={test} alt="" className=" rounded-circle "></img>
-            </div>
-          </div>
-          <p className="fs-4">في حد ممكن يعملي الشنطة دي؟</p>
           <div>
             <img src={test} alt=""></img>
           </div>
