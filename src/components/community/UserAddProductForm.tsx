@@ -1,120 +1,174 @@
 import { useForm } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
-import { ChangeEvent, useContext, useState } from "react";
-import { UserContext } from "../../Contexts/UserContext";
-import { Timestamp, addDoc, doc, setDoc, updateDoc } from "firebase/firestore";
-import { firestore, postsCollRef } from "../../firebase/firebase";
+import { ChangeEvent, useContext, useRef, useState } from "react";
+import { useUploadFile } from "react-firebase-hooks/storage";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../../firebase/firebase.config";
-import { useUploadFile } from "react-firebase-hooks/storage";
+import { v4 } from "uuid";
+import { Timestamp, addDoc, doc, setDoc } from "firebase/firestore";
+import { firestore, postsCollRef } from "../../firebase/firebase";
+import { UserContext } from "../../Contexts/UserContext";
 
-type CommentImg = {
-  imgId: string;
-  imgUrl: any;
-  imgFile: File;
-};
-type UserAddCommentFormProps = {
-  post?: any;
-};
-export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
-  const { myUser, authUser } = useContext(UserContext);
+export default function UserAddProductForm({ setLoadingPost }: any) {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
+    setValue,
     reset,
   } = useForm();
-  //  *************************************************************************
-  const [uploadFile] = useUploadFile();
+  const [uploadFile, uploading, , errorUploading] = useUploadFile();
 
-  //  *************************************************************************
-  // const [load, setLoad] = useState<Boolean>(true);
+  const [imgs, setImgs] = useState<any>([]);
+  const { authUser } = useContext(UserContext);
+
   const submitControl = async (data: any) => {
-    // console.log(data);
-    const imgId = crypto.randomUUID();
-    const imgRef = ref(storage, `posts/${imgId}`);
-    const imgFile = img.imgFile;
-    setImg({} as CommentImg);
-    await uploadFile(imgRef, imgFile);
-    const url = await getDownloadURL(imgRef);
+    console.log(data);
+    setLoadingPost(true);
+    imgs.forEach(async (img: any) => {
+      const imgRef = ref(storage, `posts/${img.imageId}`);
+      await uploadFile(imgRef, img.postImg);
+      const url = await getDownloadURL(imgRef);
+      img.imageUrl = url;
+      delete img.postImg;
 
-    // ****************************
-    if (authUser) {
-      const commentId = crypto.randomUUID();
-      const commentRef = doc(firestore, "comments", commentId);
-      setDoc(commentRef, {
-        commentBody: data.comment,
-        commentId,
-        postId: post && post?.postId,
-        generatedAt: Timestamp.now(),
-        userId: authUser[0].uId,
-        userName: authUser[0].displayName,
-        userAvatarUrl: authUser[0].avatarURL || "",
-        commentImgUrl: url,
-        userRole: authUser[0].Rule,
-      }).then(() => {
-        // setLoad(false);
-      });
-    }
-
+      if (authUser) {
+        const postId = crypto.randomUUID();
+        console.log(imgs);
+        setDoc(doc(firestore, "posts", postId), {
+          postId: postId,
+          postBody: data.addComment,
+          postBodyImages: imgs.length > 0 ? imgs : [],
+          postOwnerName: authUser[0].displayName,
+          postOwnerAvatarUrl: authUser[0].avatarURL || "",
+          genratedAt: Timestamp.now(),
+          votes: 0,
+          postOwnerId: authUser[0].uId,
+        })
+          .then(() => {
+            console.log(`Set Post Added **************************`);
+          })
+          .catch(() => {
+            console.log(`Set post not Added`);
+          })
+          .finally(() => setLoadingPost(false));
+        // addDoc(postsCollRef, {
+        //   postId: crypto.randomUUID(),
+        //   postBody: data.addComment,
+        //   postBodyImages: imgs,
+        //   postOwnerName: authUser[0].displayName,
+        //   postOwnerAvatarUrl: authUser[0].avatarURL || "",
+        //   genratedAt: Timestamp.now(),
+        //   votes: 0,
+        //   comments: [],
+        // });
+      }
+    });
     reset();
+    setImgs([]);
   };
 
-  const [img, setImg] = useState<CommentImg>({} as CommentImg);
-
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.files && e.target.files[0]);
-    // **********************************************************************
     if (e.target.files) {
-      let imgFile = e.target.files[0];
+      let postImg = e.target.files[0];
       const reader = new FileReader();
-      reader.readAsDataURL(imgFile);
+      reader.readAsDataURL(postImg);
+
       reader.onload = (e) => {
         const imageUrl = e.target?.result;
         const imageId = crypto.randomUUID();
-        if (imageUrl) {
-          setImg({ imgUrl: imageUrl, imgId: imageId, imgFile });
-        }
+        setImgs((prev: any) => [...prev, { imageUrl, imageId, postImg }]);
       };
+      console.log(imgs);
+    }
+  };
+
+  const deleteImg = (img: any) => {
+    setImgs((prev: any) => prev.filter((image: any) => image !== img));
+    if (imgs.length === 1) {
+      setValue("add-img", null);
     }
   };
 
   return (
     <form onSubmit={handleSubmit(submitControl)}>
-      <div className="d-flex align-items-center">
-        <textarea
-          className="form-control add-comment"
-          id="exampleFormControlTextarea1"
-          rows={1}
-          {...register("comment", {
-            required: "رجاء اكتب  تعليقك ",
-          })}
-        ></textarea>
-
-        <button type="submit" className=" btn btn-primary border-0 p-2 ms-2 ">
-          <p className="m-0">تعليق</p>
-        </button>
+      <div className="mb-3">
+        <label htmlFor="exampleFormControlInput1" className="form-label">
+          اضافة صورة المنتج
+        </label>
+        {/* <input
+          type="file"
+          accept="image/*"
+          className="form-control"
+          id="exampleFormControlInput1"
+          {...register("add-img")}
+        /> */}
         <input
           type="file"
-          placeholder="أضف صورة"
-          className="btn"
-          onChange={(e) => handleUpload(e)}
+          accept="image/*"
+          className="form-control"
+          id="exampleFormControlInput1"
+          {...register("add-img", {
+            required: "رجاء اضف صورة المنتج",
+            validate: {
+              hasValue: (file) => file !== null,
+            },
+            onChange: (event) => handleUpload(event),
+          })}
         />
+        <small className="text-danger">
+          <ErrorMessage errors={errors} name="add-img" />
+        </small>
+
+        {imgs?.length > 0 &&
+          imgs?.map((img: any) => (
+            <div key={img.imageId}>
+              <img src={img.imageUrl} alt="" />
+              <span
+                className="fw-bold my-1 btn btn-danger"
+                onClick={() => deleteImg(img)}
+              >
+                x
+              </span>
+            </div>
+          ))}
       </div>
-      <div className="my-3" style={{ width: "200px" }}>
-        <img src={img.imgUrl} alt="" />
-        {img.imgUrl && (
-          <button
-            onClick={() => setImg({} as CommentImg)}
-            className="btn btn-danger my-3"
-          >
-            X
-          </button>
-        )}
+      <div className="mb-3">
+        <label htmlFor="exampleFormControlTextarea1" className="form-label">
+          اضافة تعليق
+        </label>
+        <textarea
+          className="form-control"
+          id="exampleFormControlTextarea1"
+          rows={3}
+          {...register("addComment", {
+            required: "رجاء اكتب  توضيح لطلبك",
+          })}
+        ></textarea>
+        <small className="text-danger">
+          <ErrorMessage errors={errors} name="addComment" />
+        </small>
       </div>
-      <small className="text-danger">
-        <ErrorMessage errors={errors} name="add-comment" />
-      </small>
+      <div className="modal-footer">
+        <button
+          type="button"
+          className="btn btn-secondary"
+          data-bs-dismiss="modal"
+          onClick={() => {
+            reset();
+            setImgs([]);
+          }}
+        >
+          اغلاق
+        </button>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          data-bs-dismiss={isValid ? "modal" : ""}
+        >
+          اضافة
+        </button>
+      </div>
     </form>
   );
 }
