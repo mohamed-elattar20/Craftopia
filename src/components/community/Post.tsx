@@ -395,7 +395,7 @@ export default function Post({ post }: DocumentData) {
                       <div className="dropdown">
                         <button
                           title="delete"
-                          className="btn btn-primary dropdown-toggle"
+                          className="btn btn-secondary dropdown-toggle"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"

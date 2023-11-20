@@ -27,7 +27,8 @@ type myUserContext = {
   authUser: DocumentData[] | undefined;
   usersCollection: DocumentData | undefined;
   currentUser: UserType | undefined | null | DocumentData;
-  userRef: "" | DocumentReference<DocumentData, DocumentData> | undefined;
+  // userRef: "" | DocumentReference<DocumentData, DocumentData> | undefined;
+  userRef: DocumentReference<DocumentData, DocumentData> | null | undefined;
 };
 
 export const UserContext = createContext<myUserContext>({} as myUserContext);
@@ -43,10 +44,10 @@ export const UserContextProvider = ({ children }: UserContextProps) => {
     myUser && query(usersCollRef, where("uId", "==", myUser?.uid));
   const [authUser] = useCollectionData(listOfUsers);
   const [usersCollection] = useCollection(listOfUsers);
-  const [currentUserr] = useCollection(listOfUsers);
-  const userId = currentUserr && currentUserr?.docs[0].id;
-  const userRef = userId && doc(firestore, "users", userId);
-  // console.log(userRef);
+  // const [currentUserr] = useCollection(listOfUsers);
+  // const userId = currentUserr && currentUserr?.docs[0].id;
+  // const userRef = userId && doc(firestore, "users", userId);
+  const userRef = currentUser && doc(firestore, "users", currentUser.uId);
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (current) => {

@@ -116,7 +116,7 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
       />
       <button
         onClick={() => addToCartFunc(product)}
-        className="btn btn-primary w-100"
+        className="btn btn-secondary w-100"
       >
         أضف الى السلة
         <FontAwesomeIcon className="me-1 me-md-2" icon={faShoppingCart} />

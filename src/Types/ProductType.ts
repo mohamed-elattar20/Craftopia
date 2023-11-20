@@ -21,8 +21,15 @@ export type ProductType = {
   rating: number;
   ratingCount: number;
   sellerId: "";
-  reviewes: [];
+  reviewes: {
+    displayName: string;
+    rating: number;
+    reviewContent: string;
+    reviewId: string;
+    userAvatarURL: string;
+  }[];
   imgsNum: number;
   priceAfterDiscount: number;
   quantity: number;
+  isReviewAdded: boolean;
 };

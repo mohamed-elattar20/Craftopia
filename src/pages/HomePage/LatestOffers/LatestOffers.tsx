@@ -29,7 +29,7 @@ const LatestOffers = () => {
           {/* <p className="my-2 lead">خصومات تصل الى 30%</p> */}
           <Link
             to={"/store"}
-            className="mt-1 mb-3 d-flex align-items-center justify-content-center gap-2"
+            className="mt-1 mb-3 d-flex align-items-center justify-content-center gap-2 text-secondary"
           >
             <span> استكشف جميع العروض</span>
             <FontAwesomeIcon icon={faArrowLeftLong} />

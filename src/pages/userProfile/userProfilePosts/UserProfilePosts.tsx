@@ -29,8 +29,10 @@ export const UserProfilePosts = () => {
           posts.map((post) => <Post post={post} key={post.postId} />)
         ) : (
           <>
-            <h2 className="display-5">لا توجد منشورات خاصة بك في مجتمعنا</h2>
-            <Link className="btn btn-primary" to={`/community`}>
+            <h2 className="fs-3 fw-normal mb-3">
+              لا توجد منشورات خاصة بك في مجتمعنا
+            </h2>
+            <Link className="btn btn-secondary" to={`/community`}>
               إضافة منشور
             </Link>
           </>

@@ -94,7 +94,7 @@ const ResetPassword = () => {
                 )}
               </div>
               <div>
-                <button type="submit" className="btn btn-primary ms-3">
+                <button type="submit" className="btn btn-secondary ms-3">
                   إرسال رابط التفعيل
                 </button>
                 <NavLink
@@ -106,7 +106,7 @@ const ResetPassword = () => {
               </div>
               <div className="my-3">
                 {resetPassConfirm && !resetPassErr ? (
-                  <p className="text-primary fw-bold mt-2">
+                  <p className="text-secondary fw-bold mt-2">
                     {resetPassConfirm}
                   </p>
                 ) : (

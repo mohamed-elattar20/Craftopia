@@ -1,11 +1,13 @@
 import Visa from "../../assets/images/Cart Payment/Visa.png";
 import MasterCard from "../../assets/images/Cart Payment/MasterCard.png";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import CartPaymentDetails from "./CartPaymentDetails";
 import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import { ordersRef } from "../../firebase/firebase.config";
-import { addDoc, Timestamp, updateDoc } from "firebase/firestore";
+import { setDoc, Timestamp, updateDoc, doc } from "firebase/firestore";
+import { firestore } from "../../firebase/firebase";
 
 interface CartPageProps {
   nextPage: (value: number) => void;
@@ -14,6 +16,7 @@ interface CartPageProps {
 const CartPayment = ({ nextPage }: CartPageProps) => {
   const { authUser, userRef } = useContext(UserContext);
   let [bankCard, setBankCard] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   let total: number = 0;
   const shippingPrice = 60;
@@ -24,11 +27,12 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
         authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
     });
   }
-
+  const navigate = useNavigate();
   const submitOrder = async () => {
     if (authUser) {
+      setLoading(true);
       const orderId = crypto.randomUUID();
-      await addDoc(ordersRef, {
+      await setDoc(doc(firestore, "orders", orderId), {
         orderId,
         clientId: authUser[0]["uId"],
         clientName: authUser[0]["displayName"],
@@ -45,9 +49,14 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
         if (userRef) {     
           await updateDoc(userRef, {
             ["cart"]: {},
-          }).then(() => {
-            console.log("cart has been emptied");
-          });
+          })
+            .then(() => {
+              console.log("cart has been emptied");
+            })
+            .finally(() => {
+              setLoading(false);
+              navigate("/cart/order");
+            });
         }
       });
     }
@@ -114,15 +123,24 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
       </div>
       {bankCard && <CartPaymentDetails />}
       <div className="mx-auto text-center">
-        {!bankCard && (
-          <button
-            type="submit"
-            className="btn btn-primary mt-5"
-            onClick={submitOrder}
-          >
-            اتمام الطلب
-          </button>
-        )}
+        {!bankCard &&
+          (loading ? (
+            <button className="btn btn-secondary mt-5" type="button" disabled>
+              <span role="status">جاري تأكيد الطلب</span>
+              <span
+                className="spinner-border spinner-border-sm me-2"
+                aria-hidden="true"
+              ></span>
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="btn btn-secondary mt-5"
+              onClick={submitOrder}
+            >
+              اتمام الطلب
+            </button>
+          ))}
         <button
           className="btn btn-danger mt-5 me-3"
           type="submit"

@@ -165,7 +165,7 @@ const LoginForm = () => {
               </div>
               {loadingSignin ? (
                 <button
-                  className="btn btn-primary w-100"
+                  className="btn btn-secondary w-100"
                   type="button"
                   disabled
                 >
@@ -176,7 +176,7 @@ const LoginForm = () => {
                   ></span>
                 </button>
               ) : (
-                <button type="submit" className="btn btn-primary w-100">
+                <button type="submit" className="btn btn-secondary w-100">
                   تسجيل الدخول
                 </button>
               )}
@@ -193,7 +193,7 @@ const LoginForm = () => {
                 <p className=" mt-3 text-muted">جديد الى كرافتوبيا ؟</p>
                 <NavLink
                   to={`/register`}
-                  className="text-center text-decoration-none fw-bold text-primary "
+                  className="text-center text-decoration-none fw-bold text-secondary "
                 >
                   انشاء حساب لك في كرافتوبيا
                 </NavLink>

@@ -138,7 +138,7 @@ export const SellerProfileProducts = () => {
     <div className="containr w-100 overflow-hidden">
       <button
         type="button"
-        className="btn btn-primary mb-2"
+        className="btn btn-secondary mb-2"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop1"
       >
@@ -366,7 +366,7 @@ export const SellerProfileProducts = () => {
                 )}
                 <div className="modal-footer">
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                     data-bs-dismiss={isValid ? "modal" : ""}
                   >
                     حفظ

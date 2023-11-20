@@ -40,8 +40,6 @@ function Navbar() {
   };
 
   const { anonymousCartItems } = useContext(AnonymousUserContext);
-  console.log(cartItemsCount);
-  console.log(anonymousCartItems);
 
   return (
     <div className="container-fluid shadow justify-content-between sticky-top bg-white">
@@ -79,13 +77,13 @@ function Navbar() {
             />
             <button
               onClick={searchFunc}
-              className="btn btn-primary me-2"
+              className="btn btn-secondary me-2"
               type="button"
             >
               بحث
             </button>
           </div>
-          <ul className="navbar-nav align-items-center pe-3 gap-2">
+          <ul className="navbar-nav align-items-center pe-3 gap-3">
             <li className="nav-item">
               <NavLink className="nav-link p-1" aria-current="page" to={`/`}>
                 الرئيسية
@@ -156,7 +154,7 @@ function Navbar() {
                         signOut(auth);
                         navigate(`/`);
                       }}
-                      className="border-0 bg-white text-primary py-2 px-3 text-end dropdown-item"
+                      className="border-0 bg-white text-secondary py-2 px-3 text-end dropdown-item"
                     >
                       تسجيل الخروج ؟
                     </button>
@@ -202,7 +200,7 @@ function Navbar() {
                       <span></span>
                     )}
 
-                    <FontAwesomeIcon icon={faHeart} className="text-primary" />
+                    <FontAwesomeIcon icon={faHeart} color="gray" />
                   </button>
                   <button
                     title="cart"
@@ -215,7 +213,8 @@ function Navbar() {
                   >
                     <FontAwesomeIcon
                       icon={faCartPlus}
-                      className="text-primary"
+                      className=""
+                      color="gray"
                     />
                     <span
                       style={{
@@ -271,7 +270,7 @@ function Navbar() {
             </Link>
             <FontAwesomeIcon
               icon={faArrowLeftLong}
-              className="text-primary me-2"
+              className="text-secondary me-2"
             />
           </div>
 

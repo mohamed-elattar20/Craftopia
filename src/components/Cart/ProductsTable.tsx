@@ -8,8 +8,9 @@ import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 
 export const ProductsTable = () => {
   const steps = ["تحكم في مشترياتك", "أكمل تسجيل بياناتك", "التقدم للدفع"];
-  const { myUser, authUser, userRef } = useContext(UserContext);
+  const { authUser, userRef } = useContext(UserContext);
   const { anonymousCartItems } = useContext(AnonymousUserContext);
+
   let cartItems;
   if (authUser) {
     const cartKeys = Object.keys(authUser[0]?.cart);
@@ -60,7 +61,7 @@ export const ProductsTable = () => {
             <button
               data-functionality="increase"
               type="button"
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary"
               onClick={(e) => setQuantity(e)}
             >
               +
@@ -69,7 +70,7 @@ export const ProductsTable = () => {
             <button
               data-functionality="decrease"
               type="button"
-              className="btn btn-outline-primary"
+              className="btn btn-outline-secondary"
               onClick={(e) => setQuantity(e)}
             >
               -

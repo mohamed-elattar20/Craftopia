@@ -178,7 +178,7 @@ const Form = () => {
         </div>
         <div className="d-flex justify-content-start">
           {loading ? (
-            <button className="btn btn-primary mt-2" type="button" disabled>
+            <button className="btn btn-secondary mt-2" type="button" disabled>
               <span className="ms-2" role="status">
                 جاري الإرسال
               </span>
@@ -190,7 +190,7 @@ const Form = () => {
           ) : (
             <button
               type="submit"
-              className="btn btn-primary fw-bold px-4 py-2 mt-2"
+              className="btn btn-secondary fw-bold px-4 py-2 mt-2"
             >
               إرسال
             </button>

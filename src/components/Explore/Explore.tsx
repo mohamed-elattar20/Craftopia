@@ -20,7 +20,7 @@ const Explore = () => {
           <p className="mb-5 fs-5">تفاعل مع منشورات الاخرين</p>
           <Link
             to={myUser ? `/community` : `/login`}
-            className="btn btn-primary px-3 py-2  fw-bold  mb-5 mb-md-0"
+            className="btn btn-secondary px-3 py-2  fw-bold  mb-5 mb-md-0"
           >
             استكشف
           </Link>

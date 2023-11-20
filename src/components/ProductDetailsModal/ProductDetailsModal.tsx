@@ -90,7 +90,7 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
               >
                 Close
               </button>
-              <button type="button" className="btn btn-primary">
+              <button type="button" className="btn btn-secondary">
                 Save changes
               </button>
             </div> */}

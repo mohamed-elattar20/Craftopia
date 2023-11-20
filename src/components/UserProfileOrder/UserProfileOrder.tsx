@@ -16,6 +16,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 type UserProfileOrderProps = {
   productOrder: ProductType;
   orderStatus: string;
+  order: any;
 };
 type ReviewForm = {
   review: string;
@@ -39,6 +40,7 @@ function getLabelText(value: number) {
 export const UserProfileOrder = ({
   productOrder,
   orderStatus,
+  order,
 }: UserProfileOrderProps) => {
   const [value, setValue] = useState<number | null>(null);
   const [hover, setHover] = useState(-1);
@@ -51,14 +53,13 @@ export const UserProfileOrder = ({
     control,
     reset,
   } = useForm<ReviewForm>();
-  const [isReviewAdded, setIsReviewAdded] = useState(false);
   const q: any = query(
     productsCollRef,
     where("productId", "==", productOrder.productId)
   );
   const [product] = useCollectionData<ProductType>(q);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
 
     if (currentUser && product) {
@@ -77,22 +78,31 @@ export const UserProfileOrder = ({
           },
         ];
       }
-
-      updateDoc(doc(firestore, "products", product[0].productId), {
-        ...product[0],
-        rating:
-          product[0].rating !== 0
-            ? (product[0].rating + data.rating) / 2
-            : data.rating,
-        ratingCount: product[0].ratingCount + 1,
-        reviewes: updatedReviews,
-      })
-        .catch((err) => console.log(err))
-        .finally(() => {
+      try {
+        await updateDoc(doc(firestore, "products", product[0].productId), {
+          ...product[0],
+          rating:
+            product[0].rating !== 0
+              ? (product[0].rating + data.rating) / 2
+              : data.rating,
+          ratingCount: product[0].ratingCount + 1,
+          reviewes: updatedReviews,
+        }).then(() => {
           notify();
           reset();
-          setIsReviewAdded(true);
         });
+
+        Object.values(order.products).forEach((prod: any) => {
+          if (prod.productId === productOrder.productId) {
+            prod.isReviewAdded = true;
+          }
+        });
+        await updateDoc(doc(firestore, "orders", order.orderId), {
+          ...order,
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
   const notify = () =>
@@ -136,10 +146,12 @@ export const UserProfileOrder = ({
           className="align-self-sm-end text-center order-3"
           style={{ minWidth: "fit-content" }}
         >
-          {orderStatus === "pending"
-            ? ""
-            : !isReviewAdded && (
-                <div className="d-flex flex-column gap-3">
+          {orderStatus !== "delivered" ? (
+            ""
+          ) : (
+            <div className="d-flex flex-column gap-3">
+              {!productOrder.isReviewAdded && (
+                <>
                   <button
                     className="btn btn-secondary text-white"
                     type="button"
@@ -238,7 +250,7 @@ export const UserProfileOrder = ({
                             </div>
                             <div className="modal-footer">
                               <button
-                                className="btn btn-primary"
+                                className="btn btn-secondary"
                                 data-bs-dismiss={isValid ? "modal" : ""}
                               >
                                 حفظ
@@ -261,11 +273,14 @@ export const UserProfileOrder = ({
                       </div>
                     </div>
                   </div>
-                  <button className="btn btn-secondary text-white">
-                    إرجاع المنتج
-                  </button>
-                </div>
+                </>
               )}
+
+              <button className="btn btn-secondary text-white">
+                إرجاع المنتج
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </>

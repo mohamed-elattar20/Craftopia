@@ -45,10 +45,11 @@ export const UserProfileOrders = () => {
               ).toDateString()}
             </p>
             {Object.values(order.products).map((productOrder: any) => (
-              <div className="my-2">
+              <div className="my-2" key={productOrder.productId}>
                 <UserProfileOrder
                   productOrder={productOrder}
                   orderStatus={order.status}
+                  order={order}
                 />
               </div>
             ))}
@@ -56,8 +57,8 @@ export const UserProfileOrders = () => {
         ))
       ) : (
         <>
-          <h2 className="display-5 ">لا توجد طلبات</h2>
-          <Link className="btn btn-primary" to={`/store`}>
+          <h2 className="fs-3 fw-normal mb-3 ">لا توجد طلبات</h2>
+          <Link className="btn btn-secondary" to={`/store`}>
             اطلب الآن
           </Link>
         </>

@@ -18,6 +18,7 @@ const StorePage = () => {
   const [filterdProducts, setFilterdProducts] = useState<any>([]);
   const [productss] = useCollectionData(productsCollRef);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const filterQuery = (e: any) => {
     if (e.target.tagName === "BUTTON" && e.target.className.includes("cat")) {
@@ -28,6 +29,7 @@ const StorePage = () => {
 
   useEffect(() => {
     setLoading(true);
+    setError(null);
     const q = query(
       productsColRef,
       category
@@ -36,7 +38,7 @@ const StorePage = () => {
     );
     const getQuery = async () => {
       const querySnapshot = await getDocs(q)
-        .catch((er) => console.log(er))
+        .catch((er) => setError("حدث خطا ما برجاء المحاولة لاحقا"))
         .finally(() => setLoading(false));
 
       const queryProductsArray: Array<DocumentData> = [];
@@ -56,7 +58,7 @@ const StorePage = () => {
 
   return (
     <>
-      <div className="text-center mt-5 bg-primary text-light py-5">
+      <div className="text-center mt-5 bg-secondary text-light py-5">
         <h1 className="display-3 fw-medium mb-3">مرحبا بك في المتجر</h1>
         <h5 className="display-6 ">Store</h5>
       </div>
@@ -99,9 +101,10 @@ const StorePage = () => {
           </div>
         </div>
         <div className="w-25">
-          <SortComponent products={products} setProducts={setProducts} />
+          <SortComponent products={filterdProducts} setProducts={setProducts} />
         </div>
         <div>
+          {error && <h3>{error}</h3>}
           {loading ? (
             <div className="d-flex justify-content-center mt-5">
               <Spinner />

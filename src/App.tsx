@@ -49,7 +49,9 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { ProductType } from "./Types/ProductType";
 import { doc, updateDoc } from "firebase/firestore";
 import { MainLayout } from "./pages/MainLayout/MainLayout";
-import Post from "./components/community/Post";
+import { OrderDone } from "./components/Cart/OrderDone";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
+
 
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
@@ -59,7 +61,8 @@ function App() {
     window.scrollTo(0, 0);
   };
 
-  const [scrollHeight, setScrollHeight] = useState(0);
+
+  // const [scrollHeight, setScrollHeight] = useState(0);
   // useEffect(() => {
   //   const handleScroll = () => {
   //     const currentScrollHeight = window.scrollY;
@@ -70,20 +73,21 @@ function App() {
   //     window.removeEventListener("scroll", handleScroll);
   //   };
   // }, [scrollHeight]);
+
   // Scrolling
 
   return (
     <div className="App">
-      {scrollHeight > 100 && (
+      {/* {window.scrollY > 100 && (
         <button
           title="up"
           onClick={scrollUp}
-          className="btn btn-primary fixedBtn "
+          className="btn btn-secondary fixedBtn "
         >
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
-      )}
-      {/* <Post /> */}
+      )} */}
+
       <Routes>
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
@@ -111,6 +115,7 @@ function App() {
           <Route element={<ProtectedRoutesProfile />}>
             <Route path="/community" element={<Forum />} />
 
+            {/*ProtectedRoutesProfilebuyer  */}
             <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
               <Route path={`/user/profile`} element={<UserProfile />}>
                 <Route path="" element={<UserProfileAccount />} />
@@ -120,7 +125,8 @@ function App() {
                 <Route path="wishlist" element={<UserProfileWishList />} />
               </Route>
             </Route>
-
+            <Route path="/cart/order" element={<OrderDone />} />
+            {/*ProtectedRoutesProfileSeller  */}
             <Route element={<ProtectedRoutesProfileSeller />}>
               <Route path="/seller/profile" element={<SellerProfile />}>
                 <Route path="" element={<SellerProfileAccount />} />
@@ -130,6 +136,7 @@ function App() {
             </Route>
           </Route>
         </Route>
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       {/* <Footer /> */}

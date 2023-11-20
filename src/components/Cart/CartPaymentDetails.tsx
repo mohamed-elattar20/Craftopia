@@ -7,8 +7,10 @@ import {
   orderReg,
   paymentReq,
 } from "../../Hooks/PaymobHook/usePaymob";
-import { Timestamp, addDoc, updateDoc } from "firebase/firestore";
+import { Timestamp, setDoc, updateDoc, doc } from "firebase/firestore";
 import { ordersRef } from "../../firebase/firebase.config";
+import { firestore } from "../../firebase/firebase";
+
 const CartPaymentDetails = () => {
   const [iframeURL, setIframeURL] = useState("");
   const {
@@ -62,7 +64,7 @@ const CartPaymentDetails = () => {
       await makeCartEmpty();
       if (authUser) {
         const orderId = crypto.randomUUID();
-        await addDoc(ordersRef, {
+        await setDoc(doc(firestore, "orders", orderId), {
           orderId,
           clientId: authUser[0]["uId"],
           clientName: authUser[0]["displayName"],
