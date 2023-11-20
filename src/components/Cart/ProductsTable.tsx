@@ -4,11 +4,12 @@ import { useContext } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import { deleteField, updateDoc } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
+import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 
 export const ProductsTable = () => {
   const steps = ["تحكم في مشترياتك", "أكمل تسجيل بياناتك", "التقدم للدفع"];
   const { myUser, authUser, userRef } = useContext(UserContext);
-
+  const { anonymousCartItems } = useContext(AnonymousUserContext);
   let cartItems;
   if (authUser) {
     const cartKeys = Object.keys(authUser[0]?.cart);

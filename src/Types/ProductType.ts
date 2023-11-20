@@ -7,7 +7,7 @@ export type ImageObj = {
 export type ProductType = {
   productId: string;
   productTitle: string;
-  productPrice: string;
+  productPrice: number;
   productDescription: string;
   brand: string;
   productCategory: {
@@ -16,11 +16,13 @@ export type ProductType = {
   } | null;
   productImages: ImageObj[];
   generatedAt: object;
-  discount: string;
+  discount: number;
   productImage: any;
-  rating: "";
+  rating: number;
+  ratingCount: number;
   sellerId: "";
   reviewes: [];
   imgsNum: number;
-  quantity: number
+  priceAfterDiscount: number;
+  quantity: number;
 };

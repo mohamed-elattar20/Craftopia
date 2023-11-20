@@ -90,13 +90,15 @@ export const SellerProductModal = ({
       updateDoc(docRef, {
         ...productItem,
         productTitle: data.productTitle,
-        productPrice: data.productPrice,
+        productPrice: +data.productPrice,
         productDescription: data.productDescription,
         productCategory: {
           value: data.productCategory?.value,
           label: data.productCategory?.label,
         },
         discount: +data.discount || 0,
+        priceAfterDiscount:
+          +data.productPrice * (1 - (+data.discount / 100 || 0)),
         productImages,
       });
     }

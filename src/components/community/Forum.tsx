@@ -5,13 +5,15 @@ import { postsCollRef } from "../../firebase/firebase";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import { Spinner } from "../Spinner/Spinner";
+import { useState } from "react";
 
 export default function Forum() {
   const [posts, loading, error] = useCollectionData(postsCollRef);
+  const [loadingPost, setLoadingPost] = useState(false);
 
   return (
     <>
-      <Modal />
+      <Modal setLoadingPost={setLoadingPost} />
       <Container sx={{ paddingY: 3 }}>
         <Grid
           container
@@ -19,14 +21,31 @@ export default function Forum() {
           sx={{ display: "flex", justifyContent: "center" }}
         >
           {loading ? (
-            <div className="h-100 d-flex justify-content-center">
+            <div className="h-100 ">
               <Spinner />
             </div>
           ) : (
-            posts
-              ?.sort((a, b) => +b.genratedAt - +a.genratedAt)
-              .map((post) => <Post post={post} key={post.postId} />)
+            <Grid
+              container
+              spacing={3}
+              sx={{ display: "flex", justifyContent: "center" }}
+            >
+              {loadingPost ? (
+                <div className="d-flex justify-content-center">
+                  <Spinner />
+                </div>
+              ) : (
+                ""
+              )}
+
+              {posts
+                ?.sort((a, b) => +b.genratedAt - +a.genratedAt)
+                .map((post) => (
+                  <Post post={post} key={post.postId} />
+                ))}
+            </Grid>
           )}
+
           {/* {posts?.map((post) => (
             <Post post={post} key={post.postId} />
           ))} */}

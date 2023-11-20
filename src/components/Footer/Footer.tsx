@@ -10,7 +10,7 @@ import "./Footer.css";
 export const Footer = () => {
   return (
     <footer className="container mx-auto py-5 home-page-footer">
-      <div className="row text-center text-md-end g-5">
+      <div className="row text-center text-md-end gy-3">
         <ul className="list-unstyled fw-medium px-0 col-12 col-md-8 col-xl-4">
           <li>
             <h5 className="fw-semibold mb-4">كرافتوبيا</h5>
