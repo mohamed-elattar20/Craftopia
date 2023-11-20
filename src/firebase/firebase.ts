@@ -23,3 +23,5 @@ export const productsCollRef = collection(firestore, "products");
 export const postsCollRef = collection(firestore, "posts");
 
 export const commentsCollRef = collection(firestore, "comments");
+
+export const contactUsCollRef = collection(firestore, "contactUs")

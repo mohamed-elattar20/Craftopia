@@ -82,7 +82,6 @@ function App() {
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
       )}
-
       <Routes>
         {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
@@ -99,7 +98,7 @@ function App() {
             <Route path="" element={<HomePage />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/store" element={<StorePage />} />
-            <Route path="/search/:word" element={<SearchPage />} />
+            <Route path="/search/:word?" element={<SearchPage />} />
             <Route
               path="/product-details/:id"
               element={<ProductDetailsPage />}

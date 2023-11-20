@@ -13,4 +13,5 @@ export type UserType = {
   wishList: {};
   cart: {};
   orders: [];
+  email: string
 };

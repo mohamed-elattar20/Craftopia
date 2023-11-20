@@ -38,12 +38,12 @@ const ProductDetailsPage = () => {
     where("productCategory", "==", ProductData.productCategory)
   );
   const [relatedProducts] = useCollectionData(relatedProductsQ);
-  console.log(relatedProducts);
+  // console.log(relatedProducts);
 
   const filteredRelatedProducts = relatedProducts
     ?.filter((pro) => pro.productId !== ProductData.productId)
     .slice(0, 4);
-  console.log(filteredRelatedProducts);
+  // console.log(filteredRelatedProducts);
 
   const [flag, setFlag] = useState<Boolean>(false);
 

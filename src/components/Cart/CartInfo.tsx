@@ -1,4 +1,3 @@
-
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import egyptGovernoratesData from "../../pages/RegisterPage/RegisterSeller/governorates.json";
 import Select from "react-select";
@@ -77,7 +76,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
 
   return (
     <>
-      <div className="container pt-3">
+      <div className="container pt-3 vh-100">
         <p className="text-center fs-5 pb-5">تفاصيل الفاتورة</p>
         <form onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="row">
@@ -204,7 +203,11 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
             </div>
           </div>
           <div className="mx-auto text-center">
-            <button type="submit" className="btn btn-primary mt-5" onClick={() => nextPage(2)}>
+            <button
+              type="submit"
+              className="btn btn-primary mt-5"
+              onClick={() => nextPage(2)}
+            >
               تقدم إلى الدفع
             </button>
             <button

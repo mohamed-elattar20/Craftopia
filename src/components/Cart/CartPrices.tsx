@@ -6,7 +6,7 @@ interface CartPurchasesProps {
 }
 
 export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
-  const { myUser, authUser, userRef } = useContext(UserContext);
+  const { currentUser, myUser, authUser, userRef } = useContext(UserContext);
   let total: number = 0;
   if (authUser) {
     const cartKeys = Object.keys(authUser[0]?.cart);
@@ -15,33 +15,38 @@ export const CartPrices = ({ nextPage }: CartPurchasesProps) => {
         authUser[0]?.cart[key].productPrice * authUser[0]?.cart[key].quantity;
     });
   }
+  // console.log(currentUser);
 
   return (
     <>
-      <div className="card my-3">
-        <div className="card-body">
-          <h5 className="card-title pb-3 text-center">إجمالي سلة المشتريات</h5>
-          <div className="d-flex justify-content-between py-3 border-bottom">
-            <h6 className="card-subtitle mb-2">المجموع</h6>
-            <h6 className="card-subtitle mb-2">EGP {total}</h6>
+      {currentUser?.cart > 0 && (
+        <div className="card my-3">
+          <div className="card-body">
+            <h5 className="card-title pb-3 text-center">
+              إجمالي سلة المشتريات
+            </h5>
+            <div className="d-flex justify-content-between py-3 border-bottom">
+              <h6 className="card-subtitle mb-2">المجموع</h6>
+              <h6 className="card-subtitle mb-2">EGP {total}</h6>
+            </div>
+            <div className="d-flex justify-content-between pt-3  border-bottom">
+              <h6 className="card-subtitle mb-2">الشحن</h6>
+              <h6 className="card-subtitle mb-2">EGP 60</h6>
+            </div>
+            <div className="d-flex justify-content-between pt-3">
+              <h5 className="card-subtitle mb-2">الاجمالي</h5>
+              <h5 className="card-subtitle mb-2">EGP {total + 60}</h5>
+            </div>
           </div>
-          <div className="d-flex justify-content-between pt-3  border-bottom">
-            <h6 className="card-subtitle mb-2">الشحن</h6>
-            <h6 className="card-subtitle mb-2">EGP 60</h6>
-          </div>
-          <div className="d-flex justify-content-between pt-3">
-            <h5 className="card-subtitle mb-2">الاجمالي</h5>
-            <h5 className="card-subtitle mb-2">EGP {total + 60}</h5>
-          </div>
+          <button
+            className="btn btn-primary my-2 mx-3"
+            type="submit"
+            onClick={() => nextPage(1)}
+          >
+            اتمام الطلب
+          </button>
         </div>
-        <button
-          className="btn btn-primary my-2 mx-3"
-          type="submit"
-          onClick={() => nextPage(1)}
-        >
-          اتمام الطلب
-        </button>
-      </div>
+      )}
     </>
   );
 };
