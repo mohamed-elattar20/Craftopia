@@ -103,7 +103,8 @@ export const SellerProfileProducts = () => {
       brand: currentUser?.displayName,
       productId,
       generatedAt: Timestamp.now(),
-      rating: "",
+      rating: 0,
+      ratingCount: 0,
       reviewes: [],
     }).finally(() => setUploading(false));
     console.log(data);

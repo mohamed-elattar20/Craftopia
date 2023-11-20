@@ -90,7 +90,7 @@ export const SellerProductModal = ({
       updateDoc(docRef, {
         ...productItem,
         productTitle: data.productTitle,
-        productPrice: data.productPrice,
+        productPrice: +data.productPrice,
         productDescription: data.productDescription,
         productCategory: {
           value: data.productCategory?.value,

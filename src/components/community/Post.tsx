@@ -120,7 +120,7 @@ export default function Post({ post }: DocumentData) {
   };
   return (
     <>
-      <Grid item xs={7} sx={{ margin: "1rem 0" }}>
+      <Grid item xs={7} sx={{ margin: "1rem 0", width: "100%" }}>
         <Item>
           <Paper elevation={8}>
             <Stack direction={"column"}>

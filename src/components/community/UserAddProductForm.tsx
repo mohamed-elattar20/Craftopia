@@ -9,7 +9,7 @@ import { Timestamp, addDoc, doc, setDoc } from "firebase/firestore";
 import { firestore, postsCollRef } from "../../firebase/firebase";
 import { UserContext } from "../../Contexts/UserContext";
 
-export default function UserAddProductForm() {
+export default function UserAddProductForm({ setLoadingPost }: any) {
   const {
     register,
     handleSubmit,
@@ -24,6 +24,7 @@ export default function UserAddProductForm() {
 
   const submitControl = async (data: any) => {
     console.log(data);
+    setLoadingPost(true);
     imgs.forEach(async (img: any) => {
       const imgRef = ref(storage, `posts/${img.imageId}`);
       await uploadFile(imgRef, img.postImg);
@@ -49,7 +50,8 @@ export default function UserAddProductForm() {
           })
           .catch(() => {
             console.log(`Set post not Added`);
-          });
+          })
+          .finally(() => setLoadingPost(false));
         // addDoc(postsCollRef, {
         //   postId: crypto.randomUUID(),
         //   postBody: data.addComment,
