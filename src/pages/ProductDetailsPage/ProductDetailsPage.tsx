@@ -21,7 +21,6 @@ import { productsCollRef } from "../../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Box from "@mui/material/Box";
 import Rating from "@mui/material/Rating";
-import Typography from "@mui/material/Typography";
 
 const ProductDetailsPage = () => {
   const location = useLocation();
@@ -50,6 +49,8 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     setActiveImageUrl(ProductData.productImages[0].imgUrl);
   }, [ProductData]);
+  console.log("dddd", ProductData);
+  console.log(+ProductData?.rating.toFixed(1));
 
   return (
     <>
@@ -90,26 +91,26 @@ const ProductDetailsPage = () => {
 
           <div className="col-12 col-md-6">
             <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
-            <Box
-              sx={{
-                "& > legend": {
-                  mt: 2,
+            <div className="d-flex align-items-center gap-1">
+              <Box
+                sx={{
                   display: "flex",
                   flexDirection: "row-reverse",
                   direction: "ltr",
-                },
-              }}
-            >
-              <Rating
-                name="half-rating-read"
-                value={ProductData?.rating}
-                precision={0.1}
-                readOnly
-              />
-            </Box>
+                }}
+              >
+                <Rating
+                  name="half-rating-read"
+                  value={ProductData?.rating}
+                  precision={0.1}
+                  readOnly
+                />
+              </Box>
+              <span>({ProductData?.ratingCount})</span>
+            </div>
 
             {ProductData?.discount ? (
-              <div className="d-flex gap-2 align-items-baseline">
+              <div className="d-flex gap-2 align-items-baseline mt-3">
                 <h3>
                   EGP{" "}
                   {(
@@ -145,72 +146,21 @@ const ProductDetailsPage = () => {
             {/* </a> */}
           </div>
         </div>
-        {/* <div className="row g-5 ">
-          <div className="col-sm-12 col-md-12 col-lg-4">
-            <div className="d-flex flex-column gap-3 h-100">
-              <div style={{ maxHeight: "80%" }}>
-                <img
-                  className="rounded-3 "
-                  src={activeImageUrl}
-                  alt="product"
-                  style={{ maxHeight: "100%" }}
-                />
-              </div>
-              <div className="d-flex gap-2">
-                {ProductData?.productImages.map((img) => (
-                  <div className="" style={{ cursor: "pointer" }}>
-                    <img
-                      className="rounded-3"
-                      style={{
-                        border:
-                          img.imgUrl === activeImageUrl
-                            ? "1px solid #777"
-                            : "none",
-                      }}
-                      src={img?.imgUrl}
-                      alt="product"
-                      onClick={(e: React.MouseEvent<HTMLImageElement>) =>
-                        setActiveImageUrl(e.currentTarget.src)
-                      }
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-          <div className="col-sm-12 col-md-12 col-lg-6">
-            <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
-            <h3>EGP {ProductData?.productPrice}</h3>
-
-            <div className="my-4 d-flex gap-2 align-items-center">
-              <div className="w-50">
-                <AddToCartBtn product={ProductData} />
-              </div>
-
-              <WishListIcon data={ProductData} />
-            </div>
-            <Link to={`/products/${ProductData?.sellerId}`}>
-              <h5>{ProductData?.brand}</h5>
-            </Link>
-          
-
-            <span>سياسة الشحن والاسترجاع</span>
-        
-          </div>
-        </div> */}
 
         <div className="row">
           <div className="col-12 text-center my-5 d-flex justify-content-center">
             <button
               className={`btn fs-1 ms-5 ${
-                !flag ? "text-primary " : "text-muted"
+                !flag ? "text-secondary " : "text-muted"
               }`}
               onClick={() => setFlag(false)}
             >
               المواصفات
             </button>
             <button
-              className={`btn fs-1 ${!flag ? "text-muted  " : "text-primary"}`}
+              className={`btn fs-1 ${
+                !flag ? "text-muted  " : "text-secondary"
+              }`}
               onClick={() => setFlag(true)}
             >
               التقييمات

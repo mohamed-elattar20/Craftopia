@@ -11,8 +11,8 @@ const ProductDetailsReviews = ({ product }: ProductDetailsReviewsProps) => {
       <div className="container ">
         <div className="row my-4">
           {product.reviewes.length !== 0 ? (
-            product.reviewes.map((rev, index) => (
-              <div key={index} className="col-12 my-2">
+            product.reviewes.map((rev) => (
+              <div key={rev.reviewId} className="col-12 my-2">
                 <ReviewCard review={rev} />
               </div>
             ))

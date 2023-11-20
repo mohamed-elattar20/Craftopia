@@ -316,7 +316,7 @@ export const SellerProductModal = ({
                 )}
                 <div className="modal-footer">
                   <button
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                     data-bs-dismiss={isValid ? "modal" : ""}
                   >
                     حفظ

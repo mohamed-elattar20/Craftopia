@@ -75,13 +75,13 @@ export const Footer = () => {
           </li>
           <li className="d-flex gap-4 justify-content-center justify-content-md-start li-class">
             <a className="hover-icon" href="https://instagram.com">
-              <FontAwesomeIcon icon={faInstagram} className="text-primary" />
+              <FontAwesomeIcon icon={faInstagram} className="text-secondary" />
             </a>
             <a className="hover-icon" href="https://twitter.com">
-              <FontAwesomeIcon icon={faTwitter} className="text-primary" />
+              <FontAwesomeIcon icon={faTwitter} className="text-secondary" />
             </a>
             <a className="hover-icon" href="https://facebook.com">
-              <FontAwesomeIcon icon={faFacebookF} className="text-primary" />
+              <FontAwesomeIcon icon={faFacebookF} className="text-secondary" />
             </a>
           </li>
         </ul>

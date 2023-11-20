@@ -21,11 +21,9 @@ const Invest = () => {
             <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
           </div>
 
-
           <div className="d-flex mb-4">
             <FontAwesomeIcon icon={faClipboardCheck} className="mt-1" />
 
-         
             <p className="mb-0 me-2 text-end">
               قم بانشاء حساب خاص بك واعرض منتجاتك بدون أي رسوم
             </p>
@@ -44,7 +42,7 @@ const Invest = () => {
                 ? `/seller/profile`
                 : `/register`
             }
-            className="btn btn-primary fw-bold px-4 py-2 mb-4 mb-md-0"
+            className="btn btn-secondary fw-bold px-4 py-2 mb-4 mb-md-0"
           >
             ابدأ البيع
           </Link> */}

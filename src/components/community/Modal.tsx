@@ -8,7 +8,7 @@ export default function Modal({ setLoadingPost }: any) {
       <h2 className="text-center"> تبحث عن منتج ولم تجده ؟</h2>
       <button
         type="button"
-        className="btn btn-primary modal-btn d-block w-100-xs w-50-md w-25-lg mx-auto my-3 fw-bold fs-5 py-2"
+        className="btn btn-secondary modal-btn d-block w-100-xs w-50-md w-25-lg mx-auto my-3 fw-bold fs-5 py-2"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >

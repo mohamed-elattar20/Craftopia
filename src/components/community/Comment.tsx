@@ -58,7 +58,7 @@ const Comment = ({ comment }: Comment) => {
                 {comment.userId === currentUser?.uId && (
                   <button
                     onClick={() => deleteComment(comment.commentId)}
-                    className="btn btn-primary"
+                    className="btn btn-secondary"
                   >
                     {" "}
                     <FontAwesomeIcon icon={faTrashAlt} />

@@ -125,7 +125,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
           <button
             title="plus"
             onClick={() => AddQuantity(data)}
-            className="btn btn-outline-primary px-2 py-1"
+            className="btn btn-outline-secondary px-2 py-1"
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
@@ -133,7 +133,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
           <button
             title="minus"
             onClick={() => DecreaseFromCart(data)}
-            className="btn btn-outline-primary px-2 py-1"
+            className="btn btn-outline-secondary px-2 py-1"
           >
             <FontAwesomeIcon icon={faMinus} />
           </button>
@@ -142,7 +142,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
           <button
             title="delete"
             onClick={() => deleteFromCart(data)}
-            className="btn btn-primary px-2 py-1"
+            className="btn btn-outline-danger px-2 py-1"
           >
             <FontAwesomeIcon icon={faTrashAlt} />
           </button>

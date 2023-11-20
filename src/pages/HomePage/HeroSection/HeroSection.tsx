@@ -46,7 +46,7 @@ export const HeroSection = () => {
             <div className="text-center">
               <Link
                 to={`/store`}
-                className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5 "
+                className="hero-btn btn btn-secondary px-5 py-2 fs-5 "
               >
                 ابدأ التسوق
               </Link>
@@ -68,7 +68,7 @@ export const HeroSection = () => {
                     placement="bottom"
                     overlay={popoverClickRootClose}
                   >
-                    <Button className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5">
+                    <Button className="hero-btn btn btn-secondary  px-5 py-2 fs-5">
                       انضموا الآن
                     </Button>
                   </OverlayTrigger>
@@ -76,29 +76,12 @@ export const HeroSection = () => {
               ) : (
                 <Link
                   to={`/register`}
-                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
+                  className="hero-btn btn btn-secondary  px-5 py-2 fs-5"
                 >
                   انضموا الآن
                 </Link>
               )}
             </div>
-            {/* <div className="">
-              {myUser && currentUser && currentUser.Rule === "seller" ? (
-                <Link
-                  to={`/seller/profile`}
-                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
-                >
-                  إضافة منتج ؟
-                </Link>
-              ) : (
-                <Link
-                  to={`/register`}
-                  className="hero-btn btn btn-secondary text-white px-5 py-2 fs-5"
-                >
-                  انضموا الآن
-                </Link>
-              )}
-            </div> */}
           </div>
         </div>
       </div>

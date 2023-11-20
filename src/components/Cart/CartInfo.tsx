@@ -205,7 +205,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
           <div className="mx-auto text-center">
             <button
               type="submit"
-              className="btn btn-primary mt-5"
+              className="btn btn-secondary mt-5"
               onClick={() => nextPage(2)}
             >
               تقدم إلى الدفع

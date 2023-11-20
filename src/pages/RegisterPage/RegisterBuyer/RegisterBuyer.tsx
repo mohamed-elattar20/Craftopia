@@ -284,7 +284,7 @@ function RegisterBuyer() {
           </div>
           <div className="mt-4">
             {loadingSignup ? (
-              <button className="btn btn-primary " type="button" disabled>
+              <button className="btn btn-secondary " type="button" disabled>
                 <span role="status">جاري التسجيل</span>
                 <span
                   className="spinner-border spinner-border-sm me-2"
@@ -292,11 +292,11 @@ function RegisterBuyer() {
                 ></span>
               </button>
             ) : (
-              <button type="submit" className="btn btn-primary ">
+              <button type="submit" className="btn btn-secondary ">
                 تسجيل
               </button>
             )}
-            <Link to={`/register`} className="btn btn-primary  me-2">
+            <Link to={`/register`} className="btn btn-secondary  me-2">
               العوده
             </Link>
           </div>
@@ -309,7 +309,7 @@ function RegisterBuyer() {
           )}
           <NavLink
             to={`/login`}
-            className="text-primary d-block my-2 text-decoration-none"
+            className="text-secondary d-block my-2 text-decoration-none"
           >
             هل أنت عضو بالفعل؟
           </NavLink>

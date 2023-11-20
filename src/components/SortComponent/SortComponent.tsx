@@ -11,13 +11,13 @@ export const SortComponent = ({ products, setProducts }: any) => {
   const handleSorting = (e: SingleValue<{ value: string; label: string }>) => {
     if (e?.value === "low to high") {
       const sortedProducts = products?.sort(
-        (a: any, b: any) => +a.productPrice - +b.productPrice
+        (a: any, b: any) => +a.priceAfterDiscount - +b.priceAfterDiscount
       );
       setProducts([...sortedProducts]);
     }
     if (e?.value === "high to low") {
       const sortedProducts = products?.sort(
-        (a: any, b: any) => +b.productPrice - +a.productPrice
+        (a: any, b: any) => +b.priceAfterDiscount - +a.priceAfterDiscount
       );
       setProducts([...sortedProducts]);
     }
