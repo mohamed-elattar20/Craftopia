@@ -31,7 +31,7 @@ export const UserProfileOrders = () => {
             key={order.orderId}
             className="border border-2 my-3 p-3 rounded-3"
           >
-            <p className="lead mb-2">رقم الطلب :{order.orederId} </p>
+            <p className="lead mb-2">رقم الطلب :{order.orderId} </p>
             <p className="lead mb-2">
               حالة الطلب :{" "}
               {order.status === "pending" ? `جاري تجهيز الشحنة` : `تم التوصيل`}

@@ -14,7 +14,7 @@ type CommentImg = {
   imgFile: File;
 };
 type UserAddCommentFormProps = {
-  post: any;
+  post?: any;
 };
 export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
   const { myUser, authUser } = useContext(UserContext);
@@ -90,7 +90,7 @@ export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
           })}
         ></textarea>
 
-        <button type="submit" className=" btn btn-primary border-0 p-2 ">
+        <button type="submit" className=" btn btn-primary border-0 p-2 ms-2 ">
           <p className="m-0">تعليق</p>
         </button>
         <input

@@ -13,8 +13,33 @@ export default function Forum() {
 
   return (
     <>
-      <Modal setLoadingPost={setLoadingPost} />
-      <Container sx={{ paddingY: 3 }}>
+      <div className="container">
+        <div className="row">
+          <Modal setLoadingPost={setLoadingPost} />
+          <div className="col-12">
+            {loading ? (
+              <div className="h-100 ">
+                <Spinner />
+              </div>
+            ) : loadingPost ? (
+              <div className="d-flex justify-content-center">
+                <Spinner />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
+
+          <div className="col-12">
+            {posts
+              ?.sort((a, b) => +b.genratedAt - +a.genratedAt)
+              .map((post) => (
+                <Post post={post} key={post.postId} />
+              ))}
+          </div>
+        </div>
+      </div>
+      {/* <Container sx={{ paddingY: 3 }}>
         <Grid
           container
           spacing={3}
@@ -45,12 +70,8 @@ export default function Forum() {
                 ))}
             </Grid>
           )}
-
-          {/* {posts?.map((post) => (
-            <Post post={post} key={post.postId} />
-          ))} */}
         </Grid>
-      </Container>
+      </Container> */}
     </>
   );
 }

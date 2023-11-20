@@ -49,6 +49,7 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons";
 import { ProductType } from "./Types/ProductType";
 import { doc, updateDoc } from "firebase/firestore";
 import { MainLayout } from "./pages/MainLayout/MainLayout";
+import Post from "./components/community/Post";
 
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
@@ -59,16 +60,16 @@ function App() {
   };
 
   const [scrollHeight, setScrollHeight] = useState(0);
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollHeight = window.scrollY;
-      setScrollHeight(currentScrollHeight);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrollHeight]);
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const currentScrollHeight = window.scrollY;
+  //     setScrollHeight(currentScrollHeight);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [scrollHeight]);
   // Scrolling
 
   return (
@@ -82,8 +83,8 @@ function App() {
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
       )}
+      {/* <Post /> */}
       <Routes>
-        {/* Protected Routes login ********************/}
         <Route element={<ProtectedRoutesLogin />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/login/reset-password" element={<ResetPassword />} />
@@ -91,7 +92,6 @@ function App() {
           <Route path="/register/seller" element={<RegisterSeller />} />
           <Route path="/register/buyer" element={<RegisterBuyer />} />
         </Route>
-
         <Route path="/" element={<MainLayout />}>
           <Route path="/contact-us" element={<ContactUs />} />
           <Route element={<ProtectedRoutesNotSeller />}>
@@ -108,10 +108,9 @@ function App() {
               element={<SellerProductsPage />}
             />
           </Route>
-          {/* Protected Routes Profile ********************/}
           <Route element={<ProtectedRoutesProfile />}>
             <Route path="/community" element={<Forum />} />
-            {/*ProtectedRoutesProfile  */}
+
             <Route path="/" element={<ProtectedRoutesProfilebuyer />}>
               <Route path={`/user/profile`} element={<UserProfile />}>
                 <Route path="" element={<UserProfileAccount />} />
@@ -121,7 +120,7 @@ function App() {
                 <Route path="wishlist" element={<UserProfileWishList />} />
               </Route>
             </Route>
-            {/*ProtectedRoutesProfileSeller  */}
+
             <Route element={<ProtectedRoutesProfileSeller />}>
               <Route path="/seller/profile" element={<SellerProfile />}>
                 <Route path="" element={<SellerProfileAccount />} />
