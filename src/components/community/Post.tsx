@@ -42,7 +42,8 @@ import Comment from "./Comment";
 import { Spinner } from "../Spinner/Spinner";
 import { UserType } from "../../Types/UserType";
 import { Link } from "react-router-dom";
-
+import img1 from "../../assets/images/pexels-niklas-jeromin-19161535.jpg";
+import profImg from "../../assets/images/WhatsApp Image 2023-08-22 at 13.38.00.jpg";
 type PostType = {
   genratedAt: Timestamp;
   postBody: string;
@@ -120,7 +121,198 @@ export default function Post({ post }: DocumentData) {
   };
   return (
     <>
-      <Grid item xs={7} sx={{ margin: "1rem 0", width: "100%" }}>
+      {/*  */}
+      <div className="container ">
+        <div className="row justify-content-center">
+          <div className="col-sm-12 col-md-10 col-lg-7">
+            <div className="card mb-3">
+              <img
+                src={post.postBodyImages[0].imageUrl || ""}
+                className="card-img-top img-fluid"
+                alt="..."
+              />
+              <div className="card-body">
+                <div className="d-flex">
+                  <div
+                    className="rounded-circle"
+                    style={{ width: "50px", height: "50px" }}
+                  >
+                    <img
+                      src={
+                        post.postOwnerAvatarUrl
+                          ? post.postOwnerAvatarUrl
+                          : avatar
+                      }
+                      alt=""
+                      className="d-block w-100 rounded-circle object-fit-cover"
+                    />
+                  </div>
+                  <div className="me-2 w-100 d-flex justify-content-between">
+                    <div>
+                      <div className="d-flex align-items-center">
+                        <h5 className="card-title mb-1 ms-2">
+                          {post.postOwnerName}{" "}
+                        </h5>
+                        {postOwnerDoc && postOwnerDoc[0].Rule === "seller" ? (
+                          <Link
+                            to={`/products/${postOwnerDoc[0].uId}`}
+                            className="text-muted text-decoration-underline"
+                          >
+                            عرض منتجات{" "}
+                            {postOwnerDoc && postOwnerDoc[0].displayName}
+                          </Link>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                      <p
+                        className="m-0 text-muted"
+                        style={{ fontSize: "14px" }}
+                      >
+                        {new Date(post.genratedAt.toDate()).toDateString()}
+                      </p>
+                      <p
+                        className="m-0 text-muted"
+                        style={{ fontSize: "12px" }}
+                      >
+                        {new Date(
+                          post.genratedAt.toDate()
+                        ).toLocaleTimeString()}
+                      </p>
+                      <p></p>
+                    </div>
+                    <div>
+                      {post.postOwnerId === currentUser?.uId && (
+                        <div className="dropdown">
+                          <button
+                            title="delete"
+                            className="btn btn-primary dropdown-toggle py-1 px-2"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            <FontAwesomeIcon
+                              className="ms-2"
+                              icon={faEllipsis}
+                            />
+                          </button>
+                          <ul className="dropdown-menu">
+                            <button
+                              onClick={() => deletePost(post.postId)}
+                              className="dropdown-item text-end "
+                            >
+                              حذف المنشور
+                            </button>
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <p className="card-text">{post.postBody}</p>
+                <p className="card-text"></p>
+                <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex">
+                    <div>
+                      <button
+                        className="btn onfocus-btn"
+                        onClick={() => {
+                          togglesVotes(post.postId);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faArrowUpLong}
+                          color={hasVoted ? "blue" : "gray"}
+                          style={{ fontSize: 20, marginLeft: 3 }}
+                        />
+                        <span>اعجاب</span>
+                      </button>
+                    </div>
+                    <div className="d-flex align-items-center">
+                      <button
+                        className="btn d-flex align-items-center "
+                        onClick={() => {
+                          setIsOpen((isOpen) => !isOpen);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faCommentDots}
+                          color="gray"
+                          style={{ fontSize: 25 }}
+                        />
+                        <span className="me-2">تعليق</span>
+                      </button>
+                      {Object.keys(post.votes).length > 0 && (
+                        <span style={{ fontSize: "14px" }} className="me-3">
+                          نال اعجاب {Object.keys(post.votes).length}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  {comments?.length && comments?.length > 0 ? (
+                    <div style={{ fontSize: "14px" }} className="me-3">
+                      عدد التعليقات : {comments?.length}
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                </div>
+                {isOpen && <UserAddCommentForm post={post} />}
+                <div>
+                  {loading ? (
+                    <div className="">
+                      <Spinner />
+                    </div>
+                  ) : (
+                    comments
+                      ?.sort((a, b) => +b.generatedAt - +a.generatedAt)
+                      ?.slice(0, 3)
+                      .map((comment) => (
+                        // <div className="col-12">
+                        <Comment
+                          key={comment.commentId}
+                          comment={comment as CommentType}
+                        />
+                        // </div>
+                      ))
+                  )}
+
+                  {comments && comments?.length > 3 && (
+                    <>
+                      {!commentState ? (
+                        <button
+                          onClick={() => setCommentState(true)}
+                          className="btn fs-5"
+                        >
+                          أظهر المزيد...
+                        </button>
+                      ) : (
+                        ""
+                      )}
+                      {commentState
+                        ? comments
+                            .sort((a, b) => +b.generatedAt - +a.generatedAt)
+                            ?.slice(3)
+                            .map((comment) => (
+                              <div>
+                                <Comment
+                                  key={comment.commentId}
+                                  comment={comment as CommentType}
+                                />
+                              </div>
+                            ))
+                        : ""}
+                    </>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/*  */}
+      {/* <Grid item xs={7} sx={{ margin: "1rem 0", width: "100%" }}>
         <Item>
           <Paper elevation={8}>
             <Stack direction={"column"}>
@@ -157,7 +349,6 @@ export default function Post({ post }: DocumentData) {
                           <Typography sx={{ fontWeight: "bold" }}>
                             {post.postOwnerName}
                           </Typography>
-                          {/* ************************************************************* */}
                           {postOwnerDoc && postOwnerDoc[0].Rule === "seller" ? (
                             <Link
                               className="text-decoration-underline me-2"
@@ -170,7 +361,6 @@ export default function Post({ post }: DocumentData) {
                           )}
                         </div>
 
-                        {/*  */}
                         <Box sx={{ opacity: 0.9 }}>
                           {post.genratedAt && (
                             <>
@@ -201,7 +391,6 @@ export default function Post({ post }: DocumentData) {
                         </Box>
                       </Box>
                     </div>
-                    {/*  */}
                     {post.postOwnerId === currentUser?.uId && (
                       <div className="dropdown">
                         <button
@@ -223,14 +412,7 @@ export default function Post({ post }: DocumentData) {
                         </ul>
                       </div>
                     )}
-                    {/* {post.postOwnerId === currentUser?.uId && (
-                      <button
-                        onClick={() => deletePost(post.postId)}
-                        className="btn btn-danger"
-                      >
-                        حذف المنشور
-                      </button>
-                    )} */}
+                   
                   </div>
                 </Stack>
                 <Typography
@@ -258,7 +440,7 @@ export default function Post({ post }: DocumentData) {
                       color={hasVoted ? "blue" : "gray"}
                       style={{ fontSize: 20, marginLeft: 3 }}
                     />
-                    {/* <span>{Object.keys(post.votes).length}</span> */}
+          
 
                     <Typography
                       sx={{
@@ -299,7 +481,7 @@ export default function Post({ post }: DocumentData) {
                 <Box padding={1}>
                   {isOpen && <UserAddCommentForm post={post} />}
                 </Box>
-                {/* Comments ****************************************** */}
+                
                 {loading ? (
                   <div className="">
                     <Spinner />
@@ -315,12 +497,7 @@ export default function Post({ post }: DocumentData) {
                       />
                     ))
                 )}
-                {/* {comments?.slice(0, 3).map((comment) => (
-                  <Comment
-                    key={comment.commentId}
-                    comment={comment as CommentType}
-                  />
-                ))} */}
+                
                 {comments && comments?.length > 3 && (
                   <>
                     {!commentState ? (
@@ -351,7 +528,7 @@ export default function Post({ post }: DocumentData) {
             </Stack>
           </Paper>
         </Item>
-      </Grid>
+      </Grid> */}
     </>
   );
 }

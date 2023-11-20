@@ -34,41 +34,49 @@ const Comment = ({ comment }: Comment) => {
     <>
       {comment.commentImgUrl ? (
         <>
-          <div className="d-flex mt-1 p-2">
+          <div
+            style={{ borderTop: "0.1px solid #0000002b" }}
+            className="d-flex mt-1 p-2 py-3 flex-column  "
+          >
+            <div className={`d-flex mt-1 p-2 py-3 flex-column`}>
+              <div className="d-flex">
+                <div>
+                  <img
+                    className="user-img"
+                    src={comment.userAvatarUrl || avatar}
+                    alt=""
+                  />
+                </div>
+                <div className="me-2 d-flex justify-content-between w-100 ">
+                  <div>
+                    <h5>{comment.userName}</h5>
+                    <p
+                      style={{ fontSize: "11.2px" }}
+                      className="me-3 fw-bold text-muted m-0 "
+                    >
+                      {new Date(comment.generatedAt.toDate()).toDateString()}
+                    </p>
+                  </div>
+                  <div>
+                    {comment.userId === currentUser?.uId && (
+                      <button
+                        onClick={() => deleteComment(comment.commentId)}
+                        className="btn btn-primary"
+                      >
+                        {" "}
+                        <FontAwesomeIcon icon={faTrashAlt} />
+                      </button>
+                    )}
+                  </div>
+                </div>
+              </div>
+              <div className="">
+                <p className="mt-2">{comment.commentBody}</p>
+              </div>
+            </div>
             <div>
-              <img
-                className="user-img"
-                src={comment.userAvatarUrl || avatar}
-                alt=""
-              />
+              <img src={comment.commentImgUrl} alt="" />
             </div>
-            <div className="d-flex justify-content-between w-100 ">
-              <div className="me-3">
-                <h5>{comment.userName}</h5>
-                <p
-                  style={{ fontSize: "11.2px" }}
-                  className="me-3 fw-bold text-muted m-0 "
-                >
-                  {new Date(comment.generatedAt.toDate()).toDateString()}
-                </p>
-
-                <p className="lead">{comment.commentBody}</p>
-              </div>
-              <div>
-                {comment.userId === currentUser?.uId && (
-                  <button
-                    onClick={() => deleteComment(comment.commentId)}
-                    className="btn btn-primary"
-                  >
-                    {" "}
-                    <FontAwesomeIcon icon={faTrashAlt} />
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-          <div>
-            <img src={comment.commentImgUrl} alt="" />
           </div>
         </>
       ) : (
