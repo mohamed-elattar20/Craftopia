@@ -18,7 +18,7 @@ const Pagination = ({
   const [pageCount, setPageCount] = useState(0);
   const itemsPerPage = 10;
 
-  console.log(filterdProducts);
+  // console.log(filterdProducts);
 
   useEffect(() => {
     if (filterdProducts) {

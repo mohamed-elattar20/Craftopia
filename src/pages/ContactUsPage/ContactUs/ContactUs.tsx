@@ -19,11 +19,11 @@ const ContactUs = () => {
           <h3 className="mb-4 fs-3 fw-bold">بيانات التواصل</h3>
           <div className="d-flex align-items-center mb-4">
             <TelephoneFill />
-            <p className="mb-0 me-3">+1012 3456 789</p>
+            <p className="mb-0 me-3"> 01009732889 20+</p>
           </div>
           <div className="d-flex align-items-center mb-4">
             <EnvelopeFill />
-            <p className="mb-0 me-3">demo@gmail.com</p>
+            <p className="mb-0 me-3"> support.center@craftopia.com</p>
           </div>
           <div className="d-flex align-items-center mb-5">
             <GeoAltFill />

@@ -19,6 +19,9 @@ import { ProductType } from "../../Types/ProductType";
 import AddQuantityToProduct from "../../components/AddQuantityToProduct/AddQuantityToProduct";
 import { productsCollRef } from "../../firebase/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
+import Typography from "@mui/material/Typography";
 
 const ProductDetailsPage = () => {
   const location = useLocation();
@@ -35,12 +38,12 @@ const ProductDetailsPage = () => {
     where("productCategory", "==", ProductData.productCategory)
   );
   const [relatedProducts] = useCollectionData(relatedProductsQ);
-  console.log(relatedProducts);
+  // console.log(relatedProducts);
 
   const filteredRelatedProducts = relatedProducts
     ?.filter((pro) => pro.productId !== ProductData.productId)
     .slice(0, 4);
-  console.log(filteredRelatedProducts);
+  // console.log(filteredRelatedProducts);
 
   const [flag, setFlag] = useState<Boolean>(false);
 
@@ -87,6 +90,23 @@ const ProductDetailsPage = () => {
 
           <div className="col-12 col-md-6">
             <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
+            <Box
+              sx={{
+                "& > legend": {
+                  mt: 2,
+                  display: "flex",
+                  flexDirection: "row-reverse",
+                  direction: "ltr",
+                },
+              }}
+            >
+              <Rating
+                name="half-rating-read"
+                value={ProductData?.rating}
+                precision={0.1}
+                readOnly
+              />
+            </Box>
 
             {ProductData?.discount ? (
               <div className="d-flex gap-2 align-items-baseline">

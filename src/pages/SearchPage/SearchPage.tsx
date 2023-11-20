@@ -15,6 +15,8 @@ const SearchPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [itemOffset, setItemOffset] = useState(0);
 
+  // console.log(word);
+
   const searchDocuments = async (keyword: any) => {
     try {
       setLoading(true);
@@ -36,16 +38,17 @@ const SearchPage = () => {
     setLoading(false);
   };
   useEffect(() => {
-    searchDocuments(word);
+    searchDocuments(word ? word : "");
   }, [word]);
 
   return (
     <>
-      {error && <h4>{error}</h4>}
       {loading ? (
         <div className="d-flex justify-content-center mt-4">
           <Spinner />
         </div>
+      ) : error ? (
+        <h4>{error}</h4>
       ) : filterdProducts && filterdProducts.length > 0 ? (
         <div className="container mt-5">
           <div className="w-25">
@@ -68,7 +71,7 @@ const SearchPage = () => {
           </div>
         </div>
       ) : (
-        <div className="container mt-5">
+        <div className="container mt-5 vh-100">
           <h4>عذرا لا يوجد نتائج</h4>
         </div>
       )}

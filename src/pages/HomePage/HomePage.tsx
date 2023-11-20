@@ -6,8 +6,12 @@ import Invest from "../../components/Invest/Invest";
 import Navbar from "../../components/Navbar/Navbar";
 import Categories from "./Categories/Categories";
 import LatestOffers from "./LatestOffers/LatestOffers";
+import { useEffect } from "react";
 
 const HomePage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <HeroSection />

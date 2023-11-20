@@ -5,6 +5,7 @@ import gems from "../../../assets/images/Categories/gems.png";
 import candles from "../../../assets/images/Categories/candles.png";
 import crochet from "../../../assets/images/Categories/crochet.png";
 import forMore from "../../../assets/images/Categories/for_more.png";
+
 const Categories = () => {
   const categories = [
     { categoryType: "مواد طبيعية", img: gems },
@@ -14,6 +15,9 @@ const Categories = () => {
   ];
   return (
     <>
+      {/*  */}
+
+      {/*  */}
       <div className="container my-5">
         <div className="row">
           <h2 className="display-5">تسوق حسب الفئة</h2>
