@@ -21,7 +21,6 @@ import { useNavigate } from "react-router-dom";
 // React Toastify
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { ProductType } from "../../Types/ProductType";
 import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
 type AddToCartBtnProps = {
   product?: DocumentData;
@@ -57,11 +56,11 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
             },
           },
         }).then((res) => {
-          notify();
           // console.log(
           //   `quantity plus by 1 *************************************`
           // );
         });
+        notify();
       }
     }
   };
@@ -90,7 +89,7 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
   };
 
   const navigate = useNavigate();
-  const notify = () =>
+  const notify = () => {
     toast.success("تم إضافة المنتج بنجاح", {
       position: "top-left",
       autoClose: 600,
@@ -102,6 +101,7 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
       pauseOnHover: false,
       rtl: true,
     });
+  };
 
   return (
     <>
