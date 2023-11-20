@@ -3,14 +3,15 @@ import { ProductType } from "../../Types/ProductType";
 import item from "../../assets/images/User Profile/product.jpeg";
 import "./userProfileOrder.css";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { firestore } from "../../firebase/firebase";
+import { firestore, productsCollRef } from "../../firebase/firebase";
 import { useContext, useState } from "react";
 import { UserContext } from "../../Contexts/UserContext";
 import { ToastContainer, toast } from "react-toastify";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import StarIcon from "@mui/icons-material/Star";
-import { validate } from "uuid";
+import { query, where } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 type UserProfileOrderProps = {
   productOrder: ProductType;
@@ -50,32 +51,49 @@ export const UserProfileOrder = ({
     control,
     reset,
   } = useForm<ReviewForm>();
+  const [isReviewAdded, setIsReviewAdded] = useState(false);
+  const q: any = query(
+    productsCollRef,
+    where("productId", "==", productOrder.productId)
+  );
+  const [product] = useCollectionData<ProductType>(q);
 
   const onSubmit = (data: any) => {
     console.log(data);
 
-    if (currentUser) {
-      updateDoc(doc(firestore, "products", productOrder.productId), {
-        ...productOrder,
-        rating:
-          productOrder.rating !== 0
-            ? (productOrder.rating + data.rating) / 2
-            : data.rating,
-        ratingCount: productOrder.ratingCount + 1,
-        reviewes: [
-          ...productOrder?.reviewes,
-          data.review !== "" && {
+    if (currentUser && product) {
+      let updatedReviews;
+      if (data.review === "") {
+        updatedReviews = [...product[0].reviewes];
+      } else {
+        updatedReviews = [
+          ...product[0].reviewes,
+          {
             displayName: currentUser?.displayName,
             reviewContent: data.review,
             userAvatarURL: currentUser?.avatarURL || "",
             reviewId: crypto.randomUUID(),
             rating: data.rating,
           },
-        ],
-      }).then(() => notify());
-    }
+        ];
+      }
 
-    reset();
+      updateDoc(doc(firestore, "products", product[0].productId), {
+        ...product[0],
+        rating:
+          product[0].rating !== 0
+            ? (product[0].rating + data.rating) / 2
+            : data.rating,
+        ratingCount: product[0].ratingCount + 1,
+        reviewes: updatedReviews,
+      })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          notify();
+          reset();
+          setIsReviewAdded(true);
+        });
+    }
   };
   const notify = () =>
     toast.success("تم إضافة تقييمك بنجاح", {
@@ -118,144 +136,136 @@ export const UserProfileOrder = ({
           className="align-self-sm-end text-center order-3"
           style={{ minWidth: "fit-content" }}
         >
-          {orderStatus === "pending" ? (
-            ""
-          ) : (
-            <div className="d-flex flex-column gap-3">
-              <button
-                className="btn btn-secondary text-white"
-                type="button"
-                data-bs-toggle="modal"
-                data-bs-target={`#a${productOrder.productId}`}
-              >
-                إضافة تقييم
-              </button>
+          {orderStatus === "pending"
+            ? ""
+            : !isReviewAdded && (
+                <div className="d-flex flex-column gap-3">
+                  <button
+                    className="btn btn-secondary text-white"
+                    type="button"
+                    data-bs-toggle="modal"
+                    data-bs-target={`#a${productOrder.productId}`}
+                  >
+                    إضافة تقييم
+                  </button>
 
-              <div
-                className="modal fade"
-                id={`a${productOrder.productId}`}
-                data-bs-backdrop="static"
-                data-bs-keyboard="false"
-                aria-labelledby="staticBackdropLabel2"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog modal-dialog-centered modal-lg">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1
-                        className="modal-title fs-5 text-center"
-                        id="staticBackdropLabel2"
-                      >
-                        بيانات المنتج
-                      </h1>
-                    </div>
-                    <div className="modal-body">
-                      <form
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="d-flex flex-column gap-3"
-                      >
-                        <input
-                          type="number"
-                          hidden
-                          {...register("rating", {
-                            validate: { hasValue: (file) => file !== "" },
-                          })}
-                        />
-                        <div>
-                          <Box
-                            sx={{
-                              width: 200,
-                              display: "flex",
-                              alignItems: "center",
-                              flexDirection: "row-reverse",
-                              direction: "ltr",
-                            }}
+                  <div
+                    className="modal fade"
+                    id={`a${productOrder.productId}`}
+                    data-bs-backdrop="static"
+                    data-bs-keyboard="false"
+                    aria-labelledby="staticBackdropLabel2"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h1
+                            className="modal-title fs-5 text-center"
+                            id="staticBackdropLabel2"
                           >
-                            <Rating
-                              style={{ height: "1.5rem" }}
-                              name="hover-feedback"
-                              value={value}
-                              precision={0.5}
-                              getLabelText={getLabelText}
-                              onChange={(event, newValue) => {
-                                setValue(newValue);
-                                reset({ rating: hover });
-                              }}
-                              onChangeActive={(event, newHover) => {
-                                setHover(newHover);
-                              }}
-                              emptyIcon={
-                                <StarIcon
-                                  style={{ opacity: 0.55 }}
-                                  fontSize="inherit"
-                                />
-                              }
+                            بيانات المنتج
+                          </h1>
+                        </div>
+                        <div className="modal-body">
+                          <form
+                            onSubmit={handleSubmit(onSubmit)}
+                            className="d-flex flex-column gap-3"
+                          >
+                            <input
+                              type="number"
+                              hidden
+                              {...register("rating", {
+                                validate: { hasValue: (file) => file !== "" },
+                              })}
                             />
+                            <div>
+                              <Box
+                                sx={{
+                                  width: 200,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  flexDirection: "row-reverse",
+                                  direction: "ltr",
+                                }}
+                              >
+                                <Rating
+                                  style={{ height: "1.5rem" }}
+                                  name="hover-feedback"
+                                  value={value}
+                                  precision={0.5}
+                                  getLabelText={getLabelText}
+                                  onChange={(event, newValue) => {
+                                    setValue(newValue);
+                                    reset({ rating: hover });
+                                  }}
+                                  onChangeActive={(event, newHover) => {
+                                    setHover(newHover);
+                                  }}
+                                  emptyIcon={
+                                    <StarIcon
+                                      style={{ opacity: 0.55 }}
+                                      fontSize="inherit"
+                                    />
+                                  }
+                                />
 
-                            {value !== null && (
-                              <Box sx={{ ml: 2 }}>
-                                {labels[hover !== -1 ? hover : value]}
+                                {value !== null && (
+                                  <Box sx={{ ml: 2 }}>
+                                    {labels[hover !== -1 ? hover : value]}
+                                  </Box>
+                                )}
                               </Box>
-                            )}
-                          </Box>
-                          {errors.rating && (
-                            <p className=" text-danger text-end">
-                              برجاء تقييم المنتج
-                            </p>
-                          )}
+                              {errors.rating && (
+                                <p className=" text-danger text-end">
+                                  برجاء تقييم المنتج
+                                </p>
+                              )}
+                            </div>
+                            <div>
+                              <label
+                                htmlFor="review"
+                                className="form-label text-end w-100"
+                              >
+                                اضف تقييم
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                id="review"
+                                {...register("review")}
+                              />
+                            </div>
+                            <div className="modal-footer">
+                              <button
+                                className="btn btn-primary"
+                                data-bs-dismiss={isValid ? "modal" : ""}
+                              >
+                                حفظ
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                                onClick={() => {
+                                  reset();
+                                  setValue(null);
+                                  reset({ rating: "" });
+                                }}
+                              >
+                                غلق
+                              </button>
+                            </div>
+                          </form>
                         </div>
-                        <div>
-                          <label
-                            htmlFor="review"
-                            className="form-label text-end w-100"
-                          >
-                            اضف تقييم
-                          </label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            id="review"
-                            {...register("review")}
-                            // {...register("review", {
-                            //   required: "برجاء إضافة تقييم المنتج",
-                            // })}
-                          />
-                          {/* {errors.review && (
-                            <p className=" text-danger text-end">
-                              {errors.review.message}
-                            </p>
-                          )} */}
-                        </div>
-                        <div className="modal-footer">
-                          <button
-                            className="btn btn-primary"
-                            data-bs-dismiss={isValid ? "modal" : ""}
-                          >
-                            حفظ
-                          </button>
-                          <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                            onClick={() => {
-                              reset();
-                              setValue(null);
-                              reset({ rating: "" });
-                            }}
-                          >
-                            غلق
-                          </button>
-                        </div>
-                      </form>
+                      </div>
                     </div>
                   </div>
+                  <button className="btn btn-secondary text-white">
+                    إرجاع المنتج
+                  </button>
                 </div>
-              </div>
-              <button className="btn btn-secondary text-white">
-                إرجاع المنتج
-              </button>
-            </div>
-          )}
+              )}
         </div>
       </div>
     </>
