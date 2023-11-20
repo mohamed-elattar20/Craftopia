@@ -58,6 +58,7 @@ export const UserProfileAccount = () => {
       address: currentUser?.address,
       governorate: currentUser?.governorate,
     });
+    window.scrollTo(0, 0);
   }, [currentUser]);
 
   const notify = () =>

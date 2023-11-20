@@ -19,7 +19,7 @@ img {
 .fixedBtn {
   position: fixed;
   bottom: 60px;
-  right: 60px;
+  left: 60px;
   z-index: 1;
 }
 

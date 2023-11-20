@@ -38,9 +38,9 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
             },
           },
         }).then((res) => {
-          console.log(
-            `quantity plus by 1 *************************************`
-          );
+          // console.log(
+          //   `quantity plus by 1 *************************************`
+          // );
         });
       }
     } else {
@@ -71,9 +71,9 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
               },
             },
           }).then((res) => {
-            console.log(
-              `quantity plus by 1 *************************************`
-            );
+            // console.log(
+            //   `quantity plus by 1 *************************************`
+            // );
           });
         }
       }
@@ -99,14 +99,14 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
       if (userRef && userCart[product.productId]) {
         let updatedProducts = userCart;
         delete updatedProducts[product.productId];
-        console.log(updatedProducts);
+        // console.log(updatedProducts);
         updateDoc(userRef, {
           ...currentUser,
           cart: {
             ...updatedProducts,
           },
         }).then((res) => {
-          console.log(`Product Deleted ******************************`);
+          // console.log(`Product Deleted ******************************`);
         });
       }
     } else {
@@ -123,6 +123,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
       <div className=" d-flex justify-content-between">
         <div className="d-flex align-items-center">
           <button
+            title="plus"
             onClick={() => AddQuantity(data)}
             className="btn btn-outline-primary px-2 py-1"
           >
@@ -130,6 +131,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
           </button>
           <p className="lead mx-2 mb-0">{data?.quantity}</p>
           <button
+            title="minus"
             onClick={() => DecreaseFromCart(data)}
             className="btn btn-outline-primary px-2 py-1"
           >
@@ -138,6 +140,7 @@ const AddQuantityToProduct = ({ data }: AddQuantityToProductProps) => {
         </div>
         <div>
           <button
+            title="delete"
             onClick={() => deleteFromCart(data)}
             className="btn btn-primary px-2 py-1"
           >

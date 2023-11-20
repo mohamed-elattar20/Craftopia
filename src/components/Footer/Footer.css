@@ -1,3 +1,16 @@
-.home-page-footer a{
-    color: #212529;
+.home-page-footer a {
+  color: #212529;
+}
+.hoverLinks,
+.hover-icon {
+  transition: 0.5s all;
+}
+.hoverLinks:hover {
+  transform: translate(-10px);
+}
+.hover-icon:hover {
+  transform: scale(2);
+}
+.li-class {
+  width: fit-content;
 }

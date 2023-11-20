@@ -8,7 +8,6 @@ import { useCollection } from "react-firebase-hooks/firestore";
 export const ProductsTable = () => {
   const steps = ["تحكم في مشترياتك", "أكمل تسجيل بياناتك", "التقدم للدفع"];
   const { myUser, authUser, userRef } = useContext(UserContext);
- 
 
   let cartItems;
   if (authUser) {
@@ -93,9 +92,8 @@ export const ProductsTable = () => {
     });
   }
 
-
   return (
-    <div className="table-responsive">
+    <div className="table-responsive vh-100">
       <table className="table text-center align-middle table-hover table-sm">
         <thead className="table-light">
           <tr>
