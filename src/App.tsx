@@ -82,7 +82,7 @@ function App() {
           <FontAwesomeIcon icon={faArrowUp} />
         </button>
       )}
-      <Navbar />
+
 
       <Routes>
         {/* Protected Routes login ********************/}
