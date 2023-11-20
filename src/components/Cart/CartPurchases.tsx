@@ -4,6 +4,7 @@ import { CartPrices } from "./CartPrices";
 import { DocumentData } from "firebase/firestore";
 import { UserContext } from "../../Contexts/UserContext";
 import { AnonymousUserContext } from "../../Contexts/AnonymousUserContext";
+import { useNavigate } from "react-router-dom";
 
 interface CartPurchasesProps {
   nextPage: (value: number) => void;
@@ -12,6 +13,7 @@ interface CartPurchasesProps {
 export const CartPurchases = ({ nextPage }: CartPurchasesProps) => {
   const { currentUser } = useContext(UserContext);
   const { anonymousCartItems } = useContext(AnonymousUserContext);
+  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -34,7 +36,10 @@ export const CartPurchases = ({ nextPage }: CartPurchasesProps) => {
         <div className="container mt-5 text-center">
           <h4>عربة التسوق فارغة</h4>
           <div className="mt-3">
-            <button className="btn btn-secondary text-white">
+            <button
+              className="btn btn-secondary text-white"
+              onClick={() => navigate("/store")}
+            >
               ابدأ التسوق
             </button>
           </div>

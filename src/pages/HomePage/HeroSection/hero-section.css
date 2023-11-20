@@ -5,7 +5,7 @@
   transform: translateY(-50%);
 }
 .hero-btn {
-  border-radius: 0 !important;
+  /* border-radius: 0 !important; */
 }
 
 .hero-conent {
