@@ -26,11 +26,12 @@ const ProductCard = ({ data }: ProductCardProps) => {
 
   return (
     <>
-      <div className="card border-0 shadow">
-        <div className="img-icons-container position-relative">
+      <div className="card border-0 shadow align-items-stretch h-100">
+        <div className="img-icons-container position-relative h-75 ">
           <NavLink
             to={{ pathname: `/product-details/${data?.productId}` }}
             state={{ data }}
+            className="align-items-center d-flex h-100"
           >
             <img
               src={data?.productImages[0].imgUrl}

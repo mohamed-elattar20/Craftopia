@@ -51,7 +51,7 @@ export const SellerProfileProducts = () => {
   const [uploadFile, , , errorUploading] = useUploadFile();
 
   const handleUpload = async (e: ChangeEvent<HTMLInputElement>) => {
-    if (e?.target.files) {
+    if (e?.target.files && e?.target.files[0]) {
       let imgFile = e?.target.files[0];
       const reader = new FileReader();
       reader.readAsDataURL(imgFile);
@@ -126,7 +126,6 @@ export const SellerProfileProducts = () => {
     { value: "خرز", label: "خرز" },
     { value: "خيوط", label: "خيوط" },
     { value: "تصميم", label: "تصميم" },
-    { value: "أزياء", label: "أزياء" },
   ];
 
   useEffect(() => {
@@ -312,11 +311,11 @@ export const SellerProfileProducts = () => {
                 <div>
                   <label
                     className={
-                      productImages.length <= 5
+                      productImages.length < 5
                         ? "btn btn-outline-secondary"
                         : "btn-disabled"
                     }
-                    htmlFor={productImages.length <= 5 ? "productImageAdd" : ""}
+                    htmlFor={productImages.length < 5 ? "productImageAdd" : ""}
                   >
                     إضافة صورة
                   </label>

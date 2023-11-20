@@ -310,6 +310,7 @@ function RegisterBuyer() {
           <NavLink
             to={`/login`}
             className="text-primary d-block my-2 text-decoration-none"
+            style={{ width: "fit-content" }}
           >
             هل أنت عضو بالفعل؟
           </NavLink>
