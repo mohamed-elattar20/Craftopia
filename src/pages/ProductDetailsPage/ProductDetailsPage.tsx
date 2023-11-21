@@ -91,23 +91,28 @@ const ProductDetailsPage = () => {
 
           <div className="col-12 col-md-6">
             <h2 className="fw-normal mb-3 ">{ProductData?.productTitle}</h2>
-            <div className="d-flex align-items-center gap-1">
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row-reverse",
-                  direction: "ltr",
-                }}
-              >
-                <Rating
-                  name="half-rating-read"
-                  value={ProductData?.rating}
-                  precision={0.1}
-                  readOnly
-                />
-              </Box>
-              <span>({ProductData?.ratingCount})</span>
-            </div>
+
+            {ProductData?.ratingCount > 0 ? (
+              <div className="d-flex align-items-center gap-1">
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                    direction: "ltr",
+                  }}
+                >
+                  <Rating
+                    name="half-rating-read"
+                    value={ProductData?.rating}
+                    precision={0.1}
+                    readOnly
+                  />
+                </Box>
+                <span>({ProductData?.ratingCount})</span>
+              </div>
+            ) : (
+              <p>لا يوجد تقييم لهذا المنتج </p>
+            )}
 
             {ProductData?.discount ? (
               <div className="d-flex gap-2 align-items-baseline mt-3">

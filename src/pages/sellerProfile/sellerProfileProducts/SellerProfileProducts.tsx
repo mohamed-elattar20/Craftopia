@@ -373,7 +373,7 @@ export const SellerProfileProducts = () => {
                   </button>
                   <button
                     type="button"
-                    className="btn btn-secondary"
+                    className="btn btn-outline-secondary"
                     data-bs-dismiss="modal"
                     onClick={handleClose}
                   >

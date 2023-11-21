@@ -6,6 +6,7 @@ import { DocumentData } from "firebase/firestore";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeftLong } from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "../../../components/Spinner/Spinner";
 
 const LatestOffers = () => {
   const [products, loading, error] = useCollectionData(productsColRef);
@@ -27,20 +28,20 @@ const LatestOffers = () => {
         <div className="row text-center g-3">
           <h2 className="display-4">عروض اليوم</h2>
           {/* <p className="my-2 lead">خصومات تصل الى 30%</p> */}
-          <Link
+          {/* <Link
             to={"/store"}
             className="mt-1 mb-3 d-flex align-items-center justify-content-center gap-2 text-secondary"
           >
             <span> استكشف جميع العروض</span>
             <FontAwesomeIcon icon={faArrowLeftLong} />
-          </Link>
+          </Link> */}
+
           {error && <p>{error.message}</p>}
-          {loading &&
-            [1, 2, 3, 4].map((num) => (
-              <div className="col-6 col-md-6 col-lg-3" key={num}>
-                <p>Loading .....</p>
-              </div>
-            ))}
+          {loading && (
+            <div className="d-flex justify-content-center mt-4">
+              <Spinner />
+            </div>
+          )}
 
           {sortedOffers?.map((product) => (
             <div

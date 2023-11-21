@@ -119,7 +119,7 @@ export const SellerProfileTaps = () => {
           )}
         </div>
         {currentUser && (
-          <h4 className="mt-2 fs-5 px-3">{currentUser.displayName} </h4>
+          <h4 className="mt-2 fs-5 px-3">{currentUser.fullName} </h4>
         )}
       </div>
 
@@ -132,6 +132,11 @@ export const SellerProfileTaps = () => {
         <li className="nav-item col">
           <NavLink className="nav-link" to={"./products"}>
             المنتجات
+          </NavLink>
+        </li>
+        <li className="nav-item col">
+          <NavLink className="nav-link" to={"./orders"}>
+            المنتجات المطلوبة
           </NavLink>
         </li>
         <li className="nav-item col">

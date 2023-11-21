@@ -276,7 +276,7 @@ export const UserProfileOrder = ({
                 </>
               )}
 
-              <button className="btn btn-secondary text-white">
+              <button className="btn btn-outline-secondary text-white">
                 إرجاع المنتج
               </button>
             </div>

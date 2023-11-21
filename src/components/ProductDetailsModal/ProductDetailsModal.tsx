@@ -8,6 +8,8 @@ import { faHeart, faStar, faEye } from "@fortawesome/free-solid-svg-icons";
 import { DocumentData } from "firebase/firestore";
 import { WishListIcon } from "../WishListIcon/WishListIcon";
 import { useEffect } from "react";
+import Box from "@mui/material/Box";
+import Rating from "@mui/material/Rating";
 
 const ProductDetailsModal = ({ modalData }: DocumentData) => {
   const arr = [1, 2, 3, 4, 5];
@@ -44,7 +46,7 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
               ></button>
             </div>
             <div className="modal-body">
-              <div className="row align-items-center text-end">
+              <div className="row text-end">
                 <div className="col-sm-12 col-md-12 col-lg-6">
                   <img
                     src={modalData?.productImages[0].imgUrl}
@@ -54,19 +56,41 @@ const ProductDetailsModal = ({ modalData }: DocumentData) => {
                 </div>
                 <div className="col-sm-12 col-md-12 col-lg-6 bg-opacity-25">
                   <h1>{modalData?.productTitle}</h1>
-                  <p className="lead fw-medium">
-                    EGP {modalData?.productPrice}
-                  </p>
-                  <div className="rating-stars mb-2">
-                    {arr.map((star) => (
-                      <FontAwesomeIcon
-                        key={star}
-                        className="ms-2 text-warning "
-                        icon={faStar}
-                      />
-                    ))}
-                    <span>( 165 )</span>
-                  </div>
+                  {modalData?.ratingCount > 0 ? (
+                    <div className="d-flex align-items-center gap-1 mb-2">
+                      <Box
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row-reverse",
+                          direction: "ltr",
+                        }}
+                      >
+                        <Rating
+                          name="half-rating-read"
+                          value={modalData?.rating}
+                          precision={0.1}
+                          readOnly
+                        />
+                      </Box>
+                      <span>({modalData?.ratingCount})</span>
+                    </div>
+                  ) : (
+                    <p>لا يوجد تقييم لهذا المنتج </p>
+                  )}
+
+                  {modalData?.discount ? (
+                    <div className="d-flex gap-2 align-items-baseline">
+                      <h4 className="fs-4">
+                        EGP {modalData.priceAfterDiscount.toFixed(2)}
+                      </h4>
+                      <h4 className="text-decoration-line-through fw-normal fs-6">
+                        EGP {modalData?.productPrice}
+                      </h4>
+                    </div>
+                  ) : (
+                    <h4 className="fs-4">EGP {modalData?.productPrice}</h4>
+                  )}
+
                   <p>{modalData?.productDescription}</p>
                   <p className="lead">
                     الفئة: <strong> {modalData?.productCategory?.value}</strong>

@@ -17,7 +17,7 @@ const ProductDetailsReviews = ({ product }: ProductDetailsReviewsProps) => {
               </div>
             ))
           ) : (
-            <h2 className="display-5">لايوجد تقييمات لهذا المنتج </h2>
+            <h3 className="fs-4 fw-normal">لايوجد تقييمات لهذا المنتج </h3>
           )}
           {/* {product.reviewes.map((rev, index) => (
             <div key={index} className="col-12 my-2">

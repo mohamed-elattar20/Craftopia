@@ -40,7 +40,7 @@ import Cart from "./components/Cart/Cart";
 import Forum from "./components/community/Forum";
 import { UserProfilePosts } from "./pages/userProfile/userProfilePosts/UserProfilePosts";
 import UserProfileWishList from "./pages/userProfile/userProfileWishList/UserProfileWishList";
-import SellerProfilePosts from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
+import { SellerProfilePosts } from "./pages/sellerProfile/sellerProfilePosts/SellerProfilePosts";
 import SellerProductsPage from "./pages/SellerProductsPage/SellerProductsPage";
 import { ProtectedRoutesNotSeller } from "./pages/ProtectedRoutes/ProtectedRoutesNotSeller";
 //  Fontawesome
@@ -51,7 +51,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { MainLayout } from "./pages/MainLayout/MainLayout";
 import { OrderDone } from "./components/Cart/OrderDone";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
-
+import SellerProfileOrders from "./pages/sellerProfile/sellerProfileOrders/SellerProfileOrders";
 
 function App() {
   const STRIPE_PUBLISHABLE_KEY =
@@ -60,7 +60,6 @@ function App() {
   const scrollUp = () => {
     window.scrollTo(0, 0);
   };
-
 
   // const [scrollHeight, setScrollHeight] = useState(0);
   // useEffect(() => {
@@ -131,6 +130,7 @@ function App() {
               <Route path="/seller/profile" element={<SellerProfile />}>
                 <Route path="" element={<SellerProfileAccount />} />
                 <Route path="products" element={<SellerProfileProducts />} />
+                <Route path="orders" element={<SellerProfileOrders />} />
                 <Route path="posts" element={<SellerProfilePosts />} />
               </Route>
             </Route>

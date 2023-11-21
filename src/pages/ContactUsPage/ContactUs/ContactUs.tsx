@@ -25,10 +25,10 @@ const ContactUs = () => {
             <EnvelopeFill />
             <p className="mb-0 me-3"> support.center@craftopia.com</p>
           </div>
-          <div className="d-flex align-items-center mb-5">
+          {/* <div className="d-flex align-items-center mb-5">
             <GeoAltFill />
             <p className="mb-0 me-3">132 fake street</p>
-          </div>
+          </div> */}
           <div className="d-flex gap-4 align-items-center">
             <Facebook size={25} />
             <Whatsapp size={25} />
