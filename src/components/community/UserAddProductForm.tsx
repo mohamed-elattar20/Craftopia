@@ -151,6 +151,7 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
       </div>
       <div className="modal-footer">
         <button
+<<<<<<< HEAD
           type="submit"
           className="btn btn-primary"
           data-bs-dismiss={isValid ? "modal" : ""}
@@ -160,6 +161,10 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
         <button
           type="button"
           className="btn btn-outline-secondary"
+=======
+          type="button"
+          className="btn btn-secondary"
+>>>>>>> a474fb69534a80b5478f17931514cd24151088e6
           data-bs-dismiss="modal"
           onClick={() => {
             reset();
@@ -168,6 +173,16 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
         >
           اغلاق
         </button>
+<<<<<<< HEAD
+=======
+        <button
+          type="submit"
+          className="btn btn-primary"
+          data-bs-dismiss={isValid ? "modal" : ""}
+        >
+          اضافة
+        </button>
+>>>>>>> a474fb69534a80b5478f17931514cd24151088e6
       </div>
     </form>
   );
