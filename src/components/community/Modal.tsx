@@ -4,15 +4,15 @@ import UserAddProductForm from "./UserAddProductForm";
 
 export default function Modal({ setLoadingPost }: any) {
   return (
-    <div className="pt-5">
+    <div className="">
       <h2 className="text-center"> تبحث عن منتج ولم تجده ؟</h2>
       <button
         type="button"
-        className="btn btn-secondary modal-btn d-block w-100-xs w-50-md w-25-lg mx-auto my-3 fw-bold fs-5 py-2"
+        className="btn btn-secondary d-block w-100-xs w-50-md w-25-lg mx-auto my-3 fw-bold fs-5 py-2"
         data-bs-toggle="modal"
         data-bs-target="#staticBackdrop"
       >
-        شارك ما تريده مع امهر الحرفيين من هنا
+        شارك ما تريده مع أمهر الحرفيين
         <FontAwesomeIcon icon={faArrowLeft} className="me-2 align-middle" />
       </button>
       <div
@@ -28,7 +28,7 @@ export default function Modal({ setLoadingPost }: any) {
           <div className="modal-content">
             <div className="modal-header">
               <h5 className="modal-title" id="staticBackdropLabel">
-                شارك ما تبحث عنه مع امهر الحرفيين
+                شارك ما تبحث عنه مع أمهر الحرفيين
               </h5>
               {/* <button
                 type="button"

@@ -211,7 +211,7 @@ export const CartInfo = ({ nextPage }: CartPurchasesProps) => {
               تقدم إلى الدفع
             </button>
             <button
-              className="btn btn-danger mt-5 me-3"
+              className="btn btn-outline-gray mt-5 me-3"
               type="submit"
               onClick={() => nextPage(0)}
             >

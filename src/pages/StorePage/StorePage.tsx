@@ -13,7 +13,9 @@ import { Spinner } from "../../components/Spinner/Spinner";
 const StorePage = () => {
   const [products, setProducts] = useState<Array<DocumentData>>([]);
   const location = useLocation();
-  const [category, setCategory] = useState<string>(location.state);
+  const [category, setCategory] = useState<string>(
+    location.state ?? "كل الفئات"
+  );
   const [itemOffset, setItemOffset] = useState(0);
   const [filterdProducts, setFilterdProducts] = useState<any>([]);
   const [productss] = useCollectionData(productsCollRef);
@@ -26,6 +28,8 @@ const StorePage = () => {
       setItemOffset(0);
     }
   };
+
+  console.log(location.state);
 
   useEffect(() => {
     setLoading(true);
@@ -56,19 +60,40 @@ const StorePage = () => {
     getQuery();
   }, [category, productss]);
 
+  const categories = [
+    "كل الفئات",
+    "تصميم",
+    "مواد طبيعية",
+    "مواد كيميائية",
+    "خرز",
+    "خيوط",
+  ];
+
   return (
     <>
-      <div className="text-center mt-5 bg-secondary text-light py-5">
+      {/* <div className="text-center mt-5 bg-primary text-light py-5">
         <h1 className="display-3 fw-medium mb-3">مرحبا بك في المتجر</h1>
         <h5 className="display-6 ">Store</h5>
-      </div>
+      </div> */}
       <div className="container my-5">
-        <div
-          className="row justify-content-center text-center my-5"
-          onClick={(e) => filterQuery(e)}
-        >
+        <div className="row justify-content-center text-center my-5">
           <h2 className="text-center display-4 mb-5">الفئات</h2>
-          <div className="col-6 col-md-4 col-lg-2 mb-2">
+          {categories.map((cat, index) => (
+            <div className="col-6 col-md-4 col-lg-4 mb-2" key={index}>
+              <button
+                className="btn border-gray px-4 py-2 fs-5 fw-medium cat w-100"
+                onClick={(e) => filterQuery(e)}
+                style={{
+                  backgroundColor: category === cat ? "#b95151" : "transparent",
+                  color: category === cat ? "#fff" : "",
+                }}
+              >
+                {cat}
+              </button>
+            </div>
+          ))}
+
+          {/* <div className="col-6 col-md-4 col-lg-2 mb-2">
             <button className="btn btn-secondary px-4 py-2 rounded-pill fs-5 fw-medium text-light border-0 cat">
               كل الفئات
             </button>
@@ -98,7 +123,7 @@ const StorePage = () => {
             <button className="btn btn-secondary px-4 py-2 rounded-pill fs-5 fw-medium text-light border-0 cat">
               خيوط
             </button>
-          </div>
+          </div> */}
         </div>
         <div className="w-25">
           <SortComponent products={filterdProducts} setProducts={setProducts} />

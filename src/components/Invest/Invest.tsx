@@ -11,32 +11,33 @@ import { UserContext } from "../../Contexts/UserContext";
 const Invest = () => {
   const { myUser, authUser } = useContext(UserContext);
   return (
-    <div className="container py-4">
-      <div className="row py-4">
-        <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
-          <h2 className="mb-3">هل انت مبدع؟</h2>
-          <h2 className="mb-5">استثمر مواهبك!</h2>
-          <div className="d-flex align-items-center mb-4">
-            <FontAwesomeIcon icon={faHouse} />
-            <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
-          </div>
+    <section>
+      <div className="container py-5 border-bottom">
+        <div className="row">
+          <div className="col-md-6 text-center text-md-end order-1 order-md-0 ">
+            <h2 className="mb-3">هل انت مبدع؟</h2>
+            <h2 className="mb-5">استثمر مواهبك!</h2>
+            <div className="d-flex align-items-center mb-4">
+              <FontAwesomeIcon icon={faHouse} />
+              <p className="mb-0 me-2">منصة مخصصة للأعمال اليدوية</p>
+            </div>
 
-          <div className="d-flex mb-4">
-            <FontAwesomeIcon icon={faClipboardCheck} className="mt-1" />
+            <div className="d-flex mb-4">
+              <FontAwesomeIcon icon={faClipboardCheck} className="mt-1" />
 
-            <p className="mb-0 me-2 text-end">
-              قم بانشاء حساب خاص بك واعرض منتجاتك بدون أي رسوم
-            </p>
-          </div>
-          <div className="d-flex mb-5">
-            <FontAwesomeIcon icon={faHandshake} className="mt-1" />
-            <p className="mb-0  me-2 text-end">
-              نهتم بكل شيء بدءََ من استلام الطلب وحتى الشحن والتعامل مع
-              المدفوعات وخدمة العملاء
-            </p>
-          </div>
+              <p className="mb-0 me-2 text-end">
+                قم بانشاء حساب خاص بك واعرض منتجاتك بدون أي رسوم
+              </p>
+            </div>
+            <div className="d-flex mb-5">
+              <FontAwesomeIcon icon={faHandshake} className="mt-1" />
+              <p className="mb-0  me-2 text-end">
+                نهتم بكل شيء بدءََ من استلام الطلب وحتى الشحن والتعامل مع
+                المدفوعات وخدمة العملاء
+              </p>
+            </div>
 
-          {/* <Link
+            {/* <Link
             to={
               myUser && authUser && authUser[0].Rule == "seller"
                 ? `/seller/profile`
@@ -46,14 +47,15 @@ const Invest = () => {
           >
             ابدأ البيع
           </Link> */}
-        </div>
-        <div className="col-md-6 mb-3 mb-md-0">
-          <div className="h-100">
-            <img src={invest} alt="" className="h-100"></img>
+          </div>
+          <div className="col-md-6 mb-3 mb-md-0">
+            <div className="h-100">
+              <img src={invest} alt="" className="h-100"></img>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

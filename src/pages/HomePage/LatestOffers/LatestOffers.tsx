@@ -24,35 +24,35 @@ const LatestOffers = () => {
 
   return (
     <>
-      <div className="container my-5">
-        <div className="row text-center g-3">
-          <h2 className="display-4">عروض اليوم</h2>
-          {/* <p className="my-2 lead">خصومات تصل الى 30%</p> */}
-          {/* <Link
-            to={"/store"}
-            className="mt-1 mb-3 d-flex align-items-center justify-content-center gap-2 text-secondary"
-          >
-            <span> استكشف جميع العروض</span>
-            <FontAwesomeIcon icon={faArrowLeftLong} />
-          </Link> */}
-
-          {error && <p>{error.message}</p>}
-          {loading && (
-            <div className="d-flex justify-content-center mt-4">
-              <Spinner />
-            </div>
-          )}
-
-          {sortedOffers?.map((product) => (
-            <div
-              className="col-sm-12 col-md-6 col-lg-3"
-              key={product?.productId}
+      <section>
+        <div className="container py-5 border-bottom">
+          <div className="row text-center g-3">
+            <h2 className="display-5">عروض اليوم</h2>
+            {/* <p className="my-2 lead">خصومات تصل الى 30%</p> */}
+            <Link
+              to={"/store"}
+              className="mt-1 mb-3 d-flex align-items-center justify-content-center gap-2"
             >
-              <ProductCard data={product} />
-            </div>
-          ))}
+              <span> استكشف جميع العروض</span>
+              <FontAwesomeIcon icon={faArrowLeftLong} />
+            </Link>
+            {error && <p>{error.message}</p>}
+            {loading && (
+              <div className="d-flex justify-content-center mt-4">
+                <Spinner />
+              </div>
+            )}
+            {sortedOffers?.map((product) => (
+              <div
+                className="col-12 col-sm-6 col-lg-3"
+                key={product?.productId}
+              >
+                <ProductCard data={product} />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

@@ -11,16 +11,22 @@ const CategoryCard = ({ img, categoryType }: CategoryCardProps) => {
   return (
     <>
       <div className="card rounded-2 border-0">
-        <NavLink to={{ pathname: `/store` }} state={state}>
-          <img
-            src={img}
-            className="card-img-top rounded-2"
-            alt="category-img"
-          />
+        <NavLink
+          to={{ pathname: `/store` }}
+          state={state}
+          className="d-flex flex-column gap-3"
+        >
+          <div>
+            <img
+              src={img}
+              className="card-img-top rounded-2"
+              alt="category-img"
+            />
+          </div>
+          <div className="card-body text-center p-1">
+            <h4 className="card-title m-0">{categoryType}</h4>
+          </div>
         </NavLink>
-        <div className="card-body text-center">
-          <h4 className="card-title">{categoryType}</h4>
-        </div>
       </div>
     </>
   );

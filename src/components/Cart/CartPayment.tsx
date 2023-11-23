@@ -46,7 +46,7 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
         status: "pending",
         paymentMethod: !bankCard ? "On Delivery" : "Card Payment",
       }).then(async () => {
-        if (userRef) {     
+        if (userRef) {
           await updateDoc(userRef, {
             ["cart"]: {},
           })
@@ -142,7 +142,7 @@ const CartPayment = ({ nextPage }: CartPageProps) => {
             </button>
           ))}
         <button
-          className="btn btn-danger mt-5 me-3"
+          className="btn btn-outline-gray mt-5 me-3"
           type="submit"
           onClick={() => nextPage(1)}
         >

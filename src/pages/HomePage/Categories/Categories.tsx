@@ -15,25 +15,24 @@ const Categories = () => {
   ];
   return (
     <>
-      {/*  */}
-
-      {/*  */}
-      <div className="container my-5">
-        <div className="row">
-          <h2 className="display-5">تسوق حسب الفئة</h2>
-          {categories.map((category) => (
-            <div
-              className="col-6 col-md-6 col-lg-3 mt-5"
-              key={category.categoryType}
-            >
-              <CategoryCard
-                img={category.img}
-                categoryType={category.categoryType}
-              />
-            </div>
-          ))}
+      <section>
+        <div className="container py-5 border-bottom ">
+          <div className="row">
+            <h2 className="display-5">تسوق حسب الفئة</h2>
+            {categories.map((category) => (
+              <div
+                className="col-6 col-md-6 col-lg-3 mt-5"
+                key={category.categoryType}
+              >
+                <CategoryCard
+                  img={category.img}
+                  categoryType={category.categoryType}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
     </>
   );
 };

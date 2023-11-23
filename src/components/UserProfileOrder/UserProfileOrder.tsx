@@ -257,7 +257,7 @@ export const UserProfileOrder = ({
                               </button>
                               <button
                                 type="button"
-                                className="btn btn-secondary"
+                                className="btn btn-outline-gray"
                                 data-bs-dismiss="modal"
                                 onClick={() => {
                                   reset();
@@ -276,9 +276,7 @@ export const UserProfileOrder = ({
                 </>
               )}
 
-              <button className="btn btn-outline-secondary text-white">
-                إرجاع المنتج
-              </button>
+              <button className="btn btn-outline-gray">إرجاع المنتج</button>
             </div>
           )}
         </div>

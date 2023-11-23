@@ -14,7 +14,7 @@ export const OrderDone = () => {
         <Link to={"/store"} className="btn btn-secondary">
           مواصلة التسوق
         </Link>
-        <Link to={"/user/profile/orders"} className="btn btn-outline-secondary">
+        <Link to={"/user/profile/orders"} className="btn btn-outline-gray">
           عرض التفاصيل
         </Link>
       </div>

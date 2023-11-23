@@ -11,10 +11,10 @@
   padding: 10px 15px;
 
   /* background-color: grey; */
-  color: #192655;
+  /* color: #b95151; */
   border-radius: 5%;
 }
 .pagination .active {
-  background-color: #192655;
+  background-color: #b95151;
   color: white;
 }

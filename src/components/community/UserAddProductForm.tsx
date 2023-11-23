@@ -13,7 +13,7 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     setValue,
     reset,
   } = useForm();
@@ -25,45 +25,37 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
   const submitControl = async (data: any) => {
     console.log(data);
     setLoadingPost(true);
-    imgs.forEach(async (img: any) => {
+
+    const uploadPromises = imgs.map(async (img: any) => {
       const imgRef = ref(storage, `posts/${img.imageId}`);
       await uploadFile(imgRef, img.postImg);
       const url = await getDownloadURL(imgRef);
       img.imageUrl = url;
       delete img.postImg;
-
-      if (authUser) {
-        const postId = crypto.randomUUID();
-        console.log(imgs);
-        setDoc(doc(firestore, "posts", postId), {
-          postId: postId,
-          postBody: data.addComment,
-          postBodyImages: imgs.length > 0 ? imgs : [],
-          postOwnerName: authUser[0].displayName,
-          postOwnerAvatarUrl: authUser[0].avatarURL || "",
-          genratedAt: Timestamp.now(),
-          votes: 0,
-          postOwnerId: authUser[0].uId,
-        })
-          .then(() => {
-            console.log(`Set Post Added **************************`);
-          })
-          .catch(() => {
-            console.log(`Set post not Added`);
-          })
-          .finally(() => setLoadingPost(false));
-        // addDoc(postsCollRef, {
-        //   postId: crypto.randomUUID(),
-        //   postBody: data.addComment,
-        //   postBodyImages: imgs,
-        //   postOwnerName: authUser[0].displayName,
-        //   postOwnerAvatarUrl: authUser[0].avatarURL || "",
-        //   genratedAt: Timestamp.now(),
-        //   votes: 0,
-        //   comments: [],
-        // });
-      }
     });
+    await Promise.all(uploadPromises);
+
+    if (authUser) {
+      const postId = crypto.randomUUID();
+      console.log(imgs);
+      await setDoc(doc(firestore, "posts", postId), {
+        postId: postId,
+        postBody: data.addComment,
+        postBodyImages: imgs.length > 0 ? imgs : [],
+        postOwnerName: authUser[0].displayName,
+        postOwnerAvatarUrl: authUser[0].avatarURL || "",
+        genratedAt: Timestamp.now(),
+        votes: 0,
+        postOwnerId: authUser[0].uId,
+      })
+        .then(() => {
+          console.log(`Set Post Added **************************`);
+        })
+        .catch(() => {
+          console.log(`Set post not Added`);
+        });
+    }
+    setLoadingPost(false);
     reset();
     setImgs([]);
   };
@@ -93,39 +85,42 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
   return (
     <form onSubmit={handleSubmit(submitControl)}>
       <div className="mb-3">
-        <label htmlFor="exampleFormControlInput1" className="form-label">
-          اضافة صورة المنتج
+        <textarea
+          placeholder="عن ماذا تبحث؟"
+          className="form-control shadow-none"
+          id="exampleFormControlTextarea1"
+          rows={3}
+          {...register("addComment", {
+            required: "رجاء اكتب  توضيح لطلبك",
+          })}
+        ></textarea>
+      </div>
+      <div className="mb-3">
+        <label
+          htmlFor="exampleFormControlInput1"
+          className="form-label btn btn-outline-gray"
+        >
+          اضافة صورة
         </label>
-        {/* <input
-          type="file"
-          accept="image/*"
-          className="form-control"
-          id="exampleFormControlInput1"
-          {...register("add-img")}
-        /> */}
         <input
           type="file"
           accept="image/*"
           className="form-control"
           id="exampleFormControlInput1"
+          hidden
           {...register("add-img", {
-            required: "رجاء اضف صورة المنتج",
-            validate: {
-              hasValue: (file) => file !== null,
-            },
             onChange: (event) => handleUpload(event),
           })}
         />
-        <small className="text-danger">
-          <ErrorMessage errors={errors} name="add-img" />
-        </small>
-
+      </div>
+      <div className="d-flex gap-3">
         {imgs?.length > 0 &&
           imgs?.map((img: any) => (
-            <div key={img.imageId}>
-              <img src={img.imageUrl} alt="" />
+            <div key={img.imageId} className="position-relative">
+              <img src={img.imageUrl} alt="" style={{ width: "100px" }} />
               <span
-                className="fw-bold my-1 btn btn-danger"
+                className="fw-bold btn btn-danger position-absolute top-0 start-100 rounded-circle p-0 d-flex justify-content-center align-items-center translate-middle"
+                style={{ width: "22px", height: "22px" }}
                 onClick={() => deleteImg(img)}
               >
                 x
@@ -133,47 +128,26 @@ export default function UserAddProductForm({ setLoadingPost }: any) {
             </div>
           ))}
       </div>
-      <div className="mb-3">
-        <label htmlFor="exampleFormControlTextarea1" className="form-label">
-          اضافة تعليق
-        </label>
-        <textarea
-          className="form-control"
-          id="exampleFormControlTextarea1"
-          rows={3}
-          {...register("addComment", {
-            required: "رجاء اكتب  توضيح لطلبك",
-          })}
-        ></textarea>
-        <small className="text-danger">
-          <ErrorMessage errors={errors} name="addComment" />
-        </small>
-      </div>
-      <div className="modal-footer">
+
+      <div className="modal-footer d-flex">
         <button
           type="submit"
-          className="btn btn-primary"
+          className="btn btn-secondary flex-grow-1"
+          disabled={!isValid}
           data-bs-dismiss={isValid ? "modal" : ""}
         >
-          اضافة
+          نشر
         </button>
         <button
           type="button"
-          className="btn btn-outline-secondary"
+          className="btn btn-outline-gray"
           data-bs-dismiss="modal"
           onClick={() => {
             reset();
             setImgs([]);
           }}
         >
-          اغلاق
-        </button>
-        <button
-          type="submit"
-          className="btn btn-primary"
-          data-bs-dismiss={isValid ? "modal" : ""}
-        >
-          اضافة
+          غلق
         </button>
       </div>
     </form>
