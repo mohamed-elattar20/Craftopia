@@ -1,16 +1,19 @@
 import { ProductType } from "../../../Types/ProductType";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
 import { db, storage } from "../../../firebase/firebase.config";
 import { SellerProductModal } from "./SellerProductModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { firestore } from "../../../firebase/firebase";
 
 type sellerProductProps = {
   productItem: ProductType;
 };
 
 export const SellerProductItem = ({ productItem }: sellerProductProps) => {
+  // const [isAvailable, setIsAvailable] = useState(productItem.isAvailable);
   const deleteProduct = async () => {
     await deleteDoc(doc(db, "products", productItem.productId));
     productItem.productImages?.map((obj) => {
@@ -25,7 +28,13 @@ export const SellerProductItem = ({ productItem }: sellerProductProps) => {
     });
   };
 
-  console.log(productItem);
+  const handleAvaliabilty = (product: ProductType) => {
+    updateDoc(doc(firestore, "products", product.productId), {
+      ...product,
+      isAvailable: !product.isAvailable,
+    });
+    // setIsAvailable((prev) => !prev);
+  };
 
   return (
     <tr className="row border-bottom py-2 align-items-center">
@@ -46,9 +55,20 @@ export const SellerProductItem = ({ productItem }: sellerProductProps) => {
           />
         </div>
       </td>
-      <td className="col">
-        <SellerProductModal productItem={productItem} />
+      <td className="col text-center">
+        <input
+          type="checkbox"
+          checked={productItem.isAvailable ?? false}
+          onChange={() => handleAvaliabilty(productItem)}
+        />
       </td>
+      <td className="col">
+        <SellerProductModal
+          productItem={productItem}
+          key={productItem.productId}
+        />
+      </td>
+
       <td className="col text-danger text-center">
         <FontAwesomeIcon
           icon={faTrashCan}

@@ -31,5 +31,6 @@ export type ProductType = {
   imgsNum: number;
   priceAfterDiscount: number;
   quantity: number;
+  isAvailable: boolean;
   isReviewAdded: boolean;
 };
