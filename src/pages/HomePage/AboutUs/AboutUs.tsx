@@ -23,8 +23,10 @@ const AboutUs = () => {
   });
 
   return (
-    <section className="container mx-auto row row-cols-xl-4 row-cols-md-2 row-cols-1 py-5 border-bottom g-3">
-      {aboutUsCards}
+    <section>
+      <div className="container mx-auto py-5 row row-cols-xl-4 row-cols-md-2 row-cols-1 border-bottom g-3">
+        {aboutUsCards}
+      </div>
     </section>
   );
 };

@@ -105,22 +105,28 @@ const AddToCartBtn = ({ product }: AddToCartBtnProps) => {
 
   return (
     <>
-      <ToastContainer
-        newestOnTop
-        autoClose={600}
-        closeOnClick
-        rtl={true}
-        theme="light"
-        hideProgressBar
-        toastClassName={`shadow-sm `}
-      />
-      <button
-        onClick={() => addToCartFunc(product)}
-        className="btn btn-secondary w-100"
-      >
-        أضف الى السلة
-        <FontAwesomeIcon className="me-1 me-md-2" icon={faShoppingCart} />
-      </button>
+      {product?.isAvailable ? (
+        <>
+          <ToastContainer
+            newestOnTop
+            autoClose={600}
+            closeOnClick
+            rtl={true}
+            theme="light"
+            hideProgressBar
+            toastClassName={`shadow-sm `}
+          />
+          <button
+            onClick={() => addToCartFunc(product)}
+            className="btn btn-secondary w-100"
+          >
+            أضف الى السلة
+            <FontAwesomeIcon className="me-1 me-md-2" icon={faShoppingCart} />
+          </button>
+        </>
+      ) : (
+        <button className="btn btn-disabled w-100">غير متوفر حاليا</button>
+      )}
     </>
   );
 };

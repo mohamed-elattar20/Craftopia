@@ -13,12 +13,12 @@ export default function Forum() {
 
   return (
     <>
-      <div className="container">
+      <div className="container py-5">
         <div className="row">
           <Modal setLoadingPost={setLoadingPost} />
           <div className="col-12">
             {loading ? (
-              <div className="h-100 ">
+              <div className="d-flex justify-content-center mt-4">
                 <Spinner />
               </div>
             ) : loadingPost ? (

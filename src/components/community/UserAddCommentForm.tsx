@@ -15,9 +15,14 @@ type CommentImg = {
 };
 type UserAddCommentFormProps = {
   post?: any;
+  setIsOpen: any;
 };
-export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
+export default function UserAddCommentForm({
+  post,
+  setIsOpen,
+}: UserAddCommentFormProps) {
   const { myUser, authUser } = useContext(UserContext);
+  const [img, setImg] = useState<CommentImg>({} as CommentImg);
   const {
     register,
     handleSubmit,
@@ -58,9 +63,8 @@ export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
     }
 
     reset();
+    setIsOpen(false);
   };
-
-  const [img, setImg] = useState<CommentImg>({} as CommentImg);
 
   const handleUpload = (e: ChangeEvent<HTMLInputElement>) => {
     // console.log(e.target.files && e.target.files[0]);
@@ -81,37 +85,56 @@ export default function UserAddCommentForm({ post }: UserAddCommentFormProps) {
 
   return (
     <form onSubmit={handleSubmit(submitControl)}>
-      <div className="d-flex align-items-center">
-        <textarea
-          className="form-control add-comment"
-          id="exampleFormControlTextarea1"
-          rows={1}
-          {...register("comment", {
-            required: "رجاء اكتب  تعليقك ",
-          })}
-        ></textarea>
-
-        <button type="submit" className=" btn btn-primary border-0 p-2 ms-2 ">
-          <p className="m-0">تعليق</p>
-        </button>
-        <input
-          type="file"
-          placeholder="أضف صورة"
-          className="btn"
-          onChange={(e) => handleUpload(e)}
-        />
+      <div className="d-flex mt-3 gap-3">
+        <div className="flex-grow-1 position-relative border rounded-2 pb-5">
+          <textarea
+            className="form-control add-comment w-100 border-0 shadow-none "
+            id="exampleFormControlTextarea1"
+            rows={2}
+            placeholder="أضف تعليقك"
+            {...register("comment", {
+              required: "رجاء اكتب  تعليقك ",
+            })}
+          ></textarea>
+          <div className="position-absolute bottom-0 p-2 d-flex justify-content-between w-100 align-items-end">
+            <button
+              type="submit"
+              className="btn btn-secondary border-0 p-2 px-4"
+              style={{ fontSize: "14px", lineHeight: "1" }}
+            >
+              تعليق
+            </button>
+            <div>
+              <label
+                htmlFor="comment-img"
+                className="btn btn-outline-gray p-2"
+                style={{ fontSize: "14px", lineHeight: "1" }}
+              >
+                إضافة صورة
+              </label>
+              <input
+                id="comment-img"
+                type="file"
+                hidden
+                onChange={(e) => handleUpload(e)}
+              />
+            </div>{" "}
+          </div>
+        </div>
       </div>
-      <div className="my-3" style={{ width: "200px" }}>
-        <img src={img.imgUrl} alt="" />
-        {img.imgUrl && (
-          <button
-            onClick={() => setImg({} as CommentImg)}
-            className="btn btn-danger my-3"
-          >
-            X
-          </button>
-        )}
-      </div>
+      {img.imgUrl && (
+        <div className="my-3" style={{ width: "200px" }}>
+          <img src={img.imgUrl} alt="" />
+          {img.imgUrl && (
+            <button
+              onClick={() => setImg({} as CommentImg)}
+              className="btn btn-danger my-3"
+            >
+              X
+            </button>
+          )}
+        </div>
+      )}
       <small className="text-danger">
         <ErrorMessage errors={errors} name="add-comment" />
       </small>

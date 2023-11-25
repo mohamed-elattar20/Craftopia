@@ -46,10 +46,11 @@ export const WishListIcon = ({ data }: DocumentData) => {
       <button
         onClick={() => toggleWishlist(data)}
         title="fav"
-        className=" rounded-pill py-1 bg-black border-0 bg-opacity-50 text-light "
+        className="rounded-circle border-0 text-secondary btn p-1"
+        style={{ fontSize: "1.125rem" }}
       >
         {isInWishList ? (
-          <FontAwesomeIcon className="text-secondary" icon={faHeart} />
+          <FontAwesomeIcon icon={faHeart} />
         ) : (
           <FontAwesomeIcon icon={heartOutline} />
         )}

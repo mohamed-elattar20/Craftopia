@@ -105,6 +105,7 @@ export const SellerProfileProducts = () => {
       generatedAt: Timestamp.now(),
       rating: 0,
       ratingCount: 0,
+      isAvailable: true,
       reviewes: [],
     }).finally(() => setUploading(false));
     console.log(data);
@@ -159,6 +160,7 @@ export const SellerProfileProducts = () => {
                 <th className="col text-center">التصنيف</th>
                 <th className="col text-center">السعر</th>
                 <th className="col text-center">الصورة</th>
+                <th className="col text-center">التوفر</th>
                 <th className="col text-center">تعديل</th>
                 <th className="col text-center">إزالة</th>
               </tr>

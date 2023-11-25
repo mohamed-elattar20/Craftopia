@@ -130,7 +130,7 @@ function Navbar() {
                 <ul className="navbar-dropdown-menu dropdown-menu p-0">
                   <li>
                     <Link
-                      className="py-2 px-3 text-end dropdown-item"
+                      className="py-2 px-3 text-end dropdown-item btn"
                       to={
                         currentUser.Rule === "buyer"
                           ? `/user/profile`
@@ -142,7 +142,7 @@ function Navbar() {
                   </li>
                   <li>
                     <Link
-                      className="py-2 px-3 text-end dropdown-item"
+                      className="py-2 px-3 text-end dropdown-item btn"
                       to={`/community`}
                     >
                       مجتمع كرافتوبيا
@@ -154,7 +154,7 @@ function Navbar() {
                         signOut(auth);
                         navigate(`/`);
                       }}
-                      className="border-0 bg-white text-secondary py-2 px-3 text-end dropdown-item"
+                      className="border-0 bg-white py-2 px-3 text-end dropdown-item"
                     >
                       تسجيل الخروج ؟
                     </button>

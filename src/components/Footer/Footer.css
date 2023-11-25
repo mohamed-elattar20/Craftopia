@@ -3,13 +3,13 @@
 }
 .hoverLinks,
 .hover-icon {
-  transition: 0.5s all;
+  transition: 0.3s all;
 }
 .hoverLinks:hover {
   transform: translate(-10px);
 }
 .hover-icon:hover {
-  transform: scale(2);
+  transform: scale(1.25);
 }
 .li-class {
   width: fit-content;

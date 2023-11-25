@@ -71,13 +71,11 @@ const ProductCard = ({ data }: ProductCardProps) => {
             <h4 className="fs-5">EGP {data?.productPrice}</h4>
           )}
           {/* <h4 className="card-text mb-3">{data?.productPrice} EGP</h4> */}
-          <div className="d-flex">
+          <div className="d-flex align-items-center gap-2">
             <div className="flex-grow-1">
               <AddToCartBtn product={data} />
             </div>
-            <span className="me-2">
-              <WishListIcon data={data} />
-            </span>
+            <WishListIcon data={data} />
           </div>
         </div>
       </div>

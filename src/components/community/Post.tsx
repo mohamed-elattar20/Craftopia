@@ -64,6 +64,19 @@ export type CommentType = {
   commentImgUrl: string;
   userRole: string;
 };
+
+export const getPostTime = (time: number) => {
+  if (time < 60) {
+    return `منذ ${Math.floor(time)} ثانية`;
+  } else if (time < 3600) {
+    return `منذ ${Math.floor(time / 60)} دقيقة`;
+  } else if (time < 3600 * 24) {
+    return `منذ ${Math.floor(time / 3600)} ساعة`;
+  } else {
+    return `منذ ${Math.floor(time / (3600 * 24))} أيام`;
+  }
+};
+
 export default function Post({ post }: DocumentData) {
   // console.log(post);
 
@@ -120,18 +133,25 @@ export default function Post({ post }: DocumentData) {
   const deletePost = async (postId: any) => {
     const res = await deleteDoc(doc(firestore, "posts", post.postId));
   };
+
+  let currentDate = new Date().getTime();
+  let postDate = new Date(post.genratedAt.toDate()).getTime();
+  let diff = (currentDate - postDate) / 1000;
+
   return (
     <>
       {/*  */}
       <div className="container ">
         <div className="row justify-content-center">
-          <div className="col-sm-12 col-md-10 col-lg-7">
-            <div className="card mb-3">
-              <img
-                src={post.postBodyImages[0].imageUrl || ""}
-                className="card-img-top img-fluid"
-                alt="..."
-              />
+          <div className="col-sm-12 col-md-10 col-lg-6 gy-4">
+            <div className="card">
+              {post.postBodyImages.length > 0 && (
+                <img
+                  src={post.postBodyImages[0]?.imageUrl || ""}
+                  className="card-img-top img-fluid"
+                  alt="..."
+                />
+              )}
               <div className="card-body">
                 <div className="d-flex">
                   <div
@@ -151,7 +171,10 @@ export default function Post({ post }: DocumentData) {
                   <div className="me-2 w-100 d-flex justify-content-between">
                     <div>
                       <div className="d-flex align-items-center">
-                        <h5 className="card-title mb-1 ms-2">
+                        <h5
+                          className="card-title mb-1 ms-2"
+                          style={{ fontSize: "1.125rem" }}
+                        >
                           {post.postOwnerName}{" "}
                         </h5>
                         {postOwnerDoc && postOwnerDoc[0].Rule === "seller" ? (
@@ -170,24 +193,15 @@ export default function Post({ post }: DocumentData) {
                         className="m-0 text-muted"
                         style={{ fontSize: "14px" }}
                       >
-                        {new Date(post.genratedAt.toDate()).toDateString()}
+                        {getPostTime(diff)}
                       </p>
-                      <p
-                        className="m-0 text-muted"
-                        style={{ fontSize: "12px" }}
-                      >
-                        {new Date(
-                          post.genratedAt.toDate()
-                        ).toLocaleTimeString()}
-                      </p>
-                      <p></p>
                     </div>
                     <div>
                       {post.postOwnerId === currentUser?.uId && (
                         <div className="dropdown">
                           <button
                             title="delete"
-                            className="btn btn-primary dropdown-toggle py-1 px-2"
+                            className="btn dropdown-toggle py-1 px-2 border"
                             type="button"
                             data-bs-toggle="dropdown"
                             aria-expanded="false"
@@ -197,26 +211,35 @@ export default function Post({ post }: DocumentData) {
                               icon={faEllipsis}
                             />
                           </button>
-                          <ul className="dropdown-menu">
-                            <button
-                              onClick={() => deletePost(post.postId)}
-                              className="dropdown-item text-end "
-                            >
-                              حذف المنشور
-                            </button>
+                          <ul
+                            className="dropdown-menu py-1"
+                            style={{ minWidth: "fit-content" }}
+                          >
+                            <li>
+                              {" "}
+                              <button
+                                onClick={() => deletePost(post.postId)}
+                                className="dropdown-item text-end"
+                                style={{ fontSize: "14px" }}
+                              >
+                                حذف المنشور
+                              </button>
+                            </li>
                           </ul>
                         </div>
                       )}
                     </div>
                   </div>
                 </div>
-                <p className="card-text">{post.postBody}</p>
-                <p className="card-text"></p>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div className="d-flex">
-                    <div>
+                <p className="card-text mt-2">{post.postBody}</p>
+                <div
+                  className="d-flex justify-content-between align-items-center"
+                  // style={{ borderTop: "0.1px solid #0000002b" }}
+                >
+                  <div className="d-flex gap-2">
+                    <div className="d-flex ">
                       <button
-                        className="btn onfocus-btn"
+                        className="btn onfocus-btn p-0"
                         onClick={() => {
                           togglesVotes(post.postId);
                         }}
@@ -224,14 +247,14 @@ export default function Post({ post }: DocumentData) {
                         <FontAwesomeIcon
                           icon={faArrowUpLong}
                           color={hasVoted ? "blue" : "gray"}
-                          style={{ fontSize: 20, marginLeft: 3 }}
+                          style={{ fontSize: 14, marginLeft: 3 }}
                         />
-                        <span>اعجاب</span>
+                        <span style={{ fontSize: "14px" }}>اعجاب</span>
                       </button>
                     </div>
                     <div className="d-flex align-items-center">
                       <button
-                        className="btn d-flex align-items-center "
+                        className="btn d-flex align-items-center p-0"
                         onClick={() => {
                           setIsOpen((isOpen) => !isOpen);
                         }}
@@ -239,43 +262,53 @@ export default function Post({ post }: DocumentData) {
                         <FontAwesomeIcon
                           icon={faCommentDots}
                           color="gray"
-                          style={{ fontSize: 25 }}
+                          style={{ fontSize: 16 }}
                         />
-                        <span className="me-2">تعليق</span>
-                      </button>
-                      {Object.keys(post.votes).length > 0 && (
-                        <span style={{ fontSize: "14px" }} className="me-3">
-                          نال اعجاب {Object.keys(post.votes).length}
+                        <span className="me-2" style={{ fontSize: "14px" }}>
+                          تعليق
                         </span>
-                      )}
+                      </button>
                     </div>
                   </div>
-                  {comments?.length && comments?.length > 0 ? (
-                    <div style={{ fontSize: "14px" }} className="me-3">
-                      عدد التعليقات : {comments?.length}
-                    </div>
-                  ) : (
-                    ""
-                  )}
+
+                  <div className="d-flex">
+                    {Object.keys(post.votes).length > 0 && (
+                      <span style={{ fontSize: "14px" }} className="me-3">
+                        نال اعجاب {Object.keys(post.votes).length}
+                      </span>
+                    )}
+
+                    {comments?.length && comments?.length > 0 ? (
+                      <div style={{ fontSize: "14px" }} className="me-3">
+                        عدد التعليقات : {comments?.length}
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
                 </div>
-                {isOpen && <UserAddCommentForm post={post} />}
+                {isOpen && (
+                  <UserAddCommentForm post={post} setIsOpen={setIsOpen} />
+                )}
                 <div>
                   {loading ? (
                     <div className="">
                       <Spinner />
                     </div>
                   ) : (
-                    comments
-                      ?.sort((a, b) => +b.generatedAt - +a.generatedAt)
-                      ?.slice(0, 3)
-                      .map((comment) => (
-                        // <div className="col-12">
-                        <Comment
-                          key={comment.commentId}
-                          comment={comment as CommentType}
-                        />
-                        // </div>
-                      ))
+                    <div className="d-flex flex-column gap-2">
+                      {comments
+                        ?.sort((a, b) => +b.generatedAt - +a.generatedAt)
+                        ?.slice(0, 3)
+                        .map((comment) => (
+                          // <div className="col-12">
+                          <Comment
+                            key={comment.commentId}
+                            comment={comment as CommentType}
+                          />
+                          // </div>
+                        ))}
+                    </div>
                   )}
 
                   {comments && comments?.length > 3 && (

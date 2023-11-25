@@ -128,7 +128,7 @@ const ProductDetailsPage = () => {
                 </h3>
               </div>
             ) : (
-              <h3>EGP {ProductData?.productPrice}</h3>
+              <h3 className="mt-3">EGP {ProductData?.productPrice}</h3>
             )}
 
             <div className="my-4 d-flex gap-2 align-items-center">
@@ -155,7 +155,7 @@ const ProductDetailsPage = () => {
         <div className="row">
           <div className="col-12 text-center my-5 d-flex justify-content-center">
             <button
-              className={`btn fs-1 ms-5 ${
+              className={`btn fs-2 ms-5 ${
                 !flag ? "text-secondary " : "text-muted"
               }`}
               onClick={() => setFlag(false)}
@@ -163,7 +163,7 @@ const ProductDetailsPage = () => {
               المواصفات
             </button>
             <button
-              className={`btn fs-1 ${
+              className={`btn fs-2 ${
                 !flag ? "text-muted  " : "text-secondary"
               }`}
               onClick={() => setFlag(true)}
@@ -177,7 +177,7 @@ const ProductDetailsPage = () => {
           )}
         </div>
         <div className="row my-5  g-3">
-          <h2 className="mb-4 display-4 text-center ">منتجات ذات صلة</h2>
+          <h2 className="mb-4 display-5 text-center ">منتجات ذات صلة</h2>
           {filteredRelatedProducts?.map((prod: any) => (
             <div className="col-12 col-sm-6 col-lg-3" key={prod.productId}>
               <ProductCard data={prod} />
